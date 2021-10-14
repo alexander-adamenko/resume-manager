@@ -2,8 +2,8 @@
 server side
 
 To run project with "Run" button:
-1. You`ll see "maven build script found", press "load".
-2. If there`s no such message, delete ".idea" folder and reopen Intelij.
+1. You'll see "maven build script found", press "load".
+2. If there's no such message, delete ".idea" folder and reopen Intelij.
 3. Open "ResumeManagerApplication" file and press "trust project".
 4. Wait for the dependencies to load.
 
@@ -23,4 +23,4 @@ Steps:
 4. Add variables names and values
 5. Press "OK" -> "Apply" -> "OK"
 
-That`s all.
+That's all.
