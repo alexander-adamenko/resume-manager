@@ -1,7 +1,7 @@
 # resume-manager
 Server side.
 
-At first, change Java version to 17:
+At first, change Java version to 17:\
 https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/
 
 To run project with "Run" button:
@@ -11,13 +11,13 @@ To run project with "Run" button:
 4. Wait for the dependencies to load.
 
 You also need to set enviroment variables before start.
-They are:\
-MYSQL_DB_HOST\
-MYSQL_DB_PORT\
-MYSQL_DB_NAME\
-MYSQL_DB_USERNAME\
-MYSQL_DB_PASSWORD\
-MY_SECRET_KEY
+They are:
+1. MYSQL_DB_HOST
+2. MYSQL_DB_PORT
+3. MYSQL_DB_NAME
+4. MYSQL_DB_USERNAME
+5. MYSQL_DB_PASSWORD
+6. MY_SECRET_KEY
 
 Steps:
 1. "Edit Configurations" on the right of build button.
