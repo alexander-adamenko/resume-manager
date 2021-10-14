@@ -30,4 +30,8 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(name = "recruiter_id")
     private List<Candidate> candidates = new ArrayList<>();
+
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "author_id")
+    private List<Feedback> feedbacks = new ArrayList<>();
 }

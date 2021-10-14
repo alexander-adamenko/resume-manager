@@ -21,7 +21,7 @@ public class Feedback {
     //Fk
     //private Candidate candidate;
 
-    //Maybe Fk
-    //private User author;
-
+    @ManyToOne
+    @JoinColumn(name="author_id", nullable=false)
+    private User author;
 }

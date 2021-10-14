@@ -3,6 +3,8 @@ package com.infopulse.resume.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -14,5 +16,8 @@ public class Skill {
 
     private String name;
     private String level;
+
+    @ManyToMany(mappedBy = "skills")
+    private Set<Vacancy> employees = new HashSet<>();
 
 }
