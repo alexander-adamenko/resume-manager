@@ -11,7 +11,7 @@ To run project with "Run" button:
 4. Wait for the dependencies to load.
 
 You also need to set enviroment variables before start.
-They are:
+They are:\
 MYSQL_DB_HOST\
 MYSQL_DB_PORT\
 MYSQL_DB_NAME\
