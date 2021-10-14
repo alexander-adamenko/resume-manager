@@ -17,7 +17,7 @@ MYSQL_DB_PORT\
 MYSQL_DB_NAME\
 MYSQL_DB_USERNAME\
 MYSQL_DB_PASSWORD\
-MY_SECRET_KEY\
+MY_SECRET_KEY
 
 Steps:
 1. "Edit Configurations" on the right of build button.
