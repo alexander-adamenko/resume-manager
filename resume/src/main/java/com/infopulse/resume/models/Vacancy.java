@@ -17,9 +17,5 @@ public class Vacancy {
     private String location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
-
-
-
+    private User recruiter;
 }

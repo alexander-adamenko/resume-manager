@@ -24,8 +24,10 @@ public class User {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "vacancy_id")
+    @JoinColumn(name = "recruiter_id")
     private List<Vacancy> vacancies = new ArrayList<>();
 
-
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "recruiter_id")
+    private List<Candidate> candidates = new ArrayList<>();
 }

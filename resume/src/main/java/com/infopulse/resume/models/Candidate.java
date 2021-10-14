@@ -18,8 +18,8 @@ public class Candidate {
     private String aboutMe;
     private String filePath;
 
-    //Fk
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User recruiter;
 
     //Fk can be list
     //private Skill skill;
