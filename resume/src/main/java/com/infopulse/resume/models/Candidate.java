@@ -1,6 +1,17 @@
 package com.infopulse.resume.models;
 
+import lombok.Data;
+
+import javax.persistence.*;
+
+@Entity
+@Data
 public class Candidate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+
     private String name;
     private String email;
     private String phone;
@@ -11,7 +22,7 @@ public class Candidate {
     private User user;
 
     //Fk can be list
-    private Skill skill;
+    //private Skill skill;
 
 
 
