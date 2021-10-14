@@ -12,12 +12,12 @@ To run project with "Run" button:
 
 You also need to set enviroment variables before start.
 They are:
-MYSQL_DB_HOST
-MYSQL_DB_PORT
-MYSQL_DB_NAME
-MYSQL_DB_USERNAME
-MYSQL_DB_PASSWORD
-MY_SECRET_KEY
+MYSQL_DB_HOST\
+MYSQL_DB_PORT\
+MYSQL_DB_NAME\
+MYSQL_DB_USERNAME\
+MYSQL_DB_PASSWORD\
+MY_SECRET_KEY\
 
 Steps:
 1. "Edit Configurations" on the right of build button.
