@@ -1,5 +1,8 @@
 # resume-manager
-server side
+Server side.
+
+At first, change Java version to 17:
+https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/
 
 To run project with "Run" button:
 1. You'll see "maven build script found", press "load".
