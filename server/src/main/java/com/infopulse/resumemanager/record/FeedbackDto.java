@@ -1,6 +1,10 @@
 package com.infopulse.resumemanager.record;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.LocalDate;
 
 public record FeedbackDto(

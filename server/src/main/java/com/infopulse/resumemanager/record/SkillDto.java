@@ -1,6 +1,6 @@
 package com.infopulse.resumemanager.record;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public record SkillDto(
         @NotBlank

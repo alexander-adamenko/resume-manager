@@ -1,7 +1,8 @@
 package com.infopulse.resumemanager.record;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Set;
 
 public record CandidateDto(
@@ -13,6 +14,7 @@ public record CandidateDto(
         String phone,
         String degree,
         String aboutMe,
+        @NotBlank(message = "FilePath cannot be blank")
         String filePath,
         Set<SkillDto> skills
 ) { }

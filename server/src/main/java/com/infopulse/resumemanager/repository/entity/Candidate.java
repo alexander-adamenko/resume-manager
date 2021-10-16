@@ -3,7 +3,6 @@ package com.infopulse.resumemanager.repository.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Getter
@@ -23,7 +22,6 @@ public class Candidate {
     @Column(name = "about_me")
     private String aboutMe;
 
-    @NotBlank
     @Column(name = "file_path")
     private String filePath;
 
