@@ -1,12 +1,15 @@
 package com.infopulse.resumemanager.repository.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "vacancies")
 public class Vacancy {
@@ -14,15 +17,10 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String positionTitle;
-
     private Boolean needVerifiedApplicants;
-
     private Integer minimumYearsOfExperience;
-
     private String degree;
-
     private String location;
 
     @ManyToOne

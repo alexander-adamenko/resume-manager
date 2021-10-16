@@ -1,14 +1,13 @@
 package com.infopulse.resumemanager.repository.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "candidates")
 public class Candidate {
@@ -16,15 +15,9 @@ public class Candidate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Name cannot be null")
     private String name;
-
-    @Email(message = "Email should be valid")
     private String email;
-
-    //todo: write annotation for phone numbers
     private String phone;
-
     private String degree;
 
     @Column(name = "about_me")
@@ -34,11 +27,11 @@ public class Candidate {
     @Column(name = "file_path")
     private String filePath;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "candidate_skills",
             joinColumns = @JoinColumn(name = "candidate_id"),
@@ -46,6 +39,6 @@ public class Candidate {
     )
     private Set<Skill> skills;
 
-    @OneToMany(mappedBy = "candidate")
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY)
     private Set<Feedback> feedbacks;
 }

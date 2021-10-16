@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.infopulse.resumemanager.repository.entity.Role;
 
 import javax.validation.constraints.Size;
+import java.util.Set;
 
-public record UserDto(
+public record UserFullDto(
         @Size(
                 min = 4,
                 max = 20,
@@ -21,5 +22,8 @@ public record UserDto(
         String password,
         String firstName,
         String lastName,
-        Role role
+        Role role,
+        Set<CandidateDto> candidates,
+        Set<VacancyDto> vacancies,
+        Set<FeedbackDto> feedbacks
 ) { }

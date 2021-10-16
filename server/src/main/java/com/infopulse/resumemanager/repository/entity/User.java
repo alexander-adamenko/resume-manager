@@ -1,13 +1,14 @@
 package com.infopulse.resumemanager.repository.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -17,7 +18,6 @@ public class User {
 
     @Column(unique = true)
     private String username;
-
     private String password;
 
     @NotBlank
@@ -35,7 +35,7 @@ public class User {
     @OneToMany(mappedBy = "author")
     private Set<Vacancy> vacancies;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<Candidate> candidates;
 
     @OneToMany(mappedBy = "author")
