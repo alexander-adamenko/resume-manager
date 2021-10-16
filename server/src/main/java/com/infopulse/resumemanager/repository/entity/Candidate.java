@@ -25,11 +25,11 @@ public class Candidate {
     @Column(name = "file_path")
     private String filePath;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "candidate_skills",
             joinColumns = @JoinColumn(name = "candidate_id"),
@@ -37,6 +37,6 @@ public class Candidate {
     )
     private Set<Skill> skills;
 
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "candidate")
     private Set<Feedback> feedbacks;
 }
