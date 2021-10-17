@@ -1,13 +1,12 @@
 package com.infopulse.resumemanager.service;
 
-import com.infopulse.resumemanager.mapper.UserMapper;
+import com.infopulse.resumemanager.mapper.ObjectMapper;
 import com.infopulse.resumemanager.record.UserDto;
 import com.infopulse.resumemanager.repository.entity.User;
 import com.infopulse.resumemanager.repository.UserRepository;
 import com.infopulse.resumemanager.util.JwtTokenComponent;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,7 +70,7 @@ public class JwtUserWebService implements UserDetailsService {
     }
 
     private UserDto toDto(User user) {
-        UserMapper userMapper = Mappers.getMapper(UserMapper.class);
-        return userMapper.userToUserDto(user);
+        ObjectMapper objectMapper = Mappers.getMapper(ObjectMapper.class);
+        return objectMapper.userToUserDto(user);
     }
 }
