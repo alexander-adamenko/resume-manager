@@ -20,16 +20,22 @@ import java.util.Optional;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    JwtUserWebService jwtUserWebService;
+    private JwtUserWebService jwtUserWebService;
+    private JwtTokenComponent jwtTokenComponent;
 
     @Autowired
-    JwtTokenComponent jwtTokenComponent;
-    
+    public void setJwtUserWebService(JwtUserWebService jwtUserWebService) {
+        this.jwtUserWebService = jwtUserWebService;
+    }
+
+    @Autowired
+    public void setJwtTokenComponent(JwtTokenComponent jwtTokenComponent) {
+        this.jwtTokenComponent = jwtTokenComponent;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String username = null;
-
         Optional<String> jwtToken = jwtTokenComponent.getJwtFromRequestHeader(request);
         if (jwtToken.isPresent()) {
             username = jwtTokenComponent.extractUsername(jwtToken.get());
@@ -49,7 +55,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }
