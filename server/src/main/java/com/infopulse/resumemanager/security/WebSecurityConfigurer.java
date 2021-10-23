@@ -28,9 +28,12 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //make csrf enable later
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/api/v1/login")
-                .permitAll().anyRequest().authenticated()
+                .authorizeRequests()
+                .antMatchers("/api/v1/login").permitAll()
+                .antMatchers("/api/v1/registration").hasAuthority("ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
