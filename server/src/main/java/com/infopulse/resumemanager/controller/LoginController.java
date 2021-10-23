@@ -1,27 +1,33 @@
 package com.infopulse.resumemanager.controller;
 
-import com.infopulse.resumemanager.record.JwtResponse;
-import com.infopulse.resumemanager.record.UserDto;
+import com.infopulse.resumemanager.dto.JwtResponse;
+import com.infopulse.resumemanager.dto.UserDto;
+import com.infopulse.resumemanager.dto.UserFullDto;
 import com.infopulse.resumemanager.service.JwtUserWebService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/login")
 public class LoginController {
-    @Autowired
-    private JwtUserWebService jwtUserWebService;
+
+    private final JwtUserWebService jwtUserWebService;
+
+    public LoginController(JwtUserWebService jwtUserWebService) {
+        this.jwtUserWebService = jwtUserWebService;
+    }
 
     @GetMapping
-    public String hello() {
-        return "lalala";
+    public UserFullDto hello() {
+        UserFullDto userFullDto = jwtUserWebService.getFullUser("alex");
+        System.out.println(userFullDto.candidates());
+        System.out.println(228);
+        return userFullDto;
     }
 
     @PostMapping
-    public JwtResponse createAuthenticationToken(@Valid @RequestBody UserDto authenticationRequest) {
+    public JwtResponse createAuthenticationToken(@RequestBody @Valid UserDto authenticationRequest) {
         String token = jwtUserWebService.createAuthenticationToken(authenticationRequest);
         return new JwtResponse(token);
     }
