@@ -1,8 +1,7 @@
-package com.infopulse.resumemanager.record;
+package com.infopulse.resumemanager.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 public record CandidateDto(

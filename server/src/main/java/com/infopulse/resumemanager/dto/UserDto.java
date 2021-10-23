@@ -1,9 +1,9 @@
-package com.infopulse.resumemanager.record;
+package com.infopulse.resumemanager.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.infopulse.resumemanager.repository.entity.Role;
-import jakarta.validation.constraints.Size;
 
+import javax.validation.constraints.Size;
 
 public record UserDto(
         @Size(

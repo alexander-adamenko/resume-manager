@@ -1,9 +1,9 @@
-package com.infopulse.resumemanager.record;
+package com.infopulse.resumemanager.dto;
 
 import com.infopulse.resumemanager.repository.entity.Skill;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Set;
 
 public record VacancyDto(

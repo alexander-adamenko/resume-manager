@@ -1,10 +1,8 @@
 package com.infopulse.resumemanager.mapper;
 
-import com.infopulse.resumemanager.record.*;
+import com.infopulse.resumemanager.dto.*;
 import com.infopulse.resumemanager.repository.entity.*;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.Set;
 
@@ -16,6 +14,6 @@ public interface ObjectMapper {
     UserDto userToUserDto(User user);
     UserFullDto userToUserFullDto(User user);
     VacancyDto vacancyToVacancyDto(Vacancy vacancy);
-    UserFullDto toUserFullDto(UserDto userDto, Set<CandidateDto> candidates);
-
+    UserFullDto userDtoToUserFullDto(UserDto userDto, Set<CandidateDto> candidates);
+    User userDtoToUser(UserDto userDto);
 }

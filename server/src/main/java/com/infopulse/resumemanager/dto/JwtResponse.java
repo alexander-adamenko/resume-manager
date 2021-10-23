@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.record;
+package com.infopulse.resumemanager.dto;
 
 public record JwtResponse(String jwtToken) {
 }
