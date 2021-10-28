@@ -1,9 +1,9 @@
 package com.infopulse.resumemanager.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.infopulse.resumemanager.repository.entity.Role;
 
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 public record UserDto(
         @Size(
@@ -21,5 +21,5 @@ public record UserDto(
         String password,
         String firstName,
         String lastName,
-        Role role
+        Set<RoleDto> roles
 ) { }

@@ -109,12 +109,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        if (!ex.getMessage().contains("Role")) {
+        if (!ex.getMessage().contains("ERole")) {
             super.handleHttpMessageNotReadable(ex, headers, status, request);
         }
         String message = "HttpMessageNotReadableException.class";
-        if(ex.getLocalizedMessage().contains("Role")){
-            message = "Role does not exist.";
+        if(ex.getLocalizedMessage().contains("ERole")){
+            message = "ERole does not exist.";
         }
         ApiErrorResponse apiErrorResponse = ApiErrorResponse.of(
                 HttpStatus.BAD_REQUEST,
@@ -123,5 +123,5 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 
-
+//todo: add ExpiredJwtException handler
 }

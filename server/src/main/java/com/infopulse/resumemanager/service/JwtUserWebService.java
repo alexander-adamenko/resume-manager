@@ -1,129 +1,129 @@
 package com.infopulse.resumemanager.service;
 
-import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.UserDto;
-import com.infopulse.resumemanager.dto.UserFullDto;
 import com.infopulse.resumemanager.exception.UserAlreadyExistsException;
 import com.infopulse.resumemanager.mapper.ObjectMapper;
 import com.infopulse.resumemanager.repository.CandidateRepository;
+import com.infopulse.resumemanager.repository.RoleRepository;
 import com.infopulse.resumemanager.repository.UserRepository;
-import com.infopulse.resumemanager.repository.entity.Candidate;
 import com.infopulse.resumemanager.repository.entity.Role;
 import com.infopulse.resumemanager.repository.entity.User;
 import com.infopulse.resumemanager.util.JwtTokenComponent;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 @Service
 public class JwtUserWebService implements UserDetailsService {
-    private AuthenticationManager authenticationManager;
-    private PasswordEncoder passwordEncoder;
+    @PersistenceContext
+    private EntityManager entityManager;
+    private final PasswordEncoder passwordEncoder;
     private final JwtTokenComponent jwtTokenComponent;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final CandidateRepository candidateRepository;
     private final ObjectMapper objectMapper;
     @Autowired
-    public JwtUserWebService(JwtTokenComponent jwtTokenComponent, UserRepository userRepository, CandidateRepository candidateRepository) {
+    public JwtUserWebService(PasswordEncoder passwordEncoder, JwtTokenComponent jwtTokenComponent, UserRepository userRepository, RoleRepository roleRepository, CandidateRepository candidateRepository, ObjectMapper objectMapper) {
+        this.passwordEncoder = passwordEncoder;
         this.jwtTokenComponent = jwtTokenComponent;
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.candidateRepository = candidateRepository;
-        this.objectMapper = Mappers.getMapper(ObjectMapper.class);
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
-    public String createAuthenticationToken(UserDto authenticationRequest) {
-        authenticate(authenticationRequest.username(), authenticationRequest.password());
-        UserDetails userDetails = loadUserByUsername(
-                authenticationRequest.username());
-        return jwtTokenComponent.generateToken(userDetails);
-    }
-
-    private void authenticate(String username, String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDto userDto = getUser(username);
-
-        class MyRole implements GrantedAuthority{
-            String authority;
-
-            public MyRole(String authority) {
-                this.authority = authority;
-            }
-
-            @Override
-            public String getAuthority() {
-                return authority;
-            }
-        }
-
-        List<MyRole> authorities = new ArrayList<>();
-        authorities.add(new MyRole(userDto.role().name()));
+        UserDto user = getUser(username);
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.roles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.name())));
         return new org.springframework.security.core.userdetails.User(
-                userDto.username(), userDto.password(), authorities);
+                user.username(), user.password(), authorities);
     }
 
-    public UserDto getUser(String username) throws UsernameNotFoundException {
-        return objectMapper.userToUserDto(findUser(username));
-    }
-    private User findUser(String username) {
+    public UserDto getUser(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User " + username + " not found.");
         }
-        return user;
+        return objectMapper.userToUserDto(user);
     }
 
-    public UserFullDto getFullUser(String username) {
-        UserDto userDto = getUser(username);
-        Candidate candidate = candidateRepository.findByAuthor_Username(username);
-        ObjectMapper objectMapper = Mappers.getMapper(ObjectMapper.class);
-        CandidateDto candidateDto = objectMapper.candidateToCandidateDto(candidate);
-        Set<CandidateDto> candidates = new HashSet<>();
-        candidates.add(candidateDto);
-        UserFullDto userFullDto = objectMapper.userDtoToUserFullDto(userDto, candidates);
-        System.out.println(userDto);
-        System.out.println(candidateDto);
-        System.out.println(userFullDto);
-        System.out.println(objectMapper.userToUserFullDto(userRepository.findByUsername(username)));
-        return  userFullDto;
+    public List<UserDto> getUsers() {
+        List<User> userList = userRepository.findAll();
+        return userList.stream().map(objectMapper::userToUserDto).toList();
     }
 
-    public UserDto registerUser(UserDto userDto) throws UserAlreadyExistsException {
-        User userWhoMakeRegistration = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        if(userWhoMakeRegistration.getRole() != Role.ADMIN){
-            throw new AccessDeniedException("Your role is too low for this operation.");
-        }
+    //todo: need refactoring, all this written because
+    // I don't want to create new rows in "roles" table writing basic "userRepository.save(user);"
+    @Transactional
+    public UserDto saveUser(UserDto userDto) throws UserAlreadyExistsException {
         User user = userRepository.findByUsername(userDto.username());
         if (user != null){
             throw new UserAlreadyExistsException(userDto.username());
         }
-        return objectMapper.userToUserDto(userRepository.save(objectMapper.userDtoToUser(userDto)));
+        user = objectMapper.userDtoToUser(userDto);
+        Set<Role> roles = user.getRoles();
+        user.setRoles(null);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        user.setId(userRepository.findByUsername(user.getUsername()).getId());
+        User finalUser = user;
+        roles.forEach(role -> {
+            Long roleId = roleRepository.findByName(role.getName()).getId();
+            if (roleId == null)
+                try {
+                    throw new UserAlreadyExistsException("322");//todo: should be another exception
+                } catch (UserAlreadyExistsException ignored) {}
+            entityManager.createNativeQuery("INSERT INTO user_roles (user_id, role_id) VALUES (?,?)")
+                    .setParameter(1, finalUser.getId())
+                    .setParameter(2, roleRepository.findByName(role.getName()).getId())
+                    .executeUpdate();
+        });
+        return userDto;
+    }
+
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String jwtToken = jwtTokenComponent.getJwtFromRequestHeader(request);
+        String username = jwtTokenComponent.extractUsername(jwtToken);
+        if (username != null && jwtTokenComponent.validateToken(jwtToken, username, JwtTokenComponent.TokenType.REFRESH)) {
+            org.springframework.security.core.userdetails.User user =
+                    (org.springframework.security.core.userdetails.User) loadUserByUsername(username);
+            jwtTokenComponent.generateTokensForUser(user, response);
+        }
+        else {
+            //todo: refactor
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Transactional
+    public UserDto addRoleToUser(String username, String roleName) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + username + " not found.123");
+        }
+        Role role = roleRepository.findByName(roleName);
+        if (role == null) {
+            throw new UsernameNotFoundException("User " + roleName + " not found.12");//todo:fix to role not found or smth else
+        }
+        user.getRoles().add(role);
+        return objectMapper.userToUserDto(user);
     }
 }

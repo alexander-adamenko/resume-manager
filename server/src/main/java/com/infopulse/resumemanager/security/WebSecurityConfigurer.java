@@ -1,42 +1,51 @@
 package com.infopulse.resumemanager.security;
 
-import com.infopulse.resumemanager.service.JwtUserWebService;
+import com.infopulse.resumemanager.repository.UserRepository;
+import com.infopulse.resumemanager.repository.entity.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Configuration
 @EnableWebSecurity
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtUserWebService jwtUserWebService;
+
+    private CustomAuthorisationFilter customAuthorisationFilter;
+    private UserRepository userRepository;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    public void setJwtRequestFilter(CustomAuthorisationFilter customAuthorisationFilter) {
+        this.customAuthorisationFilter = customAuthorisationFilter;
+    }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserWebService);
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //make csrf enable later
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), userRepository);
+        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
+        //todo: make csrf enable later
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/login").permitAll()
-                .antMatchers("/api/v1/registration").hasAuthority("ADMIN")
+                .antMatchers("/api/v1/login", "/api/v1/refresh-token").permitAll()
+                .antMatchers("/api/v1/user**").hasAuthority(ERole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(customAuthorisationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(customAuthenticationFilter);
+        //http.formLogin().successForwardUrl("/api/v1/users");
     }
 
     @Override
@@ -47,7 +56,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-        //        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
+
 }
