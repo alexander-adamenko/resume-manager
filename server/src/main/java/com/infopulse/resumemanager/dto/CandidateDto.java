@@ -1,5 +1,7 @@
 package com.infopulse.resumemanager.dto;
 
+import com.infopulse.resumemanager.dto.validation.Phone;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
@@ -9,7 +11,7 @@ public record CandidateDto(
         String name,
         @Email(message = "Email '${validatedValue}' should be valid")
         String email,
-        //todo: write annotation for phone numbers
+        @Phone
         String phone,
         String degree,
         String aboutMe,
