@@ -3,10 +3,7 @@ package com.infopulse.resumemanager.service.matcher;
 import com.infopulse.resumemanager.dto.VacancyDto;
 import com.infopulse.resumemanager.repository.CandidateRepository;
 import com.infopulse.resumemanager.repository.entity.Candidate;
-import com.infopulse.resumemanager.service.matcher.comparators.DegreeComparator;
-import com.infopulse.resumemanager.service.matcher.comparators.FeedbackComparator;
-import com.infopulse.resumemanager.service.matcher.comparators.LanguageComparator;
-import com.infopulse.resumemanager.service.matcher.comparators.SkillComparator;
+import com.infopulse.resumemanager.service.matcher.comparators.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +22,11 @@ public class CandidatesMatcher {
         this.candidateRepository = candidateRepository;
     }
     private Stream<Candidate> getStreamOfFilteredSkills(VacancyDto vacancy){
+
         return candidateRepository
                 .findAll()
                 .stream()
-//                .filter(cnd -> cnd.getSkills()!=null)
+                .filter(cnd ->  cnd.getCandidateSkills()!=null)
                 .filter(cnd -> new SkillComparator(vacancy).countMatches(cnd) > 0);
     }
 
@@ -36,6 +34,17 @@ public class CandidatesMatcher {
     public List<Candidate> filterBySkills(VacancyDto vacancy) {
         return getStreamOfFilteredSkills(vacancy)
                 .sorted(new SkillComparator(vacancy))
+                .collect(Collectors.toList());
+    }
+
+    //filter by skills and level, which in demand
+    // + sort by number of skills, and by level
+    public List<Candidate> filterBySkillsAndLevel(VacancyDto vacancy) {
+        return candidateRepository
+                .findAll()
+                .stream()
+                .filter(cnd ->  cnd.getCandidateSkills()!=null)
+                .filter(cnd -> new SkillLevelComparator(vacancy).countMatches(cnd) > 0)
                 .collect(Collectors.toList());
     }
 

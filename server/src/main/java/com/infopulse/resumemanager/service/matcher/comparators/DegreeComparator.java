@@ -1,7 +1,7 @@
 package com.infopulse.resumemanager.service.matcher.comparators;
 
 import com.infopulse.resumemanager.repository.entity.Candidate;
-import com.infopulse.resumemanager.service.matcher.Degrees;
+import com.infopulse.resumemanager.repository.entity.enums.Degree;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,9 +13,9 @@ public class DegreeComparator implements Comparator<Candidate> {
 
     public DegreeComparator() {
         degreeWeights = new HashMap<>();
-        degreeWeights.put(Degrees.BACHELOR.name(), 1);
-        degreeWeights.put(Degrees.MASTER.name(), 2);
-        degreeWeights.put(Degrees.DOCTOR.name(), 3);
+        degreeWeights.put(Degree.BACHELOR.name(), 1);
+        degreeWeights.put(Degree.MASTER.name(), 2);
+        degreeWeights.put(Degree.DOCTOR.name(), 3);
     }
 
     public Map<String, Integer> getDegreeWeights() {
@@ -32,7 +32,7 @@ public class DegreeComparator implements Comparator<Candidate> {
     }
 
     public String getActualDegree(Candidate candidate){
-        for (Degrees d: Degrees.values())
+        for (Degree d: Degree.values())
             if (candidate.getDegree().toUpperCase(Locale.ROOT).contains(d.name())){
                 return d.name();
             }

@@ -17,6 +17,7 @@ public class SkillLevelComparator implements Comparator<Candidate> {
     public SkillLevelComparator(VacancyDto vacancy) {
         this.vacancy = vacancy;
         skillLevelsWeights = new HashMap<>();
+        skillLevelsWeights.put(Level.DEFAULT.name(), 0);
         skillLevelsWeights.put(Level.TRAINEE.name(), 1);
         skillLevelsWeights.put(Level.JUNIOR.name(), 2);
         skillLevelsWeights.put(Level.MIDDLE.name(), 3);

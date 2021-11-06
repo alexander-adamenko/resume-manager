@@ -2,8 +2,9 @@ package com.infopulse.resumemanager.service.matcher.comparators;
 
 import com.infopulse.resumemanager.dto.SkillDto;
 import com.infopulse.resumemanager.dto.VacancyDto;
+import com.infopulse.resumemanager.dto.VacancySkillDto;
 import com.infopulse.resumemanager.repository.entity.Candidate;
-import com.infopulse.resumemanager.repository.entity.Skill;
+import com.infopulse.resumemanager.repository.entity.CandidateSkill;
 
 import java.util.Comparator;
 
@@ -19,11 +20,14 @@ public record SkillComparator(
 
     public int countMatches(Candidate cnd) {
         int count = 0;
-//        for (Skill vacancySkill : vacancy.skills()) {
-//            for (Skill candidateSkill : cnd.getSkills()) {
-//                if (vacancySkill.getName().equals(candidateSkill.getName())) count++;
-//            }
-//        }
+        for (VacancySkillDto vacancySkill : vacancy.vacancySkillSet()) {
+            for (CandidateSkill candidateSkill : cnd.getCandidateSkills()) {
+                if (vacancySkill.skillDto().name()
+                        .equals(candidateSkill.getSkill().getName())){
+                    count++;
+                }
+            }
+        }
         return count;
     }
 }

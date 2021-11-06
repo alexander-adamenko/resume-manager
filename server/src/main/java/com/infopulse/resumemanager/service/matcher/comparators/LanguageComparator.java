@@ -2,9 +2,10 @@ package com.infopulse.resumemanager.service.matcher.comparators;
 
 
 import com.infopulse.resumemanager.repository.entity.Candidate;
-import com.infopulse.resumemanager.repository.entity.Skill;
+import com.infopulse.resumemanager.repository.entity.CandidateSkill;
 
 import java.util.Comparator;
+import java.util.Locale;
 
 public record LanguageComparator(String lang) implements Comparator<Candidate> {
     @Override
@@ -15,9 +16,13 @@ public record LanguageComparator(String lang) implements Comparator<Candidate> {
     }
 
     public boolean containsLang(Candidate cnd) {
-//        for (Skill candidateSkill : cnd.getSkills()) {
-//            if (candidateSkill.getName().equalsIgnoreCase(lang)) return true;
-//        }
+        for (CandidateSkill candidateSkill : cnd.getCandidateSkills()) {
+            if (candidateSkill
+                    .getSkill()
+                    .getName()
+                    .toUpperCase(Locale.ROOT)
+                    .contains(lang.toUpperCase(Locale.ROOT))) return true;
+        }
         return false;
     }
 }
