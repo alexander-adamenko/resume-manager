@@ -17,5 +17,5 @@ public record CandidateDto(
         String aboutMe,
         @NotBlank(message = "FilePath cannot be blank")
         String filePath,
-        Set<SkillDto> skills
+        Set<CandidateSkillDto> candidateSkillSet
 ) { }

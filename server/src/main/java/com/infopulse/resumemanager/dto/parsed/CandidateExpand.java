@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.record.parsed;
+package com.infopulse.resumemanager.dto.parsed;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

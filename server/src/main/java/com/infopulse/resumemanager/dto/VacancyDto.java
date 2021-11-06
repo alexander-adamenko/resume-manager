@@ -14,5 +14,5 @@ public record VacancyDto(
         Integer minimumYearsOfExperience,
         String degree,
         String location,
-        Set<Skill> skills
+        Set<VacancySkillDto> vacancySkillSet
 ) { }
