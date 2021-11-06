@@ -5,7 +5,7 @@ import com.infopulse.resumemanager.dto.CandidateSkillDto;
 import com.infopulse.resumemanager.dto.SkillDto;
 import com.infopulse.resumemanager.dto.parsed.ExtendedCandidate;
 import com.infopulse.resumemanager.repository.entity.enums.Level;
-import com.infopulse.resumemanager.service.matcher.Degrees;
+import com.infopulse.resumemanager.repository.entity.enums.Degree;
 
 import java.util.*;
 
@@ -22,7 +22,7 @@ public class ExpandCandidateToCandidateDtoMapper {
     }
 
     private String getDegreeFromEdu(String education){
-        return  Arrays.stream(Degrees.values())
+        return  Arrays.stream(Degree.values())
                 .filter(degree -> education.toUpperCase().contains(degree.toString()))
                 .findAny()
                 .map(Enum::toString)
