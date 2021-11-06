@@ -1,10 +1,14 @@
 package com.infopulse.resumemanager.service.matcher;
 
+import com.infopulse.resumemanager.dto.SkillDto;
 import com.infopulse.resumemanager.dto.VacancyDto;
+import com.infopulse.resumemanager.dto.VacancySkillDto;
 import com.infopulse.resumemanager.repository.CandidateRepository;
 import com.infopulse.resumemanager.repository.entity.Candidate;
+import com.infopulse.resumemanager.repository.entity.CandidateSkill;
 import com.infopulse.resumemanager.repository.entity.Feedback;
 import com.infopulse.resumemanager.repository.entity.Skill;
+import com.infopulse.resumemanager.repository.entity.enums.Level;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +27,25 @@ class CandidatesMatcherTest {
     @Mock
     private CandidateRepository candidateRepository;
 
+    private Skill skill1;
+    private Skill skill2;
+    private Skill skill3;
+    private Skill english;
+    private Skill notRequiredSkill;
+
     @BeforeEach
     public void setUp() {
+        skill1 = new Skill();
+        skill2 = new Skill();
+        skill3 = new Skill();
+        english = new Skill();
+        notRequiredSkill = new Skill();
+        skill1.setName("DataBases");
+        skill2.setName("OOP");
+        skill3.setName("JavaServer pages");
+        english.setName("English - upper intermediate");
+        notRequiredSkill.setName("HTML");
+
         MockitoAnnotations.initMocks(this);
         Mockito.when(candidateRepository.findAll()).thenReturn(getCandidates());
     }
@@ -37,6 +58,16 @@ class CandidatesMatcherTest {
                 .map(Candidate::getName)
                 .collect(Collectors
                         .joining(" ")), "John Peter Katy");
+    }
+
+    @Test
+    void filterBySkillsAndLevel() {
+        Assertions.assertEquals(candidatesMatcher
+                .filterBySkillsAndLevel(getVacancyDto())
+                .stream()
+                .map(Candidate::getName)
+                .collect(Collectors
+                        .joining(" ")), "John Peter");
     }
 
     @Test
@@ -84,82 +115,112 @@ class CandidatesMatcherTest {
 
 
     private List<Candidate> getCandidates() {
-        Skill skill1 = new Skill();
-        Skill skill2 = new Skill();
-        Skill skill3 = new Skill();
-        Skill english = new Skill();
-        Skill notRequiredSkill = new Skill();
-
-        skill1.setName("DataBases");
-        skill2.setName("OOP");
-        skill3.setName("JavaServer pages");
-        english.setName("English");
-        notRequiredSkill.setName("HTML");
 
         List<Candidate> candidates = new ArrayList<>();
 
-        Candidate c1 = new Candidate();
-        c1.setName("Jack");
-        Set<Skill> c1Skill = new HashSet<>();
-        c1Skill.add(notRequiredSkill);
-//        c1.setSkills(c1Skill);
-        c1.setDegree("Bachelor of Science in Information Technology, University of Colombo");
+        Candidate jack = new Candidate();
+        jack.setName("Jack");
+
+        Set<CandidateSkill> c1Skill = new HashSet<>();
+        CandidateSkill cs1 = new CandidateSkill();
+        cs1.setCandidate(jack);
+        cs1.setSkill(notRequiredSkill);
+        cs1.setLevel(Level.JUNIOR);
+        c1Skill.add(cs1);
+
+        jack.setCandidateSkills(c1Skill);
+
+        jack.setDegree("Bachelor of Science in Information Technology, University of Colombo");
         Set<Feedback> c1FeedBack = new HashSet<>();
         for (int i = 0; i < 3; i++) c1FeedBack.add(new Feedback());
-        c1.setFeedbacks(c1FeedBack);
+        jack.setFeedbacks(c1FeedBack);
 
-        Candidate c2 = new Candidate();
-        c2.setName("Katy");
-        Set<Skill> c2Skill = new HashSet<>();
-        c2Skill.add(skill3);
-//        c2.setSkills(c2Skill);
+        Candidate katy = new Candidate();
+        katy.setName("Katy");
+        Set<CandidateSkill> c2Skill = new HashSet<>();
+        CandidateSkill cs2 = new CandidateSkill();
+        cs2.setCandidate(katy);
+        cs2.setSkill(skill3);
+        cs2.setLevel(Level.DEFAULT);
+        c2Skill.add(cs2);
+        katy.setCandidateSkills(c2Skill);
+
         Set<Feedback> c2FeedBack = new HashSet<>();
         for (int i = 0; i < 12; i++) c2FeedBack.add(new Feedback());
-        c2.setFeedbacks(c2FeedBack);
+        katy.setFeedbacks(c2FeedBack);
 
-        Candidate c3 = new Candidate();
-        c3.setName("John");
-        Set<Skill> c3Skill = new HashSet<>();
-        c3Skill.add(skill2);
-        c3Skill.add(skill3);
-        c3Skill.add(english);
-//        c3.setSkills(c3Skill);
-        c3.setDegree("Master of Science in Information Technology, University of Colombo");
+        Candidate john = new Candidate();
+        john.setName("John");
+        Set<CandidateSkill> c3Skill = new HashSet<>();
+        CandidateSkill cs3 = new CandidateSkill();
+        cs3.setCandidate(john);
+        cs3.setSkill(skill2);
+        cs3.setLevel(Level.MIDDLE);
 
-        Candidate c4 = new Candidate();
-        c4.setName("Peter");
-        Set<Skill> c4Skill = new HashSet<>();
-        c4Skill.add(skill1);
-        c4Skill.add(english);
-//        c4.setSkills(c4Skill);
-        c4.setDegree("Bachelor of Science in Information Technology, University of Colombo");
+        CandidateSkill cs4 = new CandidateSkill();
+        cs4.setCandidate(john);
+        cs4.setSkill(skill3);
+        cs4.setLevel(Level.JUNIOR);
+
+        CandidateSkill cs5 = new CandidateSkill();
+        cs5.setCandidate(john);
+        cs5.setSkill(english);
+        cs5.setLevel(Level.TRAINEE);
+
+        c3Skill.add(cs3);
+        c3Skill.add(cs4);
+        c3Skill.add(cs5);
+
+        john.setCandidateSkills(c3Skill);
+
+        john.setDegree("Master of Science in Information Technology, University of Colombo");
+
+        Candidate peter = new Candidate();
+        peter.setName("Peter");
+        Set<CandidateSkill> c4Skill = new HashSet<>();
+        CandidateSkill cs6 = new CandidateSkill();
+        cs6.setCandidate(peter);
+        cs6.setSkill(skill1);
+        cs6.setLevel(Level.MIDDLE);
+
+        CandidateSkill cs7 = new CandidateSkill();
+        cs7.setCandidate(peter);
+        cs7.setSkill(english);
+        cs7.setLevel(Level.DEFAULT);
+
+        CandidateSkill cs8 = new CandidateSkill();
+        cs8.setCandidate(peter);
+        cs8.setSkill(skill2);
+        cs8.setLevel(Level.TRAINEE);
+
+        c4Skill.add(cs6);
+        c4Skill.add(cs7);
+        c4Skill.add(cs8);
+
+        peter.setCandidateSkills(c4Skill);
+
+        peter.setDegree("Bachelor of Science in Information Technology, University of Colombo");
         Set<Feedback> c4FeedBack = new HashSet<>();
         for (int i = 0; i < 7; i++) c4FeedBack.add(new Feedback());
-        c4.setFeedbacks(c4FeedBack);
+        peter.setFeedbacks(c4FeedBack);
 
-        candidates.add(c1);
-        candidates.add(c2);
-        candidates.add(c3);
-        candidates.add(c4);
+        candidates.add(jack);
+        candidates.add(katy);
+        candidates.add(john);
+        candidates.add(peter);
         return candidates;
     }
 
     private VacancyDto getVacancyDto() {
-        Set<Skill> skills = new HashSet<>();
-        Skill skill1 = new Skill();
-        Skill skill2 = new Skill();
-        Skill skill3 = new Skill();
-        Skill skill4 = new Skill();
-        skill1.setName("DataBases");
-        skill2.setName("OOP");
-        skill3.setName("JavaServer pages");
-        skill4.setName("English");
-        skills.add(skill1);
-        skills.add(skill2);
-        skills.add(skill3);
-        skills.add(skill4);
+        Set<VacancySkillDto> skills = new HashSet<>();
 
-//        return new VacancyDto("Java Developer", true, 2, null, null, skills);
-        return null;//todo change
+        skills.add(new VacancySkillDto(new SkillDto(skill1.getName()), Level.JUNIOR));
+        skills.add(new VacancySkillDto(new SkillDto(skill2.getName()), Level.TRAINEE));
+        skills.add(new VacancySkillDto(new SkillDto(skill3.getName()), Level.MIDDLE));
+
+        return new VacancyDto("Java Developer", true,
+                2, null, null, skills);
+
     }
+
 }
