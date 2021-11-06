@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,11 +17,10 @@ public class Skill {
     private Long id;
 
     private String name;
-    private String level;
 
-    @ManyToMany(mappedBy = "skills")
-    Set<Vacancy> vacancies;
+    @OneToMany(mappedBy = "skill")
+    private List<CandidateSkill> candidateSkills;
 
-    @ManyToMany(mappedBy = "skills")
-    Set<Candidate> candidates;
+    @OneToMany(mappedBy = "skill")
+    private List<VacancySkill> vacancySkills;
 }

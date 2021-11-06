@@ -28,7 +28,7 @@ public class CandidatesMatcher {
         return candidateRepository
                 .findAll()
                 .stream()
-                .filter(cnd -> cnd.getSkills()!=null)
+//                .filter(cnd -> cnd.getSkills()!=null)
                 .filter(cnd -> new SkillComparator(vacancy).countMatches(cnd) > 0);
     }
 

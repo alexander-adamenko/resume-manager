@@ -20,9 +20,9 @@ public record SkillComparator(
     public int countMatches(Candidate cnd) {
         int count = 0;
         for (Skill vacancySkill : vacancy.skills()) {
-            for (Skill candidateSkill : cnd.getSkills()) {
-                if (vacancySkill.getName().equals(candidateSkill.getName())) count++;
-            }
+//            for (Skill candidateSkill : cnd.getSkills()) {
+//                if (vacancySkill.getName().equals(candidateSkill.getName())) count++;
+//            }
         }
         return count;
     }

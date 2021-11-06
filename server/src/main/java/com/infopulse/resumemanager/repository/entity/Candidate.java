@@ -3,6 +3,7 @@ package com.infopulse.resumemanager.repository.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -29,14 +30,13 @@ public class Candidate {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @ManyToMany
-    @JoinTable(
-            name = "candidate_skills",
-            joinColumns = @JoinColumn(name = "candidate_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
-    )
-    private Set<Skill> skills;
-
     @OneToMany(mappedBy = "candidate")
     private Set<Feedback> feedbacks;
+
+    @OneToMany(mappedBy = "candidate")
+    private Set<CandidateSkill> candidateSkills;
+
+    @OneToMany(mappedBy = "candidate")
+    private List<Hiring> hiringList;
+
 }

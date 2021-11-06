@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,11 +26,10 @@ public class Vacancy {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @ManyToMany
-    @JoinTable(
-            name = "vacancy_skills",
-            joinColumns = @JoinColumn(name = "vacancy_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
-    )
-    private Set<Skill> skills;
+    @OneToMany(mappedBy = "vacancy")
+    private Set<VacancySkill> vacancySkills;
+
+    @OneToMany(mappedBy = "vacancy")
+    private List<Hiring> hiringList;
+
 }

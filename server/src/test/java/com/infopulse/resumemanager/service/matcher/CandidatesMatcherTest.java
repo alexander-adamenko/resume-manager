@@ -102,7 +102,7 @@ class CandidatesMatcherTest {
         c1.setName("Jack");
         Set<Skill> c1Skill = new HashSet<>();
         c1Skill.add(notRequiredSkill);
-        c1.setSkills(c1Skill);
+//        c1.setSkills(c1Skill);
         c1.setDegree("Bachelor of Science in Information Technology, University of Colombo");
         Set<Feedback> c1FeedBack = new HashSet<>();
         for (int i = 0; i < 3; i++) c1FeedBack.add(new Feedback());
@@ -112,7 +112,7 @@ class CandidatesMatcherTest {
         c2.setName("Katy");
         Set<Skill> c2Skill = new HashSet<>();
         c2Skill.add(skill3);
-        c2.setSkills(c2Skill);
+//        c2.setSkills(c2Skill);
         Set<Feedback> c2FeedBack = new HashSet<>();
         for (int i = 0; i < 12; i++) c2FeedBack.add(new Feedback());
         c2.setFeedbacks(c2FeedBack);
@@ -123,7 +123,7 @@ class CandidatesMatcherTest {
         c3Skill.add(skill2);
         c3Skill.add(skill3);
         c3Skill.add(english);
-        c3.setSkills(c3Skill);
+//        c3.setSkills(c3Skill);
         c3.setDegree("Master of Science in Information Technology, University of Colombo");
 
         Candidate c4 = new Candidate();
@@ -131,7 +131,7 @@ class CandidatesMatcherTest {
         Set<Skill> c4Skill = new HashSet<>();
         c4Skill.add(skill1);
         c4Skill.add(english);
-        c4.setSkills(c4Skill);
+//        c4.setSkills(c4Skill);
         c4.setDegree("Bachelor of Science in Information Technology, University of Colombo");
         Set<Feedback> c4FeedBack = new HashSet<>();
         for (int i = 0; i < 7; i++) c4FeedBack.add(new Feedback());

@@ -15,9 +15,9 @@ public record LanguageComparator(String lang) implements Comparator<Candidate> {
     }
 
     public boolean containsLang(Candidate cnd) {
-        for (Skill candidateSkill : cnd.getSkills()) {
-            if (candidateSkill.getName().equalsIgnoreCase(lang)) return true;
-        }
+//        for (Skill candidateSkill : cnd.getSkills()) {
+//            if (candidateSkill.getName().equalsIgnoreCase(lang)) return true;
+//        }
         return false;
     }
 }
