@@ -104,9 +104,8 @@
         </dependency>
         <dependency>
             <groupId>org.apache.tika</groupId>
-            <artifactId>tika</artifactId>
-            <version>1.17</version>
-            <type>pom</type>
+            <artifactId>tika-core</artifactId>
+            <version>1.25</version>
         </dependency>
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
