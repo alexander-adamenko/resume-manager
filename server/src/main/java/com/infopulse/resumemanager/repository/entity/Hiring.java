@@ -14,7 +14,7 @@ public class Hiring {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private State state;
 
     @ManyToOne
