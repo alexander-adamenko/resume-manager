@@ -1,6 +1,6 @@
 package com.infopulse.resumemanager.service.resumeParsingService.impl;
 
-import com.infopulse.resumemanager.record.parsed.CandidateExpand;
+import com.infopulse.resumemanager.dto.parsed.ExtendedCandidate;
 import gate.*;
 import gate.util.GateException;
 import org.apache.commons.io.FilenameUtils;
@@ -51,7 +51,7 @@ public class ResumeParserProgram {
         }
     }
 
-    public CandidateExpand parseUsingGateAndAnnie(File file, String path) throws GateException, IOException {
+    public ExtendedCandidate parseUsingGateAndAnnie(File file, String path) throws GateException, IOException {
         System.setProperty("gate.site.config", System.getProperty("user.dir")+"/GATEFiles/gate.xml");
         if (Gate.getGateHome() == null)
             Gate.setGateHome(new File(System.getProperty("user.dir")+"/GATEFiles"));
@@ -78,9 +78,9 @@ public class ResumeParserProgram {
 
     }
 
-    private CandidateExpand parseIntoCandidateExpand(Corpus corpus, String path){
+    private ExtendedCandidate parseIntoCandidateExpand(Corpus corpus, String path){
         Iterator<Document> iter = corpus.iterator();
-        CandidateExpand candidateExpand = null;
+        ExtendedCandidate extendedCandidate = null;
         if (iter.hasNext()) {
             Document doc = (Document) iter.next();
             AnnotationSet defaultAnnotSet = doc.getAnnotations();
@@ -93,9 +93,9 @@ public class ResumeParserProgram {
             String education = parseSectionHeading("education_and_training", defaultAnnotSet, doc);
             List<Map<String, String>> skills = parseSectionHeadingWithMultipleSubSections("skills", defaultAnnotSet, doc);
 
-            candidateExpand = new CandidateExpand(email, phone, education, summary, path, skills);
+            extendedCandidate = new ExtendedCandidate(email, phone, education, summary, path, skills);
         }
-        return candidateExpand;
+        return extendedCandidate;
     }
 
     private List<Map<String, String>> parseSectionHeadingWithMultipleSubSections(String section, AnnotationSet defaultAnnotSet, Document doc){

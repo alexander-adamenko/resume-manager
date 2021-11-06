@@ -1,13 +1,15 @@
 package com.infopulse.resumemanager.controller;
 
+import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.service.resumeParsingService.impl.ParserServiceImpl;
-import com.infopulse.resumemanager.record.parsed.CandidateExpand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/api/v1")
+
 public class ParserController {
 
     private final ParserServiceImpl parserService;
@@ -18,14 +20,14 @@ public class ParserController {
     }
 
     @PostMapping("/upload")
-    public CandidateExpand parseResume(@RequestParam MultipartFile resume) {
-        CandidateExpand candidateExpand = null;
+    public CandidateDto parseResume(@RequestParam MultipartFile resume) {
+        CandidateDto candidateDto = null;
         try {
-            candidateExpand = parserService.parseResume(resume);
+            candidateDto = parserService.parseResume(resume);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return candidateExpand;
+        return candidateDto;
     }
 
 

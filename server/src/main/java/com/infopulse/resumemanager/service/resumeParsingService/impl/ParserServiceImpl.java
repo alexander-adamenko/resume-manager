@@ -1,6 +1,7 @@
 package com.infopulse.resumemanager.service.resumeParsingService.impl;
 
-import com.infopulse.resumemanager.record.parsed.CandidateExpand;
+import com.infopulse.resumemanager.dto.CandidateDto;
+import com.infopulse.resumemanager.dto.parsed.ExtendedCandidate;
 import com.infopulse.resumemanager.service.resumeParsingService.ParserService;
 import gate.util.GateException;
 import org.apache.tika.exception.TikaException;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 @Service
 public class ParserServiceImpl implements ParserService {
@@ -25,7 +27,7 @@ public class ParserServiceImpl implements ParserService {
     }
 
     @Override
-    public CandidateExpand parseResume(MultipartFile file) {
+    public CandidateDto parseResume(MultipartFile file) {
         String uploadedFolder = System.getProperty("user.dir");
         if (uploadedFolder != null && !uploadedFolder.isEmpty()) {
             uploadedFolder += "/Resumes/";
@@ -54,14 +56,14 @@ public class ParserServiceImpl implements ParserService {
             throw new RuntimeException(exception.getMessage());
 
         }
-        CandidateExpand candidateExpand = null;
+        ExtendedCandidate extendedCandidate = null;
         if (tikkaConvertedFile != null) {
             try {
-                candidateExpand = resumeParserProgram.parseUsingGateAndAnnie(tikkaConvertedFile, path.toAbsolutePath().toString());
+                extendedCandidate = resumeParserProgram.parseUsingGateAndAnnie(tikkaConvertedFile, path.toAbsolutePath().toString());
             } catch (GateException | IOException exception) {
                 throw new RuntimeException(exception.getMessage());
             }
         }
-        return candidateExpand;
+        return new ExpandCandidateToCandidateDtoMapper().map(Objects.requireNonNull(extendedCandidate));
     }
 }

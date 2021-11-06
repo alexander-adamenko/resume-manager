@@ -159,8 +159,7 @@ class CandidatesMatcherTest {
         skills.add(skill3);
         skills.add(skill4);
 
-        return new VacancyDto("Java Developer", true,
-                2, null, null, skills);
-
+//        return new VacancyDto("Java Developer", true, 2, null, null, skills);
+        return null;//todo change
     }
 }

@@ -1,8 +1,8 @@
 package com.infopulse.resumemanager.service.resumeParsingService;
 
-import com.infopulse.resumemanager.record.parsed.CandidateExpand;
+import com.infopulse.resumemanager.dto.CandidateDto;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ParserService {
-    CandidateExpand parseResume(MultipartFile file);
+    CandidateDto parseResume(MultipartFile file);
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CandidateExpand {
+public class ExtendedCandidate {
         private String email;
         private String phone;
         private String education;
