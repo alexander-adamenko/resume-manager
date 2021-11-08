@@ -14,6 +14,7 @@ public interface ObjectMapper {
     UserDto userToUserDto(User user);
     UserFullDto userToUserFullDto(User user);
     VacancyDto vacancyToVacancyDto(Vacancy vacancy);
+    Vacancy vacancyDtoToVacancy(VacancyDto vacancy);
     UserFullDto userDtoToUserFullDto(UserDto userDto, Set<CandidateDto> candidates);
     User userDtoToUser(UserDto userDto);
 }
