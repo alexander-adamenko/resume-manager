@@ -33,6 +33,7 @@ public class ParserServiceImpl implements ParserService {
             uploadedFolder += "/Resumes/";
         } else
             throw new RuntimeException("User Directory not found");
+        CandidateDto responseWrapper = null;
         File tikkaConvertedFile = null;
         byte[] bytes = null;
         try {
@@ -45,7 +46,7 @@ public class ParserServiceImpl implements ParserService {
             path = Paths.get(uploadedFolder + file.getOriginalFilename());
             if (!Files.exists(path.getParent()))
                 Files.createDirectories(path.getParent());
-            Files.write(path, bytes);
+            path = Files.write(path, bytes);
         } catch (IOException exception) {
             throw new RuntimeException(exception.getMessage());
 
@@ -56,14 +57,14 @@ public class ParserServiceImpl implements ParserService {
             throw new RuntimeException(exception.getMessage());
 
         }
-        ExtendedCandidate extendedCandidate = null;
+        ExtendedCandidate parsedJSON = null;
         if (tikkaConvertedFile != null) {
             try {
-                extendedCandidate = resumeParserProgram.parseUsingGateAndAnnie(tikkaConvertedFile, path.toAbsolutePath().toString());
+                parsedJSON = resumeParserProgram.parseUsingGateAndAnnie(tikkaConvertedFile, path.toAbsolutePath().toString());
             } catch (GateException | IOException exception) {
                 throw new RuntimeException(exception.getMessage());
             }
         }
-        return new ExpandCandidateToCandidateDtoMapper().map(Objects.requireNonNull(extendedCandidate));
+        return new ExpandCandidateToCandidateDtoMapper().map(Objects.requireNonNull(parsedJSON));
     }
 }
