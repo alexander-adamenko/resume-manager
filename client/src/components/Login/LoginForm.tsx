@@ -110,18 +110,6 @@ function LoginForm(props: Props) {
       >
         Увійти
       </Button>
-      <Button
-        value="register"
-        className="m-2"
-        variant="secondary"
-        onClick={() => {
-          // same hack
-          formik.setFieldValue("submissionType", SubmitType.Register, false);
-          formik.handleSubmit();
-        }}
-      >
-        Зареєструватись
-      </Button>
     </Form>
   );
 }
