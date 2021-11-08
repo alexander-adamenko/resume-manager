@@ -22,6 +22,7 @@ public class ExpandCandidateToCandidateDtoMapper {
     }
 
     private String getDegreeFromEdu(String education){
+        if (education == null) return null;
         return  Arrays.stream(Degree.values())
                 .filter(degree -> education.toUpperCase().contains(degree.toString()))
                 .findAny()
