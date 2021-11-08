@@ -21,16 +21,11 @@ const UserComponent = () => {
         const options: User[] = response.data;
         setOptions(options);
     });
-    let asd= 0;
-
-    const divStyle = {
-        marginLeft: '10px',
-    };
 
     return (
         <>
             <Row>
-                <Button variant="outline-info" onClick={handleSearch}>
+                <Button variant="outline-info" onClick={handleUsers}>
                     refresh
                 </Button>
             </Row>
@@ -84,7 +79,7 @@ const UserComponent = () => {
                                                 {item.roles.map((role, indexR) => {
                                                     return (
                                                         <Row>
-                                                            <div style={divStyle}>{indexR + 1}. {role.name}</div>
+                                                            <div style={{marginLeft: '10px'}}>{indexR + 1}. {role.name}</div>
                                                         </Row>
                                                     );
                                                 })}
