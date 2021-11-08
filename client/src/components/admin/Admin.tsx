@@ -7,16 +7,20 @@ import UserService from "../../services/UserService";
 const UserComponent = () => {
     const [options, setOptions] = useState<User[]>([]);
 
-    const handleSearch = () => {
+    const handleUsers = () => {
         UserService.getAllUsers().then((response) => {
             console.log("weqweqwe")
             console.log(response.data.toString())
             const options: User[] = response.data;
             setOptions(options);
-            //setIsLoading(false);
-            //return response.data.users;
         });
     };
+    UserService.getAllUsers().then((response) => {
+        console.log("weqweqwe")
+        console.log(response.data.toString())
+        const options: User[] = response.data;
+        setOptions(options);
+    });
     let asd= 0;
 
     const divStyle = {
@@ -27,7 +31,7 @@ const UserComponent = () => {
         <>
             <Row>
                 <Button variant="outline-info" onClick={handleSearch}>
-                    Знайти
+                    refresh
                 </Button>
             </Row>
                 {options[0] !== undefined ?(
