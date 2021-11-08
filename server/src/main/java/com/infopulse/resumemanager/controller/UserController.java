@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -42,5 +44,15 @@ public class UserController {
     @GetMapping("/refresh-token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         jwtUserWebService.refreshToken(request, response);
+    }
+
+    @GetMapping("/is-authenticated")
+    public Map<String, String> isAuthenticated(
+            /*@RequestParam String username*/
+    ) {
+        Map<String, String> jsonMap = new HashMap<>();
+        //System.out.println("username:  " + username);
+        jsonMap.put("username", "username");
+        return jsonMap;
     }
 }
