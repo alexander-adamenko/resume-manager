@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.Cookie;
@@ -84,16 +85,12 @@ public class JwtTokenComponent {
     }
 
     public String getJwtFromRequestHeader(HttpServletRequest request) {
-//        String bearerToken = request.getHeader("Authorization");
-//        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-//            return bearerToken.substring(7);
-//        }
-//        else {
-//            //todo: change type, get more info, it throws when there's no token ot it's not the right form.
-//            throw new IllegalArgumentException();
-//        }
-        String bearerToken = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("access_token")).findFirst().orElseThrow().getValue();
-        System.out.println(bearerToken);
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        } else {
+            bearerToken = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("access_token")).findFirst().orElseThrow().getValue();
+        }
         return bearerToken;
     }
 
