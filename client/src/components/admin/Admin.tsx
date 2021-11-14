@@ -1,28 +1,28 @@
-import React, {Component, useEffect, useState} from "react";
-import {Button, ButtonGroup, Card, Col, Row} from "react-bootstrap";
-import {User, UserList} from "../../models/User";
+import React, {useEffect, useState} from "react";
+import {Card, Col, Row} from "react-bootstrap";
+import {User} from "../../models/User";
 import UserService from "../../services/UserService";
 
 
 const UserComponent = () => {
-    const [options, setOptions] = useState<User[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         handleUsers();
     },[]);
     const handleUsers = () => {
         UserService.getAllUsers().then((response) => {
-            setOptions(response.data);
+            setUsers(response.data);
         });
     };
     return (
         <>
             <Row>
-                {options[0] !== undefined ?("qqqqqqqqqqqqqq"): ("sdfsdfsdfsdfsdf")}
+                {users[0] !== undefined ?("qqqqqqqqqqqqqq"): ("sdfsdfsdfsdfsdf")}
             </Row>
-            {options[0] !== undefined ?(
+            {users[0] !== undefined ?(
                 <Row xs={1} md={4} className="g-3">
-                    {options.length && options.map((item, index) => {
+                    {users.length && users.map((item, index) => {
                         return (
                             <>
                             <Col key={index}>

@@ -18,6 +18,8 @@ import Loading from "./Loading";
 import Error from "./Error";
 import Admin from "./admin/Admin";
 import CreateVacancy from "./vacancy/CreateVacancy";
+import UploadingCandidate from "./Candidates/UploadingCandidate";
+import Vacancies from "./vacancy/Vacancies";
 
 const PrivateRoute = ({ ...props }) => {
   useEffect(() => {
@@ -65,9 +67,29 @@ const MainApp = () => {
                 setIsLoggedIn={setIsLoggedIn}
                 username={username}
                 setUsername={setUsername}
+                exact path="/vacancies"
+                render={(props: RouteComponentProps) => (
+                    <Vacancies />
+                )}
+            />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
                 path="/vacancies/new"
                 render={(props: RouteComponentProps) => (
                     <CreateVacancy history={props.history} location={props.location} match={props.match} />
+                )}
+            />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
+                path="/candidate/new/"
+                render={(props: RouteComponentProps) => (
+                    <UploadingCandidate />
                 )}
             />
             <Route component={Error} />

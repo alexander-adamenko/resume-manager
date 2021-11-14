@@ -15,23 +15,23 @@ const NavigationBar = (props: Props) => {
             </LinkContainer>
             <Nav className="mr-auto">
                 <NavDropdown id="navbarScrollingDropdown" title="Vacancies">
-                    <LinkContainer to="/vacancies/">
+                    <LinkContainer to="/vacancies">
                        <NavDropdown.Item>List</NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to="/vacancies/new">
                         <NavDropdown.Item>Create</NavDropdown.Item>
                     </LinkContainer>
                 </NavDropdown>
-                <LinkContainer to="/candidates/">
+                <LinkContainer to="/candidates">
                     <Nav.Link>Candidates</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/candidate/new/">
+                <LinkContainer to="/candidate/new">
                     <Nav.Link>Upload Resume</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/admin/">
+                <LinkContainer to="/admin">
                     <Nav.Link>Admin Page</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/profile/">
+                <LinkContainer to="/profile">
                     <Nav.Link>Profile</Nav.Link>
                 </LinkContainer>
             </Nav>
