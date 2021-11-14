@@ -16,7 +16,7 @@ const FrontPageComponent = ({ history }: RouteComponentProps) => {
               variant="info btn-lg"
               onClick={() =>
               {
-                window.location.reload();
+                // window.location.reload();
                 history.push("/login/");}}
             >
               eqweq

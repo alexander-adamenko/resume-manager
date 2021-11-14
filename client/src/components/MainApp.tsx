@@ -19,6 +19,7 @@ import Loading from "./Loading";
 import Error from "./Error";
 import Admin from "./admin/Admin";
 import {UserList} from "../models/User";
+import UploadingCandidate from "./Candidates/UploadingCandidate";
 
 const PrivateRoute = ({ ...props }) => {
   useEffect(() => {
@@ -68,10 +69,20 @@ const MainApp = () => {
                   <Admin />
               )}
             />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
+                path="/candidate/new/"
+                render={(props: RouteComponentProps) => (
+                    <UploadingCandidate />
+                )}
+            />
             <Route component={Error} />
           </Switch>
         </div>
-        <footer className="bg-dark text-center">
+        <footer className="bg-dark text-center footer">
           123312
         </footer>
       </Router>

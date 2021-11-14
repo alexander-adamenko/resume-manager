@@ -15,12 +15,14 @@ const UserComponent = () => {
             setOptions(options);
         });
     };
-    UserService.getAllUsers().then((response) => {
-        console.log("weqweqwe")
-        console.log(response.data.toString())
-        const options: User[] = response.data;
-        setOptions(options);
-    });
+    // useEffect(() => {
+    //     UserService.getAllUsers().then((response) => {
+    //         console.log("weqweqwe")
+    //         console.log(response.data.toString())
+    //         const options: User[] = response.data;
+    //         setOptions(options);
+    //     });
+    // }, [])
 
     return (
         <>

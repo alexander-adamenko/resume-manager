@@ -30,12 +30,12 @@ class LoginService {
     const params = new URLSearchParams()
     params.append('username', user.username)
     params.append('password', user.password)
-    return axiosInstance.post('http://127.0.0.1:8080/api/v1/login', params, config);
+    return axiosInstance.post('http://localhost:8081/api/v1/login', params, config);
   }
 
   isLoggedIn(): Promise<AxiosResponse<IsLoggedInResponse>> {
     //return axiosInstance.get(`${loginEndpoint}`);
-    return axiosInstance.get('http://127.0.0.1:8080/api/v1/is-authenticated');
+    return axiosInstance.get('http://localhost:8081/api/v1/is-authenticated');
   }
 }
 
