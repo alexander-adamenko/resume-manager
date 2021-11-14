@@ -1,4 +1,4 @@
-import React, {Component, useState} from "react";
+import React, {Component, useState, useEffect} from "react";
 import {Button, ButtonGroup, Card, Col, Row} from "react-bootstrap";
 import {User, UserList} from "../../models/User";
 import UserService from "../../services/UserService";
@@ -15,14 +15,9 @@ const UserComponent = () => {
             setOptions(options);
         });
     };
-    // useEffect(() => {
-    //     UserService.getAllUsers().then((response) => {
-    //         console.log("weqweqwe")
-    //         console.log(response.data.toString())
-    //         const options: User[] = response.data;
-    //         setOptions(options);
-    //     });
-    // }, [])
+    useEffect(() => {
+        handleUsers()
+    }, [])
 
     return (
         <>
