@@ -12,19 +12,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Login/Login";
 import NavigationBar from "./NavigationBar/NavigationBar";
 import LoginService from "../services/LoginService";
-import FrontPage from "./FrontPage";
 
 import { useEffect } from "react";
 import Loading from "./Loading";
 import Error from "./Error";
 import Admin from "./admin/Admin";
-import {UserList} from "../models/User";
+import CreateVacancy from "./vacancy/CreateVacancy";
 
 const PrivateRoute = ({ ...props }) => {
   useEffect(() => {
     LoginService.isLoggedIn()
       .then((response) => {
-        props.setUsername(response.data.username);
+        props.setUsername(response.data);
         props.setIsLoggedIn(true);
       })
       .catch(() => props.setIsLoggedIn(false));
@@ -40,23 +39,16 @@ const PrivateRoute = ({ ...props }) => {
 };
 
 const MainApp = () => {
-  const [asd, setAsd] = useState<UserList | null>(
-      null
-  );
-
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [username, setUsername] = useState("");
 
-
-  // refactor the PrivateRoute stuff soon
   return (
     <>
       <Router>
         <NavigationBar  isLoggedIn={isLoggedIn === null ? false : isLoggedIn} />
         <div className="container-fluid flex-grow-1">
           <Switch>
-            {/* some paths DON'T have to be exact in this case */}
-            <Route path="/" exact component={FrontPage} />
+            <Route path="/" exact component={Login} />
             <Route path="/login/" component={Login} />
             <PrivateRoute
               isLoggedIn={isLoggedIn}
@@ -68,10 +60,20 @@ const MainApp = () => {
                   <Admin />
               )}
             />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
+                path="/vacancies/new"
+                render={(props: RouteComponentProps) => (
+                    <CreateVacancy history={props.history} location={props.location} match={props.match} />
+                )}
+            />
             <Route component={Error} />
           </Switch>
         </div>
-        <footer className="bg-dark text-center">
+        <footer className="bg-dark text-center fixed-bottom" style={{bottom:'0', width: '100%'}}>
           123312
         </footer>
       </Router>

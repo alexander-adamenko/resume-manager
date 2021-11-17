@@ -2,13 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { SERVER_API_URL } from "../constants";
 import { LoginDetails } from "../models/AccountDetails";
 
-const loginEndpoint = `${SERVER_API_URL}/v1/login/`;
-
 const axiosInstance = axios.create({withCredentials: true});
 
-// interface LoginResponse {
-//   jwtToken: string;
-// }
 interface LoginResponse {
   access_token: string;
   refresh_token: string;
@@ -26,16 +21,14 @@ const config = {
 class LoginService {
 
   login(user: LoginDetails): Promise<AxiosResponse<LoginResponse>> {
-    //return axiosInstance.post(`${loginEndpoint}`, user);
     const params = new URLSearchParams()
     params.append('username', user.username)
     params.append('password', user.password)
-    return axiosInstance.post('http://127.0.0.1:8080/api/v1/login', params, config);
+    return axiosInstance.post(SERVER_API_URL + '/login', params, config);
   }
 
-  isLoggedIn(): Promise<AxiosResponse<IsLoggedInResponse>> {
-    //return axiosInstance.get(`${loginEndpoint}`);
-    return axiosInstance.get('http://127.0.0.1:8080/api/v1/is-authenticated');
+  isLoggedIn(): Promise<AxiosResponse<string>> {
+    return axiosInstance.get(SERVER_API_URL + '/is-authenticated');
   }
 }
 

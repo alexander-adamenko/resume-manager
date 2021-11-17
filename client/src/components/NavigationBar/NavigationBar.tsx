@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav } from "react-bootstrap";
+import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 interface Props {
@@ -14,9 +14,14 @@ const NavigationBar = (props: Props) => {
                 <Navbar.Brand>RESUME MANAGER</Navbar.Brand>
             </LinkContainer>
             <Nav className="mr-auto">
-                <LinkContainer to="/vacancies/">
-                    <Nav.Link>Vacancies</Nav.Link>
-                </LinkContainer>
+                <NavDropdown id="navbarScrollingDropdown" title="Vacancies">
+                    <LinkContainer to="/vacancies/">
+                       <NavDropdown.Item>List</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/vacancies/new">
+                        <NavDropdown.Item>Create</NavDropdown.Item>
+                    </LinkContainer>
+                </NavDropdown>
                 <LinkContainer to="/candidates/">
                     <Nav.Link>Candidates</Nav.Link>
                 </LinkContainer>
@@ -31,9 +36,7 @@ const NavigationBar = (props: Props) => {
                 </LinkContainer>
             </Nav>
             <Nav>
-                <LinkContainer to="/">
-                    <Nav.Link>Logout</Nav.Link>
-                </LinkContainer>
+                <Nav.Link href="/login">Logout</Nav.Link>
             </Nav>
         </Navbar>
     ) : (
