@@ -25,7 +25,7 @@ const NavigationBar = (props: Props) => {
                 <LinkContainer to="/candidates/">
                     <Nav.Link>Candidates</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/candidate/new">
+                <LinkContainer to="/candidate/new/">
                     <Nav.Link>Upload Resume</Nav.Link>
                 </LinkContainer>
                 <LinkContainer to="/admin/">
