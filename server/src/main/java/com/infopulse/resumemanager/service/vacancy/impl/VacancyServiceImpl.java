@@ -2,38 +2,53 @@ package com.infopulse.resumemanager.service.vacancy.impl;
 
 import com.infopulse.resumemanager.dto.VacancyDto;
 import com.infopulse.resumemanager.mapper.ObjectMapper;
+import com.infopulse.resumemanager.repository.SkillRepository;
 import com.infopulse.resumemanager.repository.UserRepository;
 import com.infopulse.resumemanager.repository.VacancyRepository;
+import com.infopulse.resumemanager.repository.VacancySkillRepository;
 import com.infopulse.resumemanager.repository.entity.User;
 import com.infopulse.resumemanager.repository.entity.Vacancy;
 import com.infopulse.resumemanager.service.vacancy.VacancyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class VacancyServiceImpl implements VacancyService {
+    @PersistenceContext
+    private EntityManager entityManager;
     private final VacancyRepository vacancyRepository;
+    private final VacancySkillRepository vacancySkillRepository;
     private final UserRepository userRepository;
+    private final SkillRepository skillRepository;
     private final ObjectMapper objectMapper;
 
-    @Autowired
-    public VacancyServiceImpl(VacancyRepository vacancyRepository, UserRepository userRepository, ObjectMapper objectMapper) {
-        this.vacancyRepository = vacancyRepository;
-        this.userRepository = userRepository;
-        this.objectMapper = objectMapper;
-    }
 
     @Override
+    @Transactional
     public VacancyDto createNewVacancy(VacancyDto vacancyDto) {
         if (vacancyDto == null) throw new IllegalArgumentException("Vacancy can`t be null");
         User userWhoAddVacancy = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Vacancy vacancy = objectMapper.vacancyDtoToVacancy(vacancyDto);
+
         vacancy.setAuthor(userWhoAddVacancy);
-        return objectMapper.vacancyToVacancyDto(vacancyRepository.save(vacancy));
+        vacancyRepository.save(vacancy);
+        long vacId = vacancyRepository.findByDescription(vacancy.getDescription()).getId();
+        vacancy.getVacancySkills().forEach(vacancySkill -> {
+            entityManager.createNativeQuery("INSERT INTO vacancy_skill (vacancy_id, skill_id, level) VALUES (?,?,?)")
+                    .setParameter(1, vacId)
+                    .setParameter(2, skillRepository.findByName(vacancySkill.getSkill().getName()).getId())
+                    .setParameter(3, vacancySkill.getLevel().name())
+                    .executeUpdate();
+        });
+        return vacancyDto;
     }
 
     @Override
