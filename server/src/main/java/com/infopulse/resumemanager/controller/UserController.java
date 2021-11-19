@@ -4,7 +4,9 @@ import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.exception.UserAlreadyExistsException;
 import com.infopulse.resumemanager.service.JwtUserWebService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -13,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -47,12 +47,8 @@ public class UserController {
     }
 
     @GetMapping("/is-authenticated")
-    public Map<String, String> isAuthenticated(
-            /*@RequestParam String username*/
-    ) {
-        Map<String, String> jsonMap = new HashMap<>();
-        //System.out.println("username:  " + username);
-        jsonMap.put("username", "username");
-        return jsonMap;
+    @ResponseStatus(HttpStatus.OK)
+    public String isAuthenticated() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

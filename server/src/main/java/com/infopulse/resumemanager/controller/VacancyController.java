@@ -1,18 +1,12 @@
 package com.infopulse.resumemanager.controller;
 
-import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.dto.VacancyDto;
-import com.infopulse.resumemanager.exception.UserAlreadyExistsException;
 import com.infopulse.resumemanager.service.vacancy.VacancyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
