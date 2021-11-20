@@ -20,6 +20,7 @@ import Admin from "./admin/Admin";
 import CreateVacancy from "./vacancy/CreateVacancy";
 import UploadingCandidate from "./Candidates/UploadingCandidate";
 import Vacancies from "./vacancy/Vacancies";
+import Profile from "./profile/Profile";
 
 const PrivateRoute = ({ ...props }) => {
   useEffect(() => {
@@ -52,6 +53,7 @@ const MainApp = () => {
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/login/" component={Login} />
+            <Route path="/profile/" component={Profile} />
             <PrivateRoute
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
