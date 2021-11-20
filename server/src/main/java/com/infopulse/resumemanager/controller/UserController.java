@@ -3,6 +3,7 @@ package com.infopulse.resumemanager.controller;
 import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.exception.UserAlreadyExistsException;
 import com.infopulse.resumemanager.service.JwtUserWebService;
+import com.infopulse.resumemanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final JwtUserWebService jwtUserWebService;
+    private final UserService userService;
 
     //todo: add paginating/sorting if it will be needed
     @GetMapping("/users")
@@ -54,5 +56,17 @@ public class UserController {
         //System.out.println("username:  " + username);
         jsonMap.put("username", "username");
         return jsonMap;
+    }
+
+    @GetMapping("/current-user")
+    public UserDto curUser() {
+        return userService.getCurrentUser();
+    }
+
+    @PutMapping("/{oldUserName}")
+    public boolean update(@PathVariable String oldUserName, @RequestParam String lastname,
+                          @RequestParam String firstname, @RequestParam String username,
+                          @RequestParam String oldPassword, @RequestParam String newPassword){
+        return userService.update(oldUserName, lastname, firstname, username, oldPassword, newPassword);
     }
 }
