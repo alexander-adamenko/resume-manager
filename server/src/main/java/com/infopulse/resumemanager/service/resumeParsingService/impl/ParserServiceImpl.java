@@ -27,44 +27,26 @@ public class ParserServiceImpl implements ParserService {
     }
 
     @Override
-    public CandidateDto parseResume(MultipartFile file) {
-        String uploadedFolder = System.getProperty("user.dir");
-        if (uploadedFolder != null && !uploadedFolder.isEmpty()) {
-            uploadedFolder += "/Resumes/";
-        } else
-            throw new RuntimeException("User Directory not found");
-        CandidateDto responseWrapper = null;
-        File tikkaConvertedFile = null;
-        byte[] bytes = null;
-        try {
-            bytes = file.getBytes();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception.getMessage());
-        }
-        Path path = null;
-        try {
-            path = Paths.get(uploadedFolder + file.getOriginalFilename());
-            if (!Files.exists(path.getParent()))
-                Files.createDirectories(path.getParent());
-            path = Files.write(path, bytes);
-        } catch (IOException exception) {
-            throw new RuntimeException(exception.getMessage());
+    public CandidateDto parseResume(String fileName) {
+        String home = System.getProperty("user.home");
+        String path = home + File.separator + "resumes" + File.separator + fileName;
 
-        }
+        File tikkaConvertedFile = null;
+
         try {
-            tikkaConvertedFile = resumeParserProgram.parseToHTMLUsingApacheTikka(path.toAbsolutePath().toString());
+            tikkaConvertedFile = resumeParserProgram.parseToHTMLUsingApacheTikka(path);
         } catch (IOException | SAXException | TikaException exception) {
             throw new RuntimeException(exception.getMessage());
 
         }
-        ExtendedCandidate parsedJSON = null;
+        ExtendedCandidate extendedCandidate = null;
         if (tikkaConvertedFile != null) {
             try {
-                parsedJSON = resumeParserProgram.parseUsingGateAndAnnie(tikkaConvertedFile, path.toAbsolutePath().toString());
+                extendedCandidate = resumeParserProgram.parseUsingGateAndAnnie(tikkaConvertedFile, path);
             } catch (GateException | IOException exception) {
                 throw new RuntimeException(exception.getMessage());
             }
         }
-        return new ExpandCandidateToCandidateDtoMapper().map(Objects.requireNonNull(parsedJSON));
+        return new ExpandCandidateToCandidateDtoMapper().map(Objects.requireNonNull(extendedCandidate));
     }
 }

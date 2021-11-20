@@ -23,17 +23,8 @@ import static gate.Utils.stringFor;
 public class ResumeParserProgram {
 
     public File parseToHTMLUsingApacheTikka(String file) throws IOException, SAXException, TikaException {
-        String ext = FilenameUtils.getExtension(file);
-        String outputFileFormat = "";
-        if (ext.equalsIgnoreCase("html") | ext.equalsIgnoreCase("pdf") | ext.equalsIgnoreCase("doc")
-                | ext.equalsIgnoreCase("docx")) {
-            outputFileFormat = ".html";
-        } else if (ext.equalsIgnoreCase("txt") | ext.equalsIgnoreCase("rtf")) {
-            outputFileFormat = ".txt";
-        } else {
-            System.out.println("Input format of the file " + file + " is not supported.");
-            return null;
-        }
+        String outputFileFormat = ".html";
+
         String OUTPUT_FILE_NAME = FilenameUtils.removeExtension(file) + outputFileFormat;
         ContentHandler handler = new ToXMLContentHandler();
         InputStream stream = new FileInputStream(file);
@@ -43,7 +34,6 @@ public class ResumeParserProgram {
             parser.parse(stream, handler, metadata);
             FileWriter htmlFileWriter = new FileWriter(OUTPUT_FILE_NAME);
             htmlFileWriter.write(handler.toString());
-            htmlFileWriter.flush();
             htmlFileWriter.close();
             return new File(OUTPUT_FILE_NAME);
         } finally {
