@@ -1,7 +1,6 @@
 package com.infopulse.resumemanager.service.vacancy;
 
 import com.infopulse.resumemanager.dto.VacancyDto;
-import com.infopulse.resumemanager.repository.entity.Vacancy;
 
 import java.util.List;
 

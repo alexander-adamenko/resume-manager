@@ -219,7 +219,7 @@ class CandidatesMatcherTest {
         skills.add(new VacancySkillDto(new SkillDto(skill3.getName()), Level.MIDDLE));
 
         return new VacancyDto("Java Developer", true,
-                2, null, null, skills);
+                2, null, null, null, skills);
 
     }
 

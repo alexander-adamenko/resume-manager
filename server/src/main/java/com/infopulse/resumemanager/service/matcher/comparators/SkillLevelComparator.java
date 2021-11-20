@@ -33,9 +33,9 @@ public class SkillLevelComparator implements Comparator<Candidate> {
 
     public int countMatches(Candidate cnd) {
         int count = 0;
-        for (VacancySkillDto vacancySkillDto : vacancy.vacancySkillSet()) {
+        for (VacancySkillDto vacancySkillDto : vacancy.vacancySkills()) {
             for (CandidateSkill candidateSkill : cnd.getCandidateSkills()) {
-                if (vacancySkillDto.skillDto().name().equals(candidateSkill.getSkill().getName())){
+                if (vacancySkillDto.skill().name().equals(candidateSkill.getSkill().getName())){
                     if(skillLevelsWeights.get(candidateSkill.getLevel().name())
                     >= skillLevelsWeights.get(vacancySkillDto.level().name()))
                         count++;

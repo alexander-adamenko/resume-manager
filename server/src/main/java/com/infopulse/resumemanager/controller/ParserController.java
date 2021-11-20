@@ -19,16 +19,16 @@ public class ParserController {
         this.parserService = parserServiceImpl;
     }
 
-    @PostMapping("/upload")
-    public CandidateDto parseResume(@RequestParam MultipartFile resume) {
-        CandidateDto candidateDto = null;
-        try {
-            candidateDto = parserService.parseResume(resume);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return candidateDto;
-    }
+//    @PostMapping("/upload")
+//    public CandidateDto parseResume(@RequestParam MultipartFile resume) {
+//        CandidateDto candidateDto = null;
+//        try {
+//            candidateDto = parserService.parseResume(resume);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return candidateDto;
+//    }
 
 
 }
