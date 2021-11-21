@@ -32,7 +32,7 @@ public class CandidateController {
         return candidateService.getNamesUploadedFiles();
     }
 
-    @PostMapping("/parse")
+    @GetMapping("/parse")
     public CandidateDto parseResume(@RequestParam String fileName){
         return parserService.parseResume(fileName);
     }
