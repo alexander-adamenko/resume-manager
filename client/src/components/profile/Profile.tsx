@@ -37,9 +37,8 @@ const Profile = () => {
         if (matchPasswords()) {
             UserService.updateUser(userDetails?.username, lastname, firstname, username, oldPassword, newPassword)
         .then(r => {
-            if(!r.data){setErrorMessage("Old password is not valid");}
-            else loadUser();
-            });
+            setErrorMessage(r.data);
+        })
         }
         else setErrorMessage("Passwords don't match");
     };
@@ -49,7 +48,6 @@ const Profile = () => {
     return (
         <Container className="center">
          <form>
-               <h1 className="h4 text-center mb-4">Profile</h1>
                 <Container className="justify-content-center align-items-md-center">
                     <label htmlFor="lastname" className="grey-text">
                         Lastname
@@ -103,10 +101,10 @@ const Profile = () => {
                                onChange={(e) => setNewRepeatPasswordShown(e.target.checked)}/>
                     </p>
                 </Container>
-             <div className="text-center mt-4">
-                    <p className="text-danger">{errorMessage}</p>
+             <p className="text-center mt-4">
+                    <span className="text-danger">{errorMessage}</span>
                     <Button variant="outline-info" onClick={updateUser}>Save</Button>
-                </div>
+                </p>
             </form>
         </Container>
 

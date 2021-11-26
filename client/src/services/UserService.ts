@@ -19,7 +19,7 @@ class UserService {
     }
     updateUser(oldUsername: string | undefined, lastname: string | undefined, firstname: string | undefined,
                username: string | undefined, oldPassword: string | undefined,
-               newPassword: string | undefined): Promise<AxiosResponse<Boolean>>{
+               newPassword: string | undefined): Promise<AxiosResponse<string>>{
         let params = new URLSearchParams();
         if (typeof lastname === "string") {
             params.append("lastname", lastname)
@@ -35,7 +35,7 @@ class UserService {
         }
         if (typeof newPassword === "string") {
             params.append("newPassword", newPassword)
-        } else params.append("newPassword", "")
+        }
 
         return axiosInstance.put(`${SERVER_API_URL}/`+oldUsername, params)
     }
