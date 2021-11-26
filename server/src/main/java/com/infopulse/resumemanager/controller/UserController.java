@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PutMapping("/{oldUserName}")
-    public boolean update(@PathVariable String oldUserName, @RequestParam String lastname,
+    public StringBuilder update(@PathVariable String oldUserName, @RequestParam String lastname,
                           @RequestParam String firstname, @RequestParam String username,
                           @RequestParam String oldPassword, @RequestParam String newPassword){
         return userService.update(oldUserName, lastname, firstname, username, oldPassword, newPassword);
