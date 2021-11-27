@@ -13,8 +13,12 @@ export interface VacancySkills {
     level: string;
 }
 
-export interface Skill {
+export class Skill {
     name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
 }
 
 export interface SkillsDegreesLevelsCities {
