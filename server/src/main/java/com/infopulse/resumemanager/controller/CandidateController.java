@@ -24,7 +24,9 @@ public class CandidateController {
 
     @PostMapping("/upload")
     public CandidateDto uploadResume(@RequestParam MultipartFile resume) {
-        return candidateService.saveCandidateResume(resume);
+        candidateService.saveCandidateResume(resume);
+        return parserService.parseResume(resume.getOriginalFilename());
+
     }
 
     @GetMapping()
@@ -35,5 +37,10 @@ public class CandidateController {
     @GetMapping("/parse")
     public CandidateDto parseResume(@RequestParam String fileName){
         return parserService.parseResume(fileName);
+    }
+
+    @PostMapping()
+    public CandidateDto saveCandidateAfterParsing(@RequestBody CandidateDto candidate) {
+        return candidateService.saveCandidateWithSkills(candidate);
     }
 }

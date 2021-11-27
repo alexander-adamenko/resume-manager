@@ -12,8 +12,12 @@ import java.util.Set;
 @Mapper
 public interface ObjectMapper {
     CandidateDto candidateToCandidateDto(Candidate candidate);
+    Candidate candidateDtoToCandidate(CandidateDto candidateDto);
+    CandidateSkillDto candidateSkillToCandidateSkillDto(CandidateSkill candidateSkill);
+    CandidateSkill candidateSkillDtoToCandidateSkill(CandidateSkillDto candidateSkillDto);
     FeedbackDto feedbackToFeedbackDto(Feedback feedback);
     SkillDto skillToSkillDto(Skill skill);
+    Skill skillDtoToSkill(SkillDto skillDto);
     UserDto userToUserDto(User user);
     UserFullDto userToUserFullDto(User user);
     VacancyDto vacancyToVacancyDto(Vacancy vacancy);
