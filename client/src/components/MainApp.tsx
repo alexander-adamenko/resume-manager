@@ -21,6 +21,7 @@ import CreateVacancy from "./vacancy/CreateVacancy";
 import UploadingCandidate from "./Candidates/UploadingCandidate";
 import Vacancies from "./vacancy/Vacancies";
 import Profile from "./profile/Profile";
+import Candidates from "./Candidates/Candidates";
 
 const PrivateRoute = ({ ...props }) => {
   useEffect(() => {
@@ -30,7 +31,7 @@ const PrivateRoute = ({ ...props }) => {
         props.setIsLoggedIn(true);
       })
       .catch(() => props.setIsLoggedIn(false));
-  }, [props]);
+  }, []);
 
   return props.isLoggedIn === null ? (
     <Loading />
@@ -53,7 +54,6 @@ const MainApp = () => {
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/login/" component={Login} />
-            <Route path="/profile/" component={Profile} />
             <PrivateRoute
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
@@ -89,9 +89,29 @@ const MainApp = () => {
                 setIsLoggedIn={setIsLoggedIn}
                 username={username}
                 setUsername={setUsername}
+                path="/candidates"
+                render={(props: RouteComponentProps) => (
+                    <Candidates/>
+                )}
+            />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
                 path="/candidate/new/"
                 render={(props: RouteComponentProps) => (
                     <UploadingCandidate />
+                )}
+            />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
+                path="/profile"
+                render={(props: RouteComponentProps) => (
+                    <Profile/>
                 )}
             />
             <Route component={Error} />
