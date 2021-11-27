@@ -65,6 +65,14 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    public List<CandidateDto> getAllCandidates() {
+        return candidateRepository.findAll().stream()
+                .filter(candidate -> candidate.getAuthor().equals(getRequestAuthor()))
+                .map(objectMapper::candidateToCandidateDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<String> getNamesUploadedFiles() {
         return candidateRepository.findAll().stream()
                 .filter(candidate -> candidate.getAuthor().equals(getRequestAuthor()))

@@ -30,6 +30,11 @@ public class CandidateController {
     }
 
     @GetMapping()
+    public List<CandidateDto> getAllCandidates(){
+        return candidateService.getAllCandidates();
+    }
+
+    @GetMapping("/fileNames")
     public List<String> getNamesUploadedFiles(){
         return candidateService.getNamesUploadedFiles();
     }
