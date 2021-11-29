@@ -5,6 +5,8 @@ import {UserDetails} from "../models/UserDetails";
 
 const portfolioEndpoint = `${SERVER_API_URL}/users`;
 const currentUser = `${SERVER_API_URL}/current-user`;
+const addRoleToUserEndpoint = `${SERVER_API_URL}/user/add-role`;
+const deleteRoleFromUserEndpoint = `${SERVER_API_URL}/user/delete-role`;
 
 const axiosInstance = axios.create({ withCredentials: true });
 
@@ -21,25 +23,32 @@ class UserService {
                username: string | undefined, oldPassword: string | undefined,
                newPassword: string | undefined): Promise<AxiosResponse<string>>{
         let params = new URLSearchParams();
-        if (typeof lastname === "string") {
-            params.append("lastname", lastname)
-        }
-        if (typeof firstname === "string") {
-            params.append("firstname", firstname)
-        }
-        if (typeof username === "string") {
-            params.append("username", username)
-        }
-        if (typeof oldPassword === "string") {
-            params.append("oldPassword", oldPassword)
-        }
-        if (typeof newPassword === "string") {
+
+        if (typeof lastname === "string" && typeof firstname === "string" &&
+            typeof username === "string" && typeof oldPassword === "string" &&
+            typeof newPassword === "string") {
+            params.append("lastname", lastname);
+            params.append("firstname", firstname);
+            params.append("username", username);
+            params.append("oldPassword", oldPassword);
             params.append("newPassword", newPassword)
         }
 
-        return axiosInstance.put(`${SERVER_API_URL}/`+oldUsername, params)
+        return axiosInstance.put(`${SERVER_API_URL}/`+oldUsername, params);
     }
 
+    addRoleToUser(username: string | undefined, roleName: string | undefined): Promise<AxiosResponse<User>>{
+        let params = new URLSearchParams();
+        if (typeof username === "string" && typeof roleName === "string") {
+            params.append("username", username);
+            params.append("roleName", roleName);
+        }
+        return axiosInstance.post(addRoleToUserEndpoint, params);
+    }
+    removeRoleFromUser(username: string | undefined, roleName: string | undefined): Promise<AxiosResponse<User>>{
+        //todo
+        return axiosInstance.post(deleteRoleFromUserEndpoint+"/"+username+"/"+roleName);
+    }
 }
 
 export default new UserService();
