@@ -218,7 +218,7 @@ class CandidatesMatcherTest {
         skills.add(new VacancySkillDto(new SkillDto(skill2.getName()), Level.TRAINEE));
         skills.add(new VacancySkillDto(new SkillDto(skill3.getName()), Level.MIDDLE));
 
-        return new VacancyDto("Java Developer", true,
+        return new VacancyDto(1l, "Java Developer", true,
                 2, null, null, null, skills);
 
     }

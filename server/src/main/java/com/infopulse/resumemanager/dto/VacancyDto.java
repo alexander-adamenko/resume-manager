@@ -5,6 +5,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.Set;
 
 public record VacancyDto(
+        Long id,
         @NotBlank
         String positionTitle,
         Boolean isActive,
