@@ -8,14 +8,28 @@ const axiosInstance = axios.create({ withCredentials: true });
 const config = {headers: { 'Content-Type': 'multipart/form-data'}}
 
 class CandidateService {
-    getNamesUploadedFiles(): Promise<AxiosResponse<string[]/*List with names of resumes*/>> {
+    getAllCandidates(): Promise<AxiosResponse<Candidate[]/*List with names of resumes*/>> {
         return axiosInstance.get(candidatesEndpoint);
     }
 
-    uploadResumeOfCandidate(resume: File): Promise<AxiosResponse<Candidate[]>>{
+    getNamesUploadedFiles(): Promise<AxiosResponse<string[]/*List with names of resumes*/>> {
+        return axiosInstance.get(candidatesEndpoint + "/fileNames");
+    }
+
+    uploadResumeOfCandidate(resume: File): Promise<AxiosResponse<Candidate>>{
         let formData = new FormData();
         formData.append("resume", resume)
         return axiosInstance.post(candidatesEndpoint + "/upload", formData, config)
+    }
+
+    parseChosenResume(fileName: string): Promise<AxiosResponse<Candidate>>{
+        let params = new URLSearchParams();
+        params.append("fileName", fileName)
+        return axiosInstance.get(candidatesEndpoint + "/parse", {params})
+    }
+
+    createCandidate(candidate: Candidate): Promise<AxiosResponse<Candidate>> {
+        return axiosInstance.post(SERVER_API_URL + '/candidates', candidate);
     }
 }
 

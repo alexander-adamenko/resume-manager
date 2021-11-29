@@ -1,3 +1,5 @@
+import {CandidateSkill} from "./CandidateSkill";
+
 export interface Candidate{
     name: string,
     email: string,
@@ -5,7 +7,7 @@ export interface Candidate{
     degree: string,
     aboutMe: string,
     filePath: string,
-    candidateSkillSet: any;
+    candidateSkills: CandidateSkill[];
 }
 
 
