@@ -26,4 +26,5 @@ public interface ObjectMapper {
     User userDtoToUser(UserDto userDto);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserFromDto(UserDto dto, @MappingTarget User user);
+    RoleDto roleToRoleDto(Role role);
 }

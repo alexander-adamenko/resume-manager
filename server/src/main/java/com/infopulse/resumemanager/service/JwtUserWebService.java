@@ -115,15 +115,31 @@ public class JwtUserWebService implements UserDetailsService {
 
     @Transactional
     public UserDto addRoleToUser(String username, String roleName) {
+        User user = getCheckedUser(username);
+        user.getRoles().add(getCheckedRole(roleName));
+        return objectMapper.userToUserDto(user);
+    }
+
+    @Transactional
+    public UserDto removeRoleFromUser(String username, String roleName) {
+        User user = getCheckedUser(username);
+        user.getRoles().remove(getCheckedRole(roleName));
+        return objectMapper.userToUserDto(user);
+    }
+
+    private User getCheckedUser(String username){
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User " + username + " not found.123");
         }
+        return user;
+    }
+
+    private Role getCheckedRole(String roleName){
         Role role = roleRepository.findByName(roleName);
         if (role == null) {
             throw new UsernameNotFoundException("User " + roleName + " not found.12");//todo:fix to role not found or smth else
         }
-        user.getRoles().add(role);
-        return objectMapper.userToUserDto(user);
+        return role;
     }
 }

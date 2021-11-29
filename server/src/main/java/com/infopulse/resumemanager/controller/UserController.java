@@ -42,6 +42,10 @@ public class UserController {
     public ResponseEntity<UserDto> addRoleToUser(@RequestParam String username, @RequestParam String roleName) {
         return ResponseEntity.ok().body(jwtUserWebService.addRoleToUser(username, roleName));
     }
+    @PostMapping("/user/delete-role/{username}/{roleName}")
+    public ResponseEntity<UserDto> deleteRoleFromUser(@PathVariable String username, @PathVariable String roleName) {
+        return ResponseEntity.ok().body(jwtUserWebService.removeRoleFromUser(username, roleName));
+    }
 
     @GetMapping("/refresh-token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -69,4 +73,5 @@ public class UserController {
                           @RequestParam String oldPassword, @RequestParam String newPassword){
         return userService.update(oldUserName, lastname, firstname, username, oldPassword, newPassword);
     }
+
 }
