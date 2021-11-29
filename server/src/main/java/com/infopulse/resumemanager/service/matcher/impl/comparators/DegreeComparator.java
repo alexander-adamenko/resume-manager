@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.service.matcher.comparators;
+package com.infopulse.resumemanager.service.matcher.impl.comparators;
 
 import com.infopulse.resumemanager.repository.entity.Candidate;
 import com.infopulse.resumemanager.repository.entity.enums.Degree;
