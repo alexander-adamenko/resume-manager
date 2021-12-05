@@ -11,6 +11,18 @@ import {Candidate} from "../../models/Candidate";
 const UploadingCandidateComponent = () => {
     const [candidate, setCandidate] = useState<Candidate>();
     const {register, handleSubmit} = useForm();
+    const [resumes, setResumes] = useState<string[]>([])
+    const [isLoaded, setIsLoaded] = useState<boolean>(true);
+
+    useEffect(() => {
+        handleResumes()
+    }, [candidate]);
+
+    const handleResumes = () =>{
+        CandidateService.getNamesUploadedFiles().then(response =>
+            setResumes(response.data)
+        )
+    }
 
     const onSubmit = (data: any) => {
         const resumeFile = data.resume[0];
@@ -38,6 +50,9 @@ const UploadingCandidateComponent = () => {
     )
     }
 
+    const handleDeleteResume = (item: string) => {
+        CandidateService.deleteChosenResume(item).then(handleResumes)
+    }
 
     return (
         <div>
@@ -49,6 +64,30 @@ const UploadingCandidateComponent = () => {
                 </Form>
             </div>
             <hr/>
+            <div className="row">
+                <div className="col-3">
+                    <h3 className="card-title">Resumes</h3>
+                    {resumes.length > 0 && resumes.map((item, index) => {
+                        return (
+                            <Col key={index}>
+                                <Card>
+                                    <Card.Body>
+                                        <Card.Title>{item}</Card.Title>
+                                        <Button className="m-1"
+                                                variant="outline-info"
+                                                size="sm"
+                                                onClick={() => handleParseResume(item)}>
+                                            Re-parse
+                                        </Button>
+                                        <Button className="m-1"
+                                                variant="outline-danger"
+                                                size="sm"
+                                                onClick={() => handleDeleteResume(item)}>
+                                            Delete
+                                        </Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
 
                         )})}
                 </div>

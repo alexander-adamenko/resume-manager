@@ -5,7 +5,8 @@ import CandidateService from "../../services/CandidateService";
 import styles from "./styles/styles.module.css";
 import {SERVER_API_URL} from "../../constants";
 import {Card, Col, Row} from "react-bootstrap";
-import {string} from "yup";
+import {LinkContainer} from "react-router-bootstrap";
+
 
 
 const CandidatesComponent = () => {
@@ -37,11 +38,13 @@ const CandidatesComponent = () => {
                                         <Card.Subtitle className="mb-2 text-muted">{item.email} {item.phone}</Card.Subtitle>
                                         <Card.Text>Degree: {item.degree}</Card.Text>
                                         <Card.Text>{item.aboutMe}</Card.Text>
-                                        <Card.Link className={styles.link}
-                                                   href={`${SERVER_API_URL}/resumes/${item.filePath.substring(item.filePath.lastIndexOf("\\") + 1)}`}
-                                                   target="_blank">&#128194;
+                                        <Card.Link
+                                            href={`${SERVER_API_URL}/resumes/${item.filePath.substring(item.filePath.lastIndexOf("\\") + 1)}`} target="_blank">
+                                            &#128194;
                                         </Card.Link>
-                                        <Card.Link href="#">See full</Card.Link>
+                                        <LinkContainer to={`/candidates/${item.id}`}>
+                                            <Card.Link>See full</Card.Link>
+                                        </LinkContainer>
                                     </Card.Body>
                                 </Card>
                             </Col>

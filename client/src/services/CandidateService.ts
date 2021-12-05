@@ -28,6 +28,12 @@ class CandidateService {
         return axiosInstance.get(candidatesEndpoint + "/parse", {params})
     }
 
+    deleteChosenResume(fileName: string): Promise<AxiosResponse>{
+        let params = new URLSearchParams();
+        params.append("fileName", fileName)
+        return axiosInstance.delete(candidatesEndpoint, {params})
+    }
+
     createCandidate(candidate: Candidate): Promise<AxiosResponse<Candidate>> {
         return axiosInstance.post(SERVER_API_URL + '/candidates', candidate);
     }
