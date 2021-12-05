@@ -22,6 +22,7 @@ import UploadingCandidate from "./Candidates/UploadingCandidate";
 import Vacancies from "./vacancy/Vacancies";
 import Profile from "./profile/Profile";
 import Candidates from "./Candidates/Candidates";
+import FullCandidateComponent from "./Candidates/FullCandidate";
 
 const PrivateRoute = ({ ...props }) => {
   useEffect(() => {
@@ -89,9 +90,19 @@ const MainApp = () => {
                 setIsLoggedIn={setIsLoggedIn}
                 username={username}
                 setUsername={setUsername}
-                path="/candidates"
+                exact path="/candidates"
                 render={(props: RouteComponentProps) => (
                     <Candidates/>
+                )}
+            />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
+                exact path="/candidates/:id"
+                render={(props: RouteComponentProps) => (
+                    <FullCandidateComponent history={props.history} location={props.location} match={props.match} />
                 )}
             />
             <PrivateRoute

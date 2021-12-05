@@ -12,6 +12,10 @@ class CandidateService {
         return axiosInstance.get(candidatesEndpoint);
     }
 
+    getCandidate(id: number): Promise<AxiosResponse<Candidate>> {
+        return axiosInstance.get(`${candidatesEndpoint}/${id}`);
+    }
+
     getNamesUploadedFiles(): Promise<AxiosResponse<string[]/*List with names of resumes*/>> {
         return axiosInstance.get(candidatesEndpoint + "/fileNames");
     }
