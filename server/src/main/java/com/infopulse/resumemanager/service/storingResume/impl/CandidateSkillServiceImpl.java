@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CandidateSkillServiceImpl implements CandidateSkillService {
@@ -31,6 +33,14 @@ public class CandidateSkillServiceImpl implements CandidateSkillService {
     }
 
     @Override
+    public Set<CandidateSkillDto> getSkillsByCandidateId(Long candidateId) {
+        return candidateSkillRepository.findAll().stream()
+                .filter(candidateSkill -> candidateSkill.getCandidate().getId().equals(candidateId))
+                .map(objectMapper::candidateSkillToCandidateSkillDto)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public CandidateSkillDto saveCandidateSkill(CandidateSkillDto candidateSkilldto, long candidateId) {
         Skill savedSkill = saveSkillIfNotExist(candidateSkilldto.skill().name());
         var candidateSkill = new CandidateSkill();
@@ -44,6 +54,16 @@ public class CandidateSkillServiceImpl implements CandidateSkillService {
 
         return objectMapper.candidateSkillToCandidateSkillDto(
                 candidateSkillRepository.save(candidateSkill));
+    }
+
+    @Override
+    public void deleteCandidateSkill(CandidateSkill candidateSkill) {
+        candidateSkillRepository.delete(candidateSkill);
+    }
+
+    @Override
+    public void deleteAllSkillOfCandidate(Long candidateId) {
+        candidateSkillRepository.deleteAllSkillsOfCandidate(candidateId);
     }
 
     private Skill saveSkillIfNotExist(String name){

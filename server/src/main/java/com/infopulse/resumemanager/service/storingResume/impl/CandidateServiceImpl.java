@@ -10,13 +10,17 @@ import com.infopulse.resumemanager.repository.entity.Candidate;
 import com.infopulse.resumemanager.repository.entity.User;
 import com.infopulse.resumemanager.service.storingResume.CandidateService;
 import com.infopulse.resumemanager.service.storingResume.CandidateSkillService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -79,6 +83,16 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    public CandidateDto getCandidateById(Long id) {
+        Optional<Candidate> byId = candidateRepository.findById(id);
+        if(byId.isEmpty()){
+            throw new NoSuchElementException("No Candidate with such id");
+        }
+        Candidate candidate = byId.get();
+        return objectMapper.candidateToCandidateDto(candidate);
+    }
+
+    @Override
     public List<String> getNamesUploadedFiles() {
         return candidateRepository.findAll().stream()
                 .filter(candidate -> candidate.getAuthor().equals(getRequestAuthor()))
@@ -112,6 +126,34 @@ public class CandidateServiceImpl implements CandidateService {
         return objectMapper.candidateToCandidateDto(candidateRepository.save(candidateAfterParsing));
     }
 
+    @Override
+    @Transactional
+    public void deleteCandidate(String fileName) {
+        Optional<Candidate> candidateByFilePath = Optional.ofNullable(candidateRepository.findCandidateByFilePath(path + fileName));
+        if (candidateByFilePath.isPresent()){
+            Candidate candidate = candidateByFilePath.get();
+            deleteSkills(candidate);
+            deleteFile(fileName);
+            candidateRepository.delete(candidate);
+        } else {
+            throw new NoSuchElementException("Candidate not found");
+        }
+    }
+
+    public boolean deleteFile(String fileName) {
+        String filePath = path + fileName;
+        boolean result = false;
+        try {
+            result = Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void deleteSkills(Candidate candidate) {
+        candidateSkillService.deleteAllSkillOfCandidate(candidate.getId());
+    }
 
     private boolean checkIfFileExists(String filepath){
         return new File(filepath).exists();
