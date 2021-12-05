@@ -1,6 +1,6 @@
 import {SERVER_API_URL} from "../constants";
 import axios, {AxiosResponse} from "axios";
-import {Candidate} from "../models/Candidate";
+import {Candidate, CandidateWrapper} from "../models/Candidate";
 
 const candidatesEndpoint = `${SERVER_API_URL}/candidates`;
 
@@ -8,7 +8,7 @@ const axiosInstance = axios.create({ withCredentials: true });
 const config = {headers: { 'Content-Type': 'multipart/form-data'}}
 
 class CandidateService {
-    getAllCandidates(): Promise<AxiosResponse<Candidate[]/*List with names of resumes*/>> {
+    getAllCandidates(): Promise<AxiosResponse<Candidate[]>> {
         return axiosInstance.get(candidatesEndpoint);
     }
 
@@ -16,7 +16,7 @@ class CandidateService {
         return axiosInstance.get(candidatesEndpoint + "/fileNames");
     }
 
-    uploadResumeOfCandidate(resume: File): Promise<AxiosResponse<Candidate>>{
+    uploadResumeOfCandidate(resume: File): Promise<AxiosResponse<CandidateWrapper>>{
         let formData = new FormData();
         formData.append("resume", resume)
         return axiosInstance.post(candidatesEndpoint + "/upload", formData, config)

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Form, FormControl, FormLabel, InputGroup, Row, Table} from "react-bootstrap";
+import {Button, Col, Form, FormLabel, InputGroup, Table} from "react-bootstrap";
 import CandidateService from "../../services/CandidateService";
 import {Candidate} from "../../models/Candidate";
 import {CandidateSkill} from "../../models/CandidateSkill";
 import {Skill, SkillsDegreesLevelsCities} from "../../models/Vacancy";
 import VacancyService from "../../services/VacancyService";
-import {useFormik} from "formik";
+import {FormikErrors, useFormik} from "formik";
 
 interface Props {
     parsedCandidate: Candidate;
@@ -15,6 +15,8 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
     const [candidate, setCandidate] = useState<Candidate>(parsedCandidate);
     const [skillSet, setSkillSet] = useState<CandidateSkill[]>([])
     const [data, setData] = useState<SkillsDegreesLevelsCities>();
+    const [isSubmitted, setSubmit] = useState<boolean>(false)
+    const [successValidation, setSuccessValidation] = useState<boolean>();
 
     const handleSkillsDegreesLevelsCities = () => {
         VacancyService.getAllSkillsDegreesLevelsCities().then((response) => {
@@ -33,8 +35,30 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
         setSkillSet([...skillSet])
     };
 
+    function validate(values: Candidate){
+        let errors: FormikErrors<Candidate> = {};
+        if (!values.name) {
+            errors.name = 'Field is empty.'
+            setSuccessValidation(false);
+        }
+        if(!values.phone){
+            errors.phone = 'Field is empty.'
+            setSuccessValidation(false);
+        }
+        if(!values.email){
+            errors.email = 'Field is empty.'
+            setSuccessValidation(false);
+        }
+        if(!values.aboutMe){
+            errors.aboutMe = 'Field is empty.'
+            setSuccessValidation(false);
+        }
+        return errors;
+    }
+
     const formik = useFormik({
         initialValues:{
+            id: candidate.id,
             name: candidate.name,
             phone: candidate.phone,
             email: candidate.email,
@@ -44,20 +68,26 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
             candidateSkills: candidate.candidateSkills,
         },
         onSubmit: values => {
+            setSuccessValidation(true);
             values.candidateSkills = skillSet;
             if (values.degree === "" && data){
                 values.degree = data.degrees[0];
             }
-            CandidateService.createCandidate(values).then(r =>{
-            })
+            formik.setErrors(validate(values));
+            if (successValidation) {
+                CandidateService.createCandidate(values).then(r =>{
+                    setSubmit(true)
+                })
+            }
         },
     });
 
 
     return (
         <div>
-            {candidate && data &&
+            {!isSubmitted && candidate && data &&
             <Form onSubmit={formik.handleSubmit}>
+                <h3 className="">Parsed candidate:</h3>
                 <Form.Group as={Col}>
                     <FormLabel>Name</FormLabel>
                     <Col>
@@ -66,8 +96,12 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                 id="name"
                                 name="name"
                                 defaultValue={formik.initialValues.name}
-                                onChange={formik.handleChange}>
+                                onChange={formik.handleChange}
+                                isInvalid={!!formik.errors.name}>
                             </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.name}
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Col>
                 </Form.Group>
@@ -80,8 +114,12 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                 id="email"
                                 name="email"
                                 defaultValue={formik.initialValues.email}
-                                onChange={formik.handleChange}>
+                                onChange={formik.handleChange}
+                                isInvalid={!!formik.errors.email}>
                             </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.email}
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Col>
                 </Form.Group>
@@ -94,8 +132,12 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                 id="phone"
                                 name="phone"
                                 defaultValue={formik.initialValues.phone}
-                                onChange={formik.handleChange}>
+                                onChange={formik.handleChange}
+                                isInvalid={!!formik.errors.phone}>
                             </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.phone}
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Col>
                 </Form.Group>
@@ -109,8 +151,12 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                 name="aboutMe"
                                 as="textarea"
                                 defaultValue={formik.initialValues.aboutMe}
-                                onChange={formik.handleChange}>
+                                onChange={formik.handleChange}
+                                isInvalid={!!formik.errors.aboutMe}>
                             </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.aboutMe}
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Col>
                 </Form.Group>
@@ -132,8 +178,6 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                         </InputGroup>
                     </Col>
                 </Form.Group>
-                {/*<FormControl type="text" value={degree} onChange={(e) => setDegree(e.target.value)}/>*/}
-
                 <Table>
                     <thead>
                         <tr>
@@ -145,15 +189,17 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                     {skillSet?.length > 0
                         && skillSet.map((candidateSkill, index) => {
                         return (
-                            <tr>
+                            <tr key={index}>
                                 <td>
                                     <Form.Group>
                                         <Col>
                                             <InputGroup>
                                                 <Form.Control
-                                                    defaultValue={candidateSkill.skillDto.name}
+                                                    defaultValue={candidateSkill.skill.name}
+                                                    isInvalid={!!formik.errors.candidateSkills}
                                                     onChange={e => {
-                                                    skillSet[index].skillDto.name = e.target.value;
+                                                    skillSet[index].skill.name = e.target.value;
+
                                                 }}>
                                                 </Form.Control>
                                             </InputGroup>
@@ -188,12 +234,13 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                 </Table>
 
                 <Button className="md-4" type="submit">Submit</Button>
-
+                <br/>
+                <br/>
             </Form>
             }
-
-            <br/>
-            <br/>
+            {isSubmitted && <div>
+                <h3>Candidate successfully submitted &#9989;</h3>
+            </div>}
         </div>
     );
 }
