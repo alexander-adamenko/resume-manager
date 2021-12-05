@@ -32,7 +32,7 @@ public class CandidateSkillServiceImpl implements CandidateSkillService {
 
     @Override
     public CandidateSkillDto saveCandidateSkill(CandidateSkillDto candidateSkilldto, long candidateId) {
-        Skill savedSkill = saveSkillIfNotExist(candidateSkilldto.skillDto().name());
+        Skill savedSkill = saveSkillIfNotExist(candidateSkilldto.skill().name());
         var candidateSkill = new CandidateSkill();
         candidateSkill.setSkill(savedSkill);
         candidateSkill.setLevel(candidateSkilldto.level());

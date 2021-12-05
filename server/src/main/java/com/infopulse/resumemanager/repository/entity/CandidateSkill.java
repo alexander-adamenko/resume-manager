@@ -3,6 +3,7 @@ package com.infopulse.resumemanager.repository.entity;
 import com.infopulse.resumemanager.repository.entity.enums.Level;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 public record CandidateDto(
+        Long id,
         @NotBlank(message = "Name cannot be blank")
         String name,
         @Email(message = "Email '${validatedValue}' should be valid")
