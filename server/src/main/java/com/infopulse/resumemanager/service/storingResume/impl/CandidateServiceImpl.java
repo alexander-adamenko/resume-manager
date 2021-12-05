@@ -1,6 +1,8 @@
 package com.infopulse.resumemanager.service.storingResume.impl;
 
 import com.infopulse.resumemanager.dto.CandidateDto;
+import com.infopulse.resumemanager.exception.FileExistsException;
+import com.infopulse.resumemanager.exception.UnsupportedFileException;
 import com.infopulse.resumemanager.mapper.ObjectMapper;
 import com.infopulse.resumemanager.repository.CandidateRepository;
 import com.infopulse.resumemanager.repository.UserRepository;
@@ -26,6 +28,8 @@ public class CandidateServiceImpl implements CandidateService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final CandidateSkillService candidateSkillService;
+    String path = System.getProperty("user.home") + File.separator + "resumes" + File.separator;
+
 
     @Autowired
     public CandidateServiceImpl(CandidateRepository candidateRepository, UserRepository userRepository, ObjectMapper objectMapper, CandidateSkillService candidateSkillService) {
@@ -36,18 +40,20 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateDto saveCandidateResume(MultipartFile file) {
-        String home = System.getProperty("user.home");
-        String path = home + File.separator + "resumes" + File.separator + file.getOriginalFilename();
+    public CandidateDto saveCandidateResume(MultipartFile file) throws UnsupportedFileException, FileExistsException {
+        String filePath = path + file.getOriginalFilename();
 
-        if (checkIfFileExists(path)) {
-            System.out.println("File is already exists");
-//            todo handler
-            return null;
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (extension != null && !(extension.equals("pdf") || extension.equals("docx") || extension.equals("doc"))) {
+            throw new UnsupportedFileException(extension);
+        }
+
+        if (checkIfFileExists(filePath)) {
+            throw new FileExistsException(file.getOriginalFilename());
         }
 
         try {
-            File fileByPath = new File(path);
+            File fileByPath = new File(filePath);
             if (!fileByPath.exists()) {
                 fileByPath.mkdirs();
             }
@@ -57,7 +63,7 @@ public class CandidateServiceImpl implements CandidateService {
         }
 
         Candidate candidate = new Candidate();
-        candidate.setFilePath(path);
+        candidate.setFilePath(filePath);
         candidate.setAuthor(getRequestAuthor());
 
         Candidate save = candidateRepository.save(candidate);
