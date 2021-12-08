@@ -26,4 +26,15 @@ public class VacancyController {
     public List<VacancyDto> getAllVacancies() {
         return vacancyService.getAllVacancies();
     }
+
+    @GetMapping("/abc")
+    @ResponseStatus(HttpStatus.OK)
+    public VacancyDto getVacancy(@RequestParam Long id) {
+        return vacancyService.getVacancy(id);
+    }
+
+    @PutMapping()
+    public VacancyDto update(@RequestBody @Valid VacancyDto vacancyDto){
+        return vacancyService.updateVacancy(vacancyDto);
+    }
 }

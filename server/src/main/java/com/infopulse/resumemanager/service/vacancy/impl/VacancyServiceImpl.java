@@ -59,4 +59,31 @@ public class VacancyServiceImpl implements VacancyService {
                 .map(objectMapper::vacancyToVacancyDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public VacancyDto getVacancy(Long id) {
+        String usernameWhoRequesting = SecurityContextHolder.getContext().getAuthentication().getName();
+        return objectMapper.vacancyToVacancyDto(vacancyRepository.findById(id).orElseThrow());
+    }
+
+    @Override
+    @Transactional
+    public VacancyDto updateVacancy(VacancyDto vacancyDto) {
+        Vacancy vacancy = vacancyRepository.findById(vacancyDto.id()).orElseThrow();
+        Vacancy newVacancy = objectMapper.vacancyDtoToVacancy(vacancyDto);
+        newVacancy.setAuthor(vacancy.getAuthor());
+        vacancyRepository.save(newVacancy);
+//        DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+        entityManager.createNativeQuery("DELETE FROM vacancy_skill WHERE vacancy_id=?")
+                .setParameter(1, newVacancy.getId())
+                .executeUpdate();
+        newVacancy.getVacancySkills().forEach(vacancySkill -> {
+            entityManager.createNativeQuery("INSERT INTO vacancy_skill (vacancy_id, skill_id, level) VALUES (?,?,?)")
+                    .setParameter(1, newVacancy.getId())
+                    .setParameter(2, skillRepository.findByName(vacancySkill.getSkill().getName()).getId())
+                    .setParameter(3, vacancySkill.getLevel().name())
+                    .executeUpdate();
+        });
+        return vacancyDto;
+    }
 }
