@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     Candidate findByAuthor_Username(String username);
+    Candidate findCandidateByFilePath(String filepath);
 }

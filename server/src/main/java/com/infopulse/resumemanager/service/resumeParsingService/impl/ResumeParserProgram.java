@@ -53,7 +53,8 @@ public class ResumeParserProgram {
         annie.initAnnie();
 
         Corpus corpus = Factory.newCorpus("Annie corpus");
-        URL u = file.toURI().toURL();
+        File file1 = new File(path);
+        URL u = file1.toURI().toURL();
         FeatureMap params = Factory.newFeatureMap();
         params.put("sourceUrl", u);
         params.put("preserveOriginalContent", Boolean.TRUE);

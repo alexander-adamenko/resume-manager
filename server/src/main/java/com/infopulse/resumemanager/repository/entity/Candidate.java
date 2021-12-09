@@ -3,6 +3,8 @@ package com.infopulse.resumemanager.repository.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +12,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "candidates")
+@ToString
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +36,8 @@ public class Candidate {
     @OneToMany(mappedBy = "candidate")
     private Set<Feedback> feedbacks;
 
-    @OneToMany(mappedBy = "candidate")
-    private Set<CandidateSkill> candidateSkills;
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+    private Set<CandidateSkill> candidateSkills = new HashSet<>();
 
     @OneToMany(mappedBy = "candidate")
     private List<Hiring> hiringList;

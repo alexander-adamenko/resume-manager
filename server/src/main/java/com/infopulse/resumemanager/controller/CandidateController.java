@@ -1,6 +1,9 @@
 package com.infopulse.resumemanager.controller;
 
 import com.infopulse.resumemanager.dto.CandidateDto;
+import com.infopulse.resumemanager.dto.parsed.ResponseWrapper;
+import com.infopulse.resumemanager.exception.FileExistsException;
+import com.infopulse.resumemanager.exception.UnsupportedFileException;
 import com.infopulse.resumemanager.service.resumeParsingService.ParserService;
 import com.infopulse.resumemanager.service.storingResume.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +26,31 @@ public class CandidateController {
 
 
     @PostMapping("/upload")
-    public CandidateDto uploadResume(@RequestParam MultipartFile resume) {
-        candidateService.saveCandidateResume(resume);
-        return parserService.parseResume(resume.getOriginalFilename());
+    public ResponseWrapper uploadResume(@RequestParam MultipartFile resume) {
+        ResponseWrapper responseWrapper = new ResponseWrapper();
+        try {
+            candidateService.saveCandidateResume(resume);
+            responseWrapper.setData(parserService.parseResume(resume.getOriginalFilename()));
+            responseWrapper.setStatus(200);
+            responseWrapper.setMessage("Successfully parsed Resume!");
+        } catch (UnsupportedFileException | FileExistsException ex) {
+            responseWrapper.setMessage(ex.getMessage());
+            responseWrapper.setStatus(500);
+        }
+        return responseWrapper;
 
     }
 
     @GetMapping()
     public List<CandidateDto> getAllCandidates(){
         return candidateService.getAllCandidates();
+    }
+
+    @GetMapping("/{id}")
+    public CandidateDto getCandidateById(@PathVariable Long id){
+        CandidateDto candidateById = candidateService.getCandidateById(id);
+        System.out.println(candidateById);
+        return candidateById;
     }
 
     @GetMapping("/fileNames")
@@ -47,5 +66,10 @@ public class CandidateController {
     @PostMapping()
     public CandidateDto saveCandidateAfterParsing(@RequestBody CandidateDto candidate) {
         return candidateService.saveCandidateWithSkills(candidate);
+    }
+
+    @DeleteMapping()
+    public void deleteCandidateWithSuchResume(@RequestParam String fileName){
+        candidateService.deleteCandidate(fileName);
     }
 }

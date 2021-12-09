@@ -18,7 +18,7 @@ public class ExpandCandidateToCandidateDtoMapper {
         String filepath = extendedCandidate.getFilePath();
         Set<CandidateSkillDto> candidateSkillSet = getCandidateSkillSet(extendedCandidate.getSkills());
 
-        return new CandidateDto(null, email, phone, degreeFromEdu, aboutMe, filepath, candidateSkillSet);
+        return new CandidateDto(null, null, email, phone, degreeFromEdu, aboutMe, filepath, candidateSkillSet);
     }
 
     private String getDegreeFromEdu(String education){
