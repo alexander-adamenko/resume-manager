@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public interface CandidatesMatcher {
+    List<Candidate> getCandidates(VacancyDto vacancy);
     List<Candidate> filterBySkills(VacancyDto vacancy);
     List<Candidate> filterBySkillsAndLevel(VacancyDto vacancy);
     List<Candidate> filterBySkillsLang(VacancyDto vacancy, String lang);

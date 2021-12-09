@@ -20,12 +20,17 @@ public class CandidatesMatcherImpl implements CandidatesMatcher {
         this.candidateRepository = candidateRepository;
     }
     private Stream<Candidate> getStreamOfFilteredSkills(VacancyDto vacancy){
-
         return candidateRepository
                 .findAll()
                 .stream()
                 .filter(cnd ->  cnd.getCandidateSkills()!=null)
                 .filter(cnd -> new SkillComparator(vacancy).countMatches(cnd) > 0);
+    }
+
+    @Override
+    public List<Candidate> getCandidates(VacancyDto vacancy) {
+        return getStreamOfFilteredSkills(vacancy)
+                .collect(Collectors.toList());
     }
 
     //filter by skills + sort by number of skills
