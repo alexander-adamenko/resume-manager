@@ -13,6 +13,7 @@ public class DegreeComparator implements Comparator<Candidate> {
 
     public DegreeComparator() {
         degreeWeights = new HashMap<>();
+        degreeWeights.put(Degree.NONE.name(), 0);
         degreeWeights.put(Degree.BACHELOR.name(), 1);
         degreeWeights.put(Degree.MASTER.name(), 2);
         degreeWeights.put(Degree.DOCTOR.name(), 3);

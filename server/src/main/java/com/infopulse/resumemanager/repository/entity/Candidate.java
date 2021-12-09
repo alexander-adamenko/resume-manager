@@ -1,6 +1,7 @@
 package com.infopulse.resumemanager.repository.entity;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -24,6 +25,7 @@ public class Candidate {
     private String degree;
 
     @Column(name = "about_me")
+    @Length(max = 2000)
     private String aboutMe;
 
     @Column(name = "file_path")

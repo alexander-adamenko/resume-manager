@@ -12,6 +12,7 @@ import com.infopulse.resumemanager.service.storingResume.CandidateSkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -73,7 +74,7 @@ public class CandidateSkillServiceImpl implements CandidateSkillService {
             savedSkill = skill.get();
         } else {
             var skillToSave = new Skill();
-            skillToSave.setName(name);
+            skillToSave.setName(name.toLowerCase(Locale.ROOT));
             savedSkill = skillRepository.save(skillToSave);
         }
         return savedSkill;
