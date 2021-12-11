@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Card, Col, Row} from "react-bootstrap";
-import {User, Role} from "../../models/User";
+import {Table} from "react-bootstrap";
+import {Role, User} from "../../models/User";
 import UserService from "../../services/UserService";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrash, faPlus} from '@fortawesome/free-solid-svg-icons'
+import {faPlus, faTrash} from '@fortawesome/free-solid-svg-icons'
 import RoleService from "../../services/RoleService";
 
 const UserComponent = () => {
@@ -25,13 +25,19 @@ const UserComponent = () => {
             setRoles(response.data);
         });
     };
+
+    function getDiffOfRoles(arr: Role[]): Role[]{
+        let arrMap = arr.map(value => value.name)
+        return roles.filter(x => !arrMap.includes(x.name));
+    }
+
     const addRoleToUser = (username: string | undefined, e: HTMLSelectElement) => {
         UserService.addRoleToUser(username, e.options[e.selectedIndex].value).then((response) => {
             handleUsers();
         });
     }
-    const removeRoleFromUser = (username: string | undefined, roleName: string | undefined) => {
-        UserService.removeRoleFromUser(username, roleName).then((response) => {
+    const removeRoleFromUser = (username: string | undefined, e: HTMLSelectElement) => {
+        UserService.removeRoleFromUser(username, e.options[e.selectedIndex].value).then((response) => {
             handleUsers();
         });
     }
@@ -44,66 +50,75 @@ const UserComponent = () => {
         e.style.color = "black";
     }
     return (
-        <>
-            <Row>
-                {users[0] !== undefined ? ("qqqqqqqqqqqqqq") : ("sdfsdfsdfsdfsdf")}
-            </Row>
-            {users[0] !== undefined ? (
-                <Row xs={1} md={4} className="g-3">
-                    {users.length && users.map((item, index) => {
-                        return (
-                            <>
-                                <Col key={index}>
-                                    <Card style={{width: '18rem'}}>
-                                        <Card.Body>
-                                            <Card.Title>{item.username}</Card.Title>
-                                            <Card.Subtitle
-                                                className="mb-2 text-muted">{item.firstName} {item.lastName}</Card.Subtitle>
-                                            <Card.Text>
-                                                {item.roles.map((role, indexR) => {
-                                                    return (
-                                                        <Row>
-                                                            <div
-                                                                style={{marginLeft: '10px'}}>{indexR + 1}. {role.name}</div>
-                                                            <FontAwesomeIcon icon={faTrash}
-                                                                             id={"del" + index + "." + indexR}
-                                                                             onClick={() => removeRoleFromUser(item.username, role.name)}
-                                                                             size="1x" style={{cursor: "pointer"}}
-                                                                             onMouseOver={() => setColor(document.getElementById("del" + index + "." + indexR))}
-                                                                             onMouseLeave={() => delColor(document.getElementById("del" + index + "." + indexR))}/>
-                                                        </Row>
-                                                    );
-                                                })}
-
-
-                                            </Card.Text>
-                                            <div>
-                                                <select id={"role" + index} style={{ background:"white"}}>
-                                                    {roles.map((role) => {
+        <div>
+            <div className="col-9 m-auto">
+            <div className="container-xl">
+                <div className="table-title">
+                    <h2 className="p-4 text-center">Manage <b>Users</b></h2>
+                </div>
+            </div>
+            {users.length != 0 ? (
+                <div>
+                    <Table className="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Username</th>
+                            <th>Roles</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {users.length && users.map((item, index) => {
+                            return (
+                                <tr>
+                                    <td>{item.firstName}</td>
+                                    <td>{item.lastName}</td>
+                                    <td>{item.username}</td>
+                                    <td>{item.roles.map((role, indexR) => {
+                                        return (<div>
+                                            <div className="w-45">{indexR + 1}. {role.name}</div>
+                                        </div>)})}
+                                    </td>
+                                    <td>
+                                        <div>{item.roles.length > 0 && <div>
+                                                <select className="m-2" id={"rolesDel" + index} style={{ background:"white"}}>
+                                                    {item.roles.map((role) => {
                                                         return (<option style={{ background:"white"}}>{role.name}</option>)
-                                                    })
-                                                    }
+                                                    })}
+                                                </select>
+                                                <FontAwesomeIcon icon={faTrash} id={"del" + index}
+                                                                 onClick={() => removeRoleFromUser(item.username,
+                                                                     document.getElementById("rolesDel" + index) as HTMLSelectElement)}
+                                                                 size="1x" style={{cursor: "pointer"}}
+                                                                 onMouseOver={() => setColor(document.getElementById("del" + index))}
+                                                                 onMouseLeave={() => delColor(document.getElementById("del" + index))}/>
+                                            </div>}
+                                        </div>
+                                        <div>{getDiffOfRoles(item.roles).length > 0 && <div>
+                                                <select className="m-2" id={"rolesAdd" + index} style={{ background:"white"}}>
+                                                    {getDiffOfRoles(item.roles).map((role) => {
+                                                        return (<option style={{ background:"white"}}>{role.name}</option>)
+                                                    })}
                                                 </select>
                                                 <FontAwesomeIcon icon={faPlus} id={"add"+index}
                                                                  onClick={() => addRoleToUser(item.username,
-                                                                     document.getElementById("role" + index) as HTMLSelectElement)}
+                                                                     document.getElementById("rolesAdd" + index) as HTMLSelectElement)}
                                                                  size="lg" style={{cursor: "pointer"}}
-                                                                 onMouseOver={() => setColor(document.getElementById("add"+index))}
-                                                                 onMouseLeave={() => delColor(document.getElementById("add"+index))}/>
-                                            </div>
-                                            <Card.Link href="#">Card Link</Card.Link>
-                                            <Card.Link href="#">Another Link</Card.Link>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </>
-
-                        )
-                    })}
-                </Row>
-            ) : ("gecnj")}
-
-        </>
+                                                                 onMouseOver={() => setColor(document.getElementById("add" + index))}
+                                                                 onMouseLeave={() => delColor(document.getElementById("add" + index))}/>
+                                            </div>}
+                                        </div>
+                                    </td>
+                            </tr>
+                        )})}
+                        </tbody>
+                    </Table>
+                </div>
+            ): ("Failed to load users") }
+            </div>
+        </div>
     );
 
 }

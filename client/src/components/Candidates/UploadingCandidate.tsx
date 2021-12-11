@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Col, Form, FormControl, FormLabel, Spinner} from "react-bootstrap";
+import {Button, Card, Col, Form, Spinner} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import CandidateService from "../../services/CandidateService";
 import EditCandidate from "./EditCandidate";
@@ -58,15 +58,16 @@ const UploadingCandidateComponent = () => {
         <div>
             <div className="p-3">
                 <Form onSubmit={handleSubmit(onSubmit)}>
-                    <FormLabel>Upload file</FormLabel>
-                    <FormControl type="file" {...register("resume")}/>
-                    <Button className="mt-1" type="submit">Submit</Button>
+                    <h4>Upload file</h4>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Control type="file"  {...register("resume")}/>
+                        <Button className="mt-1" type="submit">Submit</Button>
+                    </Form.Group>
                 </Form>
             </div>
-            <hr/>
             <div className="row">
                 <div className="col-3">
-                    <h3 className="card-title">Resumes</h3>
+                    <h3 className="card-title text-center">Resumes</h3>
                     {resumes.length > 0 && resumes.map((item, index) => {
                         return (
                             <Col key={index}>

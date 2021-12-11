@@ -1,5 +1,5 @@
 import {Candidate} from "../../models/Candidate";
-import {Card, Col, Table} from "react-bootstrap";
+import {Button, Card, Col, Table} from "react-bootstrap";
 import {SERVER_API_URL} from "../../constants";
 import React, {useEffect, useState} from "react";
 import CandidateService from "../../services/CandidateService";
@@ -36,8 +36,9 @@ const FullCandidateComponent = (props: Props) => {
                         <Card.Text>Degree: {candidate?.degree}</Card.Text>
                         <Card.Text>{candidate?.aboutMe}</Card.Text>
                         <Card.Link
+
                             href={`${SERVER_API_URL}/resumes/${candidate?.filePath.substring(candidate?.filePath.lastIndexOf("\\") + 1)}`} target="_blank">
-                            &#128194;
+                            <Button className="bg-light">&#128194;</Button>
                         </Card.Link>
                         <Table>
                         <thead>

@@ -77,8 +77,8 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
     return(
         <>
             {data !== undefined ? (
-            <Card style={{margin: 'auto', width:'500px'}} /*className="col-md-6 mt-5"*/>
-                <Card.Header>Create new Vacancy</Card.Header>
+            <Card className="col-7 m-auto" >
+                <h3 className="mt-2 text-center">Create new Vacancy</h3>
                 <Card.Body>
                     <Form onSubmit={formik.handleSubmit}>
                         {/*TITLE*/}
@@ -109,7 +109,7 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
                                 Years of experience:
                             </Form.Label>
                             <Col md="8">
-                                <InputGroup className="mb-2 mr-sm-2" >
+                                <InputGroup className="mb-2 mr-sm-2 " >
                                     <Form.Control
                                         id="minimumYearsOfExperience"
                                         name="minimumYearsOfExperience"

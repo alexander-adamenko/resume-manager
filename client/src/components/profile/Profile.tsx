@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Button, Container} from "react-bootstrap";
+import {Button, Container, Form} from "react-bootstrap";
 import {UserDetails} from "../../models/UserDetails";
 import UserService from "../../services/UserService";
 
@@ -47,7 +47,8 @@ const Profile = () => {
     }
     return (
         <Container className="center">
-         <form>
+                <h2 className="p-4 text-center">Manage <b>Profile</b></h2>
+            <Form>
                 <Container className="justify-content-center align-items-md-center">
                     <label htmlFor="lastname" className="grey-text">
                         Lastname
@@ -66,17 +67,17 @@ const Profile = () => {
                     <label htmlFor="username" className="grey-text">
                         Username
                     </label>
-                    <input type="text" name="username" value={username}
+                    <input type="text" name="username1" value={username}
                            onChange={(e) => setUsername(e.target.value)}
                            className="form-control"/>
                     <p><label htmlFor="oldPassword" className="grey-text">
                         Old password
                     </label>
-                    <input type={oldPasswordShown ? "text" : "password"} name="oldPassword" value={oldPassword}
+                    <input autoComplete="off" type={oldPasswordShown ? "text" : "password"} name="oldPassword1" value={oldPassword}
                            onChange={(e) => setOldPassword(e.target.value)}
                            className="form-control"/>
-                    <span>Показати</span>
-                    <input type="checkbox" checked={oldPasswordShown}
+                    <span>Show</span>
+                    <input className="m-2" type="checkbox" checked={oldPasswordShown}
                            onChange={(e) => setOldPasswordShown(e.target.checked)}/>
                     </p>
                     <p><label htmlFor="newPassword" className="grey-text">
@@ -85,8 +86,8 @@ const Profile = () => {
                     <input type={newPasswordShown ? "text" : "password"} name="newPassword" value={newPassword}
                            onChange={(e) => setNewPassword(e.target.value)}
                            className="form-control"/>
-                    <span>Показати</span>
-                    <input type="checkbox" checked={newPasswordShown}
+                    <span>Show</span>
+                    <input className="m-2" type="checkbox" checked={newPasswordShown}
                            onChange={(e) => setNewPasswordShown(e.target.checked)}/>
                     </p>
                     <p><label htmlFor="newRepeatPassword" className="grey-text">
@@ -96,8 +97,8 @@ const Profile = () => {
                            value={newRepeatPassword}
                            onChange={(e) => {setNewRepeatPassword(e.target.value);}}
                            className="form-control"/>
-                   <span>Показати</span>
-                        <input type="checkbox" checked={newRepeatPasswordShown}
+                   <span>Show</span>
+                        <input className="m-2" type="checkbox" checked={newRepeatPasswordShown}
                                onChange={(e) => setNewRepeatPasswordShown(e.target.checked)}/>
                     </p>
                 </Container>
@@ -105,7 +106,7 @@ const Profile = () => {
                     <span className="text-danger">{errorMessage}</span>
                     <Button variant="outline-info" onClick={updateUser}>Save</Button>
                 </p>
-            </form>
+            </Form>
         </Container>
 
 

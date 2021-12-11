@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {Candidate} from "../../models/Candidate";
 import CandidateService from "../../services/CandidateService";
 
-import styles from "./styles/styles.module.css";
 import {SERVER_API_URL} from "../../constants";
 import {Card, Col, Row} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
@@ -31,7 +30,9 @@ const CandidatesComponent = () => {
                 <Row xs={1} md={4} className="g-3">
                     {candidates.length > 0 && candidates.map((item, index) => {
                         return (
-                            <Col>
+                            <div>
+                            {item.name != null &&
+                            <Col key={index}>
                                 <Card style={{ width: '18rem' }}>
                                     <Card.Body>
                                         <Card.Title>{item.name}</Card.Title>
@@ -47,7 +48,9 @@ const CandidatesComponent = () => {
                                         </LinkContainer>
                                     </Card.Body>
                                 </Card>
-                            </Col>
+                            </Col>}
+                            </div>
+
                         )}
                     )}
                 </Row>
