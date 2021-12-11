@@ -3,17 +3,11 @@ package com.infopulse.resumemanager.service.resumeParsingService.impl;
 import com.infopulse.resumemanager.dto.parsed.ExtendedCandidate;
 import gate.*;
 import gate.util.GateException;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.sax.ToXMLContentHandler;
 import org.springframework.stereotype.Component;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -22,26 +16,7 @@ import static gate.Utils.stringFor;
 @Component
 public class ResumeParserProgram {
 
-    public File parseToHTMLUsingApacheTikka(String file) throws IOException, SAXException, TikaException {
-        String outputFileFormat = ".html";
-
-        String OUTPUT_FILE_NAME = FilenameUtils.removeExtension(file) + outputFileFormat;
-        ContentHandler handler = new ToXMLContentHandler();
-        InputStream stream = new FileInputStream(file);
-        AutoDetectParser parser = new AutoDetectParser();
-        Metadata metadata = new Metadata();
-        try {
-            parser.parse(stream, handler, metadata);
-            FileWriter htmlFileWriter = new FileWriter(OUTPUT_FILE_NAME);
-            htmlFileWriter.write(handler.toString());
-            htmlFileWriter.close();
-            return new File(OUTPUT_FILE_NAME);
-        } finally {
-            stream.close();
-        }
-    }
-
-    public ExtendedCandidate parseUsingGateAndAnnie(File file, String path) throws GateException, IOException {
+    public ExtendedCandidate parseUsingGateAndAnnie(String path) throws GateException, IOException {
         System.setProperty("gate.site.config", System.getProperty("user.dir")+"/GATEFiles/gate.xml");
         if (Gate.getGateHome() == null)
             Gate.setGateHome(new File(System.getProperty("user.dir")+"/GATEFiles"));
@@ -51,21 +26,28 @@ public class ResumeParserProgram {
 
         Annie annie = new Annie();
         annie.initAnnie();
-
-        Corpus corpus = Factory.newCorpus("Annie corpus");
-        File file1 = new File(path);
-        URL u = file1.toURI().toURL();
+        ExtendedCandidate extendedCandidate;
+        File fileToParse = new File(path);
+        URL u = fileToParse.toURI().toURL();
         FeatureMap params = Factory.newFeatureMap();
         params.put("sourceUrl", u);
         params.put("preserveOriginalContent", Boolean.TRUE);
         params.put("collectRepositioningInfo", Boolean.TRUE);
+        Corpus corpus = Factory.newCorpus("Annie corpus");
         Document resume = (Document) Factory.createResource("gate.corpora.DocumentImpl", params);
-        corpus.add(resume);
+        try {
+            corpus.add(resume);
+            annie.setCorpus(corpus);
+            annie.execute();
 
-        annie.setCorpus(corpus);
-        annie.execute();
+            extendedCandidate = parseIntoCandidateExpand(corpus, path);
+        } finally {
+            corpus.clear();
+            Factory.deleteResource(resume);
 
-        return parseIntoCandidateExpand(corpus, path);
+
+        }
+        return extendedCandidate;
 
     }
 
@@ -78,8 +60,6 @@ public class ResumeParserProgram {
 
             String email = parseAnnSectionSingleRes("EmailFinder", defaultAnnotSet, doc);
             String phone = parseAnnSectionSingleRes("PhoneFinder", defaultAnnotSet, doc);
-            List<String> urls = parseAnnSection("URLFinder", defaultAnnotSet, doc);
-
             String summary = parseSectionHeading("summary", defaultAnnotSet, doc);
             String education = parseSectionHeading("education_and_training", defaultAnnotSet, doc);
             List<Map<String, String>> skills = parseSectionHeadingWithMultipleSubSections("skills", defaultAnnotSet, doc);

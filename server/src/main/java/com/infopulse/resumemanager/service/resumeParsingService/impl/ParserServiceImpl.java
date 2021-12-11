@@ -27,26 +27,16 @@ public class ParserServiceImpl implements ParserService {
     }
 
     @Override
-    public CandidateDto parseResume(String fileName) {
+    public synchronized CandidateDto parseResume(String fileName) {
         String home = System.getProperty("user.home");
         String path = home + File.separator + "resumes" + File.separator + fileName;
 
-        File tikkaConvertedFile = null;
-
+        ExtendedCandidate extendedCandidate;
         try {
-            tikkaConvertedFile = resumeParserProgram.parseToHTMLUsingApacheTikka(path);
-        } catch (IOException | SAXException | TikaException exception) {
-            throw new RuntimeException(exception.getMessage());
-
-        }
-        ExtendedCandidate extendedCandidate = null;
-        if (tikkaConvertedFile != null) {
-            try {
-                extendedCandidate = resumeParserProgram.parseUsingGateAndAnnie(tikkaConvertedFile, path);
+            extendedCandidate = resumeParserProgram.parseUsingGateAndAnnie(path);
             } catch (GateException | IOException exception) {
                 throw new RuntimeException(exception.getMessage());
             }
-        }
         return new ExpandCandidateToCandidateDtoMapper().map(Objects.requireNonNull(extendedCandidate));
     }
 }

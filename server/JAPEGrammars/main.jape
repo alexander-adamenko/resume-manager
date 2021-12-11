@@ -8,8 +8,6 @@ Phases:
 ProfileSection
 EmailFinder
 PhoneFinder
-AddressFinder
-URLFinder
 SectionHeadingFinder
 SectionBodyFinderPre
 SectionBodyFinder
