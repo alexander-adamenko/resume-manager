@@ -13,7 +13,7 @@ interface Props {
 
 const EditCandidateComponent = ({parsedCandidate}: Props) => {
     const [candidate, setCandidate] = useState<Candidate>(parsedCandidate);
-    const [skillSet, setSkillSet] = useState<CandidateSkill[]>([])
+    const [skillSet, setSkillSet] = useState<CandidateSkill[]>(candidate.candidateSkills || [])
     const [data, setData] = useState<SkillsDegreesLevelsCities>();
     const [isSubmitted, setSubmit] = useState<boolean>(false)
     const [successValidation, setSuccessValidation] = useState<boolean>();
@@ -23,15 +23,20 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
             setData(response.data);
         });
     };
+
     useEffect(() => {
         handleSkillsDegreesLevelsCities()
         setCandidate(parsedCandidate)
-        setSkillSet(candidate.candidateSkills || [])
     }, [candidate]);
 
     const addSkill = () => {
         const emptyCandidateSkill: CandidateSkill = new CandidateSkill(new Skill(""), data?.levels[0])
         skillSet.push(emptyCandidateSkill)
+        setSkillSet([...skillSet])
+    };
+
+    const removeSkill = (index: number) => {
+        skillSet.splice(index, 1)
         setSkillSet([...skillSet])
     };
 
@@ -51,6 +56,10 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
         }
         if(!values.aboutMe){
             errors.aboutMe = 'Field is empty.'
+            setSuccessValidation(false);
+        }
+        if(values.aboutMe.length > 2000){
+            errors.aboutMe = 'Must be less than 2000 characters'
             setSuccessValidation(false);
         }
         return errors;
@@ -87,7 +96,7 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
         <div>
             {!isSubmitted && candidate && data &&
             <Form onSubmit={formik.handleSubmit}>
-                <h3 className="">Parsed candidate:</h3>
+                <h3 className="text-center">Parsed candidate:</h3>
                 <Form.Group as={Col}>
                     <FormLabel>Name</FormLabel>
                     <Col>
@@ -186,8 +195,8 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                         </tr>
                     </thead>
                     <tbody>
-                    {skillSet?.length > 0
-                        && skillSet.map((candidateSkill, index) => {
+                    {skillSet?.length > 0 &&
+                        skillSet.map((candidateSkill, index) => {
                         return (
                             <tr key={index}>
                                 <td>
@@ -195,11 +204,11 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                         <Col>
                                             <InputGroup>
                                                 <Form.Control
-                                                    defaultValue={candidateSkill.skill.name}
+                                                    value={skillSet[index].skill.name}
                                                     isInvalid={!!formik.errors.candidateSkills}
                                                     onChange={e => {
-                                                    skillSet[index].skill.name = e.target.value;
-
+                                                        skillSet[index].skill.name = e.target.value
+                                                        setSkillSet([...skillSet])
                                                 }}>
                                                 </Form.Control>
                                             </InputGroup>
@@ -213,11 +222,11 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                                 <Form.Control
                                                     as="select"
                                                     className="mb-2 mr-sm-2"
-                                                    key={candidateSkill.level}
+                                                    key={skillSet[index].level}
                                                     onChange={e => {
                                                         skillSet[index].level = e.target.value;
                                                     }}
-                                                    defaultValue={candidateSkill.level}>
+                                                    value={candidateSkill.level}>
                                                     {data.levels.map((level, index) => {
                                                         return (<option key={index}>{level}</option>);
                                                     })}
@@ -226,6 +235,7 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                         </Col>
                                     </Form.Group>
                                 </td>
+                                <td><Button className="bg-light" onClick={() => removeSkill(index)}>&#128465;</Button></td>
                             </tr>
                     )
                 })}
