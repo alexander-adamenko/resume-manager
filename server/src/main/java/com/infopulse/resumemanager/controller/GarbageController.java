@@ -1,17 +1,18 @@
 package com.infopulse.resumemanager.controller;
 
+import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.SkillDto;
-import com.infopulse.resumemanager.dto.SkillsDegreesLevelsCitiesDto;
+import com.infopulse.resumemanager.dto.SkillsDegreesLevelsCitiesEnglishLevelsDto;
+import com.infopulse.resumemanager.dto.VacancyDto;
 import com.infopulse.resumemanager.repository.entity.Vacancy;
 import com.infopulse.resumemanager.service.GarbageService;
 import com.infopulse.resumemanager.service.emailsender.EmailSenderService;
+import com.infopulse.resumemanager.service.matcher.CandidatesMatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class GarbageController {
     private final GarbageService garbageService;
     private final EmailSenderService emailSenderService;
+    private final CandidatesMatcher candidatesMatcher;
 
     @GetMapping("/skills")
     @ResponseStatus(HttpStatus.OK)
@@ -46,10 +48,10 @@ public class GarbageController {
         return garbageService.getAllCities();
     }
 
-    @GetMapping("/skills-degrees-levels-cities")
+    @GetMapping("/skills-degrees-levels-cities-english-levels")
     @ResponseStatus(HttpStatus.OK)
-    public SkillsDegreesLevelsCitiesDto getAllSkillsDegreesLevelsCities() {
-        return garbageService.getAllSkillsDegreesLevelsCities();
+    public SkillsDegreesLevelsCitiesEnglishLevelsDto getAllSkillsDegreesLevelsCitiesEnglishLevels() {
+        return garbageService.getAllSkillsDegreesLevelsCitiesEnglishLevels();
     }
 
     @GetMapping("/send-email")
@@ -58,4 +60,15 @@ public class GarbageController {
         emailSenderService.sendInviteLetter(Collections.emptyList(), new Vacancy());
     }
 
+    @GetMapping("/match-test")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CandidateDto> matchCandidatesTest(@RequestBody @Valid VacancyDto vacancyDto) {
+        return candidatesMatcher.matchCandidates(vacancyDto);
+    }
+
+    @GetMapping("/match")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CandidateDto> matchCandidates(@RequestParam Long id) {
+        return candidatesMatcher.matchCandidates(id);
+    }
 }

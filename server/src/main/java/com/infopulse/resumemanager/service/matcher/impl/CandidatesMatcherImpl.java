@@ -1,24 +1,28 @@
 package com.infopulse.resumemanager.service.matcher.impl;
 
+import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.VacancyDto;
+import com.infopulse.resumemanager.mapper.ObjectMapper;
 import com.infopulse.resumemanager.repository.CandidateRepository;
+import com.infopulse.resumemanager.repository.VacancyRepository;
 import com.infopulse.resumemanager.repository.entity.Candidate;
 import com.infopulse.resumemanager.service.matcher.CandidatesMatcher;
 import com.infopulse.resumemanager.service.matcher.impl.comparators.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 @Service
+@AllArgsConstructor
 public class CandidatesMatcherImpl implements CandidatesMatcher {
     private final CandidateRepository candidateRepository;
-    @Autowired
-    public CandidatesMatcherImpl(CandidateRepository candidateRepository) {
-        this.candidateRepository = candidateRepository;
-    }
+    private final VacancyRepository vacancyRepository;
+    private final ObjectMapper objectMapper;
+
     private Stream<Candidate> getStreamOfFilteredSkills(VacancyDto vacancy){
         return candidateRepository
                 .findAll()
@@ -83,5 +87,58 @@ public class CandidatesMatcherImpl implements CandidatesMatcher {
                 .filter(cnd -> cnd.getFeedbacks().size()>0)
                 .sorted(new FeedbackComparator())
                 .collect(Collectors.toList());
+    }
+
+    private List<CandidateDto> doMatching(VacancyDto vacancy) {
+        Predicate<Candidate> hasEnoughDegree = candidate ->
+                        candidate.getDegree().ordinal() >= vacancy.degree().ordinal();
+
+        Predicate<Candidate> hasEnoughYearsOfExperience = candidate ->
+                candidate.getYearsOfExperience() >=  vacancy.minimumYearsOfExperience();
+
+        Predicate<Candidate> liveInRightLocation = candidate ->
+                candidate.getLocation().equals(vacancy.location());
+
+        Predicate<Candidate> hasEnoughEnglishLevel = candidate ->
+                candidate.getEnglishLevel().ordinal() >= vacancy.englishLevel().ordinal();
+
+        Predicate<Candidate> hasEnoughSkillsLevel = candidate -> vacancy
+                .vacancySkills()
+                .stream()
+                .map(objectMapper::vacancySkillDtoToVacancy)
+                .allMatch(vacancySkill -> candidate
+                        .getCandidateSkills()
+                        .stream()
+                        .anyMatch(candidateSkill -> candidateSkill
+                                .getSkill()
+                                .getName()
+                                .equals(vacancySkill.getSkill().getName())
+                                && candidateSkill
+                                .getLevel()
+                                .ordinal() >= vacancySkill.getLevel().ordinal()));
+
+
+        return candidateRepository
+                .findAll()
+                .stream()
+                .filter(hasEnoughDegree
+                        .and(hasEnoughYearsOfExperience)
+                        .and(liveInRightLocation)
+                        .and(hasEnoughEnglishLevel)
+                        .and(hasEnoughSkillsLevel))
+                .map(objectMapper::candidateToCandidateDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CandidateDto> matchCandidates(VacancyDto vacancy) {
+
+        return doMatching(vacancy);
+    }
+
+    @Override
+    public List<CandidateDto> matchCandidates(Long id) {
+        VacancyDto vacancy = objectMapper.vacancyToVacancyDto(vacancyRepository.getById(id));
+        return doMatching(vacancy);
     }
 }

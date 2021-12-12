@@ -2,10 +2,11 @@ package com.infopulse.resumemanager.dto;
 
 import java.util.List;
 
-public record SkillsDegreesLevelsCitiesDto(
+public record SkillsDegreesLevelsCitiesEnglishLevelsDto(
         List<SkillDto> skills,
         List<String> degrees,
         List<String> levels,
-        List<String> cities
+        List<String> cities,
+        List<String> englishLevels
 ) {
 }

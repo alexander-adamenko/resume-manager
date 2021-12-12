@@ -1,5 +1,8 @@
 package com.infopulse.resumemanager.repository.entity;
 
+import com.infopulse.resumemanager.repository.entity.enums.City;
+import com.infopulse.resumemanager.repository.entity.enums.Degree;
+import com.infopulse.resumemanager.repository.entity.enums.EnglishLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,8 +23,12 @@ public class Vacancy {
     private String positionTitle;
     private Boolean isActive;
     private Integer minimumYearsOfExperience;
-    private String degree;
-    private String location;
+    @Enumerated(EnumType.STRING)
+    private Degree degree;
+    @Enumerated(EnumType.STRING)
+    private City location;
+    @Enumerated(EnumType.STRING)
+    private EnglishLevel englishLevel;
     @Column(length = 6000)
     private String description;
 

@@ -1,15 +1,17 @@
 package com.infopulse.resumemanager.service;
 
 import com.infopulse.resumemanager.dto.SkillDto;
-import com.infopulse.resumemanager.dto.SkillsDegreesLevelsCitiesDto;
+import com.infopulse.resumemanager.dto.SkillsDegreesLevelsCitiesEnglishLevelsDto;
 import com.infopulse.resumemanager.mapper.ObjectMapper;
 import com.infopulse.resumemanager.repository.SkillRepository;
 import com.infopulse.resumemanager.repository.entity.enums.City;
 import com.infopulse.resumemanager.repository.entity.enums.Degree;
+import com.infopulse.resumemanager.repository.entity.enums.EnglishLevel;
 import com.infopulse.resumemanager.repository.entity.enums.Level;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,16 +37,27 @@ public class GarbageService {
         return getEnumValues(City.class);
     }
 
-    public SkillsDegreesLevelsCitiesDto getAllSkillsDegreesLevelsCities() {
-        return new SkillsDegreesLevelsCitiesDto(
+    private List<String> getAllEnglishLevels() {
+        return getEnumValues(EnglishLevel.class);
+    }
+
+    public SkillsDegreesLevelsCitiesEnglishLevelsDto getAllSkillsDegreesLevelsCitiesEnglishLevels() {
+        return new SkillsDegreesLevelsCitiesEnglishLevelsDto(
                 getAllSkills(),
                 getAllDegrees(),
                 getAllLevels(),
-                getAllCities()
+                getAllCities(),
+                getAllEnglishLevels()
         );
     }
 
     private List<String> getEnumValues(Class<? extends Enum<?>> e) {
-        return Arrays.stream(e.getEnumConstants()).map(Enum::name).toList();
+        Enum<?>[] enums = e.getEnumConstants();
+        String[] names = new String[enums.length];
+        for (int i = 0; i < enums.length; i++) {
+            names[i] = enums[i].toString();
+        }
+        return new ArrayList<String>(Arrays.asList(names));
+        //return Arrays.stream(e.getEnumConstants()).map(Enum::get).toList();
     }
 }

@@ -8,6 +8,7 @@ import com.infopulse.resumemanager.repository.entity.Candidate;
 import com.infopulse.resumemanager.repository.entity.CandidateSkill;
 import com.infopulse.resumemanager.repository.entity.Feedback;
 import com.infopulse.resumemanager.repository.entity.Skill;
+import com.infopulse.resumemanager.repository.entity.enums.Degree;
 import com.infopulse.resumemanager.repository.entity.enums.Level;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,8 +130,8 @@ class CandidatesMatcherTest {
         c1Skill.add(cs1);
 
         jack.setCandidateSkills(c1Skill);
-
-        jack.setDegree("Bachelor of Science in Information Technology, University of Colombo");
+        jack.setDegree(Degree.BACHELOR);
+//        jack.setDegree("Bachelor of Science in Information Technology, University of Colombo");
         Set<Feedback> c1FeedBack = new HashSet<>();
         for (int i = 0; i < 3; i++) c1FeedBack.add(new Feedback());
         jack.setFeedbacks(c1FeedBack);
@@ -173,7 +174,8 @@ class CandidatesMatcherTest {
 
         john.setCandidateSkills(c3Skill);
 
-        john.setDegree("Master of Science in Information Technology, University of Colombo");
+        john.setDegree(Degree.MASTER);
+//        john.setDegree("Master of Science in Information Technology, University of Colombo");
 
         Candidate peter = new Candidate();
         peter.setName("Peter");
@@ -199,7 +201,8 @@ class CandidatesMatcherTest {
 
         peter.setCandidateSkills(c4Skill);
 
-        peter.setDegree("Bachelor of Science in Information Technology, University of Colombo");
+        peter.setDegree(Degree.BACHELOR);
+//        peter.setDegree("Bachelor of Science in Information Technology, University of Colombo");
         Set<Feedback> c4FeedBack = new HashSet<>();
         for (int i = 0; i < 7; i++) c4FeedBack.add(new Feedback());
         peter.setFeedbacks(c4FeedBack);
@@ -219,7 +222,7 @@ class CandidatesMatcherTest {
         skills.add(new VacancySkillDto(new SkillDto(skill3.getName()), Level.MIDDLE));
 
         return new VacancyDto(1l, "Java Developer", true,
-                2, null, null, null, skills);
+                2, null, null,null, null, skills);
 
     }
 

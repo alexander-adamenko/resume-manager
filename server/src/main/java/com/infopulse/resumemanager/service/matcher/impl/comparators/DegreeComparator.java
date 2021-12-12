@@ -34,7 +34,7 @@ public class DegreeComparator implements Comparator<Candidate> {
 
     public String getActualDegree(Candidate candidate) {
         for (Degree d : Degree.values())
-            if (candidate.getDegree().toUpperCase(Locale.ROOT).contains(d.name())) {
+            if (candidate.getDegree().toString().toUpperCase(Locale.ROOT).contains(d.name())) {
                 return d.name();
             }
         return null;

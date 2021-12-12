@@ -2,14 +2,15 @@ package com.infopulse.resumemanager.repository.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum City {
-    KYIV("Kyiv"),
-    KHARKIV("Kharkiv"),
-    LVIV("Lviv"),
-    DNIPRO("Dnipro"),
-    ODESA("Odesa");
+public enum EnglishLevel {
+    BEGINNER("Beginner"),
+    PRE_INTERMEDIATE("Pre Intermediate"),
+    INTERMEDIATE("Intermediate"),
+    UPPER_INTERMEDIATE("Upper Intermediate"),
+    ADVANCED("Advanced"),
+    PROFICIENT("Proficient");
     final private String value;
-    City(String name) {
+    EnglishLevel(String name) {
         value = name;
     }
 

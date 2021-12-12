@@ -11,19 +11,30 @@ import java.util.Set;
 
 @Mapper
 public interface ObjectMapper {
+
     CandidateDto candidateToCandidateDto(Candidate candidate);
     Candidate candidateDtoToCandidate(CandidateDto candidateDto);
+
     CandidateSkillDto candidateSkillToCandidateSkillDto(CandidateSkill candidateSkill);
     CandidateSkill candidateSkillDtoToCandidateSkill(CandidateSkillDto candidateSkillDto);
+
     FeedbackDto feedbackToFeedbackDto(Feedback feedback);
+
     SkillDto skillToSkillDto(Skill skill);
     Skill skillDtoToSkill(SkillDto skillDto);
+
     UserDto userToUserDto(User user);
+    User userDtoToUser(UserDto userDto);
+
     UserFullDto userToUserFullDto(User user);
+
     VacancyDto vacancyToVacancyDto(Vacancy vacancy);
     Vacancy vacancyDtoToVacancy(VacancyDto vacancy);
+
     UserFullDto userDtoToUserFullDto(UserDto userDto, Set<CandidateDto> candidates);
-    User userDtoToUser(UserDto userDto);
+
+    VacancySkill vacancySkillDtoToVacancy(VacancySkillDto vacancySkillDto);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserFromDto(UserDto dto, @MappingTarget User user);
     RoleDto roleToRoleDto(Role role);

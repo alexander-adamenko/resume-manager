@@ -1,10 +1,14 @@
 package com.infopulse.resumemanager.repository.entity;
 
-import lombok.*;
+import com.infopulse.resumemanager.repository.entity.enums.City;
+import com.infopulse.resumemanager.repository.entity.enums.Degree;
+import com.infopulse.resumemanager.repository.entity.enums.EnglishLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +26,13 @@ public class Candidate {
     private String name;
     private String email;
     private String phone;
-    private String degree;
+    @Enumerated(EnumType.STRING)
+    private Degree degree;
+    @Enumerated(EnumType.STRING)
+    private EnglishLevel englishLevel;
+    @Enumerated(EnumType.STRING)
+    private City location;
+    private int yearsOfExperience;
 
     @Column(name = "about_me")
     @Length(max = 2000)
