@@ -14,7 +14,7 @@ interface Props {
 const EditCandidateComponent = ({parsedCandidate}: Props) => {
     const [candidate, setCandidate] = useState<Candidate>(parsedCandidate);
     const [skillSet, setSkillSet] = useState<CandidateSkill[]>([])
-    const [data, setData] = useState<SkillsDegreesLevelsCities>();
+    const [data, setData] = useState<SkillsDegreesLevelsCitiesEnglishLevels>();
     const [isSubmitted, setSubmit] = useState<boolean>(false)
     const [successValidation, setSuccessValidation] = useState<boolean>();
 
@@ -71,9 +71,6 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
             name: candidate.name,
             phone: candidate.phone,
             email: candidate.email,
-            englishLevel: candidate.englishLevel,
-            location: candidate.location,
-            yearsOfExperience: candidate.yearsOfExperience,
             englishLevel: candidate.englishLevel,
             location: candidate.location,
             yearsOfExperience: candidate.yearsOfExperience,
