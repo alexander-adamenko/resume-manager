@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
-import {Skill, SkillsDegreesLevelsCities, Vacancy, VacancySkills} from "../../models/Vacancy";
+import {Skill, SkillsDegreesLevelsCitiesEnglishLevels, Vacancy, VacancySkills} from "../../models/Vacancy";
 import {FormikErrors, useFormik} from "formik";
 import {Typeahead} from "react-bootstrap-typeahead";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -9,7 +9,7 @@ import {RouteComponentProps} from "react-router-dom";
 
 const CreateVacancyComponent = (props: RouteComponentProps) =>  {
     const [multiSelections, setMultiSelections] = useState<Skill[]>([]);
-    const [data, setData] = useState<SkillsDegreesLevelsCities>();
+    const [data, setData] = useState<SkillsDegreesLevelsCitiesEnglishLevels>();
     const [vacancySkills, setVacancySkills] = useState<VacancySkills[]>([]);
     const [successValidation, setSuccessValidation] = useState<boolean>();
 
@@ -46,11 +46,13 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
 
     const formik = useFormik({
         initialValues:{
+            id: undefined,
             positionTitle: '',
             isActive: true,
             minimumYearsOfExperience: 0,
-            degree: data?.degrees[0] ? ( data?.degrees[0]):(''),
-            location: data?.cities[0] ? ( data?.cities[0]):(''),
+            degree: data?.degrees[0] ? (data?.degrees[0]):(''),
+            location: data?.cities[0] ? (data?.cities[0]):(''),
+            englishLevel: data?.englishLevels[0] ? (data?.englishLevels[0]):(''),
             vacancySkills: [{skill:{name:''}, level:''}],
             description: '',
         },
@@ -171,6 +173,7 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
                             <Form.Label column md="4">Required Skills</Form.Label>
                             <Col md="8">
                                 <Typeahead <Skill>
+
                                     id="basic-typeahead-multiple"
                                     labelKey="name"
                                     multiple

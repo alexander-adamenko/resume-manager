@@ -29,14 +29,14 @@ function LoginForm(props: Props) {
       username: Yup.string()
         .required("Required")
         .typeError("Must be a string of characters")
-        .min(1, "Must be between 1 to 255 characters")
-        .max(255, "Must be between 1 to 255 characters"),
+        .min(4, "Must be between 4 to 16 characters")
+        .max(16, "Must be between 4 to 16 characters"),
 
       password: Yup.string()
         .required("Required")
         .typeError("Must be a string of characters")
-        .min(1, "Must be between 1 to 255 characters")
-        .max(255, "Must be between 1 to 255 characters"),
+        .min(8, "Must be between 8 to 16 characters")
+        .max(16, "Must be between 8 to 16 characters"),
     }),
 
     onSubmit: (values) => {
@@ -52,29 +52,32 @@ function LoginForm(props: Props) {
 
   return (
     <Form onSubmit={formik.handleSubmit}>
-      <Form.Group as={Row}>
-        <Form.Label column md="2">
-          Логін
+      <Form.Group as={Row} style={{marginBottom: '10px'}}>
+        <Form.Label column md="4" className="text-end">
+          Login
         </Form.Label>
-        <Col md="5">
+        <Col md="6">
           <InputGroup className="mr-sm-2">
             <Form.Control
               id="inputUsername"
               name="username"
               value={formik.values.username}
               onChange={formik.handleChange}
+              isInvalid={!!formik.errors.username}
             />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.username}
+            </Form.Control.Feedback>
           </InputGroup>
         </Col>
-        {formik.touched.username && formik.errors.username ? (
-          <Col md="4">{formik.errors.username}</Col>
-        ) : null}
+        <Col md="2">
+        </Col>
       </Form.Group>
-      <Form.Group as={Row}>
-        <Form.Label column md="2">
-          Пароль
+      <Form.Group as={Row} style={{marginBottom: '10px'}}>
+        <Form.Label column md="4" className="text-end">
+          Password
         </Form.Label>
-        <Col md="5">
+        <Col md="6">
           <InputGroup className="mr-sm-2">
             <Form.Control
               id="inputPassword"
@@ -82,34 +85,39 @@ function LoginForm(props: Props) {
               type={passwordShow ? "text" : "password"}
               value={formik.values.password}
               onChange={formik.handleChange}
+              isInvalid={!!formik.errors.password}
             />
-            <InputGroup.Append>
-              <InputGroup.Text>Показати</InputGroup.Text>
+              <InputGroup.Text>Show</InputGroup.Text>
               <InputGroup.Checkbox
                 onClick={() => setPasswordShow(!passwordShow)}
               />
-            </InputGroup.Append>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.password}
+            </Form.Control.Feedback>
           </InputGroup>
         </Col>
-        {formik.touched.password && formik.errors.password ? (
-          <Col md="4">{formik.errors.password}</Col>
-        ) : null}
+        <Col md="2">
+        </Col>
       </Form.Group>
+      <Form.Group as={Row} >
+      <Col md="8">
+      </Col>
+      <Col md="2">
       <Button
-        type="submit" // so ENTER to submit form works
+        type="submit"
         value="login"
-        className="m-2"
         variant="primary"
         onClick={() => {
-          // technically not correct since setting field value directly
-          // is async and should return a callable Promise:
-          // form might be submitted before the submissionType has changed
           formik.setFieldValue("submissionType", SubmitType.Login, false);
           formik.handleSubmit();
         }}
       >
-        Увійти
+        Sing in
       </Button>
+      </Col>
+      <Col md="2">
+      </Col>
+      </Form.Group>
     </Form>
   );
 }

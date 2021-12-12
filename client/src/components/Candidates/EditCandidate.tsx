@@ -3,7 +3,7 @@ import {Button, Col, Form, FormLabel, InputGroup, Table} from "react-bootstrap";
 import CandidateService from "../../services/CandidateService";
 import {Candidate} from "../../models/Candidate";
 import {CandidateSkill} from "../../models/CandidateSkill";
-import {Skill, SkillsDegreesLevelsCities} from "../../models/Vacancy";
+import {Skill, SkillsDegreesLevelsCitiesEnglishLevels} from "../../models/Vacancy";
 import VacancyService from "../../services/VacancyService";
 import {FormikErrors, useFormik} from "formik";
 
@@ -13,7 +13,7 @@ interface Props {
 
 const EditCandidateComponent = ({parsedCandidate}: Props) => {
     const [candidate, setCandidate] = useState<Candidate>(parsedCandidate);
-    const [skillSet, setSkillSet] = useState<CandidateSkill[]>(candidate.candidateSkills || [])
+    const [skillSet, setSkillSet] = useState<CandidateSkill[]>([])
     const [data, setData] = useState<SkillsDegreesLevelsCities>();
     const [isSubmitted, setSubmit] = useState<boolean>(false)
     const [successValidation, setSuccessValidation] = useState<boolean>();
@@ -71,6 +71,12 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
             name: candidate.name,
             phone: candidate.phone,
             email: candidate.email,
+            englishLevel: candidate.englishLevel,
+            location: candidate.location,
+            yearsOfExperience: candidate.yearsOfExperience,
+            englishLevel: candidate.englishLevel,
+            location: candidate.location,
+            yearsOfExperience: candidate.yearsOfExperience,
             aboutMe: candidate.aboutMe,
             degree: candidate.degree || "",
             filePath: candidate.filePath,

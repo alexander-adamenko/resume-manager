@@ -6,6 +6,9 @@ export interface Candidate{
     email: string,
     phone: string,
     degree: string,
+    englishLevel: string,
+    location: string,
+    yearsOfExperience: number,
     aboutMe: string,
     filePath: string,
     candidateSkills: CandidateSkill[];

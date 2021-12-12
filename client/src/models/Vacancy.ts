@@ -1,9 +1,11 @@
 export interface Vacancy {
+    id: number | undefined;
     positionTitle: string;
     isActive: boolean;
     minimumYearsOfExperience: number;
     degree: string;
     location: string;
+    englishLevel: string;
     vacancySkills: VacancySkills[];
     description: string;
 }
@@ -21,9 +23,10 @@ export class Skill {
     }
 }
 
-export interface SkillsDegreesLevelsCities {
+export interface SkillsDegreesLevelsCitiesEnglishLevels {
     skills: Skill[];
     degrees: string[];
     levels: string[];
     cities: string[];
+    englishLevels: string[];
 }

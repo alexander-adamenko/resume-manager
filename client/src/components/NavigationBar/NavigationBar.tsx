@@ -1,5 +1,5 @@
 import React from "react";
-import {Navbar, Nav, NavDropdown} from "react-bootstrap";
+import {Navbar, Nav, NavDropdown, Col} from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
 const NavigationBar = (props: Props) => {
 
     return props.isLoggedIn ? (
-        <Navbar sticky="top" bg="dark" variant="dark">
-            <LinkContainer to="/">
-                <Navbar.Brand>RESUME MANAGER</Navbar.Brand>
+        <Navbar sticky="top" bg="dark" variant="dark" >
+            <LinkContainer to="/vacancies" style={{marginLeft: '10px'}}>
+                <Navbar.Brand >RESUME MANAGER</Navbar.Brand>
             </LinkContainer>
             <Nav className="mr-auto">
                 <NavDropdown id="navbarScrollingDropdown" title="Vacancies">
@@ -41,8 +41,10 @@ const NavigationBar = (props: Props) => {
         </Navbar>
     ) : (
         <Navbar sticky="top" bg="dark" variant="dark">
-            <LinkContainer to="/">
-                <Navbar.Brand>RESUME MANAGER</Navbar.Brand>
+            <LinkContainer to="/" style={{marginLeft: '10px'}}>
+                <Navbar.Brand>
+                    RESUME MANAGER
+                </Navbar.Brand>
             </LinkContainer>
         </Navbar>
     );

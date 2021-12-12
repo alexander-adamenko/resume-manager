@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Container, Jumbotron, Modal, Button } from "react-bootstrap";
+import { Row, Container, Modal, Button } from "react-bootstrap";
 
 import LoginService from "../../services/LoginService";
 import LoginForm from "./LoginForm";
@@ -36,11 +36,13 @@ const LoginComponent = (props: RouteComponentProps) => {
     <>
       <Row className="bg-secondary min-vh-100">
         <Container className="vertical-center">
-          <Jumbotron className="col-lg-10 offset-1 mx-auto text-center">
-            <LoginForm loginAction={login} />
-          </Jumbotron>
+
+          <div className="p-5 mb-4 bg-light rounded-3 mx-auto text-center col-6">
+              <LoginForm loginAction={login} />
+          </div>
         </Container>
       </Row>
+
       <Modal show={loginError} onHide={() => setLoginError(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>
