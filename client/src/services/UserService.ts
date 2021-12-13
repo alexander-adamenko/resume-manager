@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { SERVER_API_URL } from "../constants";
-import { User } from "../models/User";
+import {RoleImpl, User} from "../models/User";
 import {UserDetails} from "../models/UserDetails";
+import {FormikValues} from "formik";
 
 const portfolioEndpoint = `${SERVER_API_URL}/users`;
 const currentUser = `${SERVER_API_URL}/current-user`;
@@ -46,8 +47,15 @@ class UserService {
         return axiosInstance.post(addRoleToUserEndpoint, params);
     }
     removeRoleFromUser(username: string | undefined, roleName: string | undefined): Promise<AxiosResponse<User>>{
-        //todo
         return axiosInstance.post(deleteRoleFromUserEndpoint+"/"+username+"/"+roleName);
+    }
+
+    createUser(user: FormikValues){
+        let rolesNames: string[] = user.roles;
+        user.roles = [];
+        for (let i = 0; i < rolesNames.length; i++)
+            user.roles.push(new RoleImpl(rolesNames[i]));
+        return axiosInstance.post(SERVER_API_URL + '/user/save', user);
     }
 }
 

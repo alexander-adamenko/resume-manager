@@ -70,7 +70,7 @@ const Profile = () => {
                     <input type="text" name="username1" value={username}
                            onChange={(e) => setUsername(e.target.value)}
                            className="form-control"/>
-                    <p><label htmlFor="oldPassword" className="grey-text">
+                    <br/><p><label htmlFor="oldPassword" className="grey-text">
                         Old password
                     </label>
                     <input autoComplete="off" type={oldPasswordShown ? "text" : "password"} name="oldPassword1" value={oldPassword}

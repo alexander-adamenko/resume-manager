@@ -11,3 +11,11 @@ export interface Role {
 export interface UserList {
     users: User[];
 }
+
+export class RoleImpl implements Role{
+    name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+}
