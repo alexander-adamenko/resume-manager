@@ -35,8 +35,8 @@ const NavigationBar = (props: Props) => {
                     <Nav.Link>Profile</Nav.Link>
                 </LinkContainer>
             </Nav>
-            <Nav>
-                <Nav.Link href="/login">Logout</Nav.Link>
+            <Nav className="ms-auto">
+                <Nav.Link href="/login" style={{marginRight: '10px'}}>Logout</Nav.Link>
             </Nav>
         </Navbar>
     ) : (
