@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Col, Form, InputGroup, Row} from "react-bootstrap";
+import {Button, Card, Col, Form, InputGroup, Row, Toast} from "react-bootstrap";
 import {Skill, SkillsDegreesLevelsCitiesEnglishLevels, Vacancy, VacancySkills} from "../../models/Vacancy";
 import {FormikErrors, useFormik} from "formik";
 import {Typeahead} from "react-bootstrap-typeahead";
@@ -12,6 +12,8 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
     const [data, setData] = useState<SkillsDegreesLevelsCitiesEnglishLevels>();
     const [vacancySkills, setVacancySkills] = useState<VacancySkills[]>([]);
     const [successValidation, setSuccessValidation] = useState<boolean>();
+    const [show, setShow] = useState(false);
+    const toggleShow = () => setShow(!show);
 
     useEffect(() => {
         handleSkillsDegreesLevelsCities();
@@ -65,12 +67,15 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
             if (values.location === '' && data){
                 values.location = data.cities[0];
             }
+            if (values.englishLevel === '' && data){
+                values.englishLevel = data.englishLevels[0];
+            }
             formik.setErrors(validate(values));
             if (successValidation) {
                 VacancyService.createVacancy(values).then(r => {
                     console.log(r.status === 201);
+                    toggleShow();
                     //props.history.push("/vacancies/new");
-
                 });
             }
         },
@@ -78,6 +83,20 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
 
     return(
         <>
+            <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide
+                   style={{
+                       position: 'absolute',
+                       right: 40,
+                       bottom: 10,
+                       width: 250,
+                       height: 100,
+                   }}>
+                <Toast.Header>
+                    <strong className="mr-auto">Notification</strong>
+                    <small>1 second ago</small>
+                </Toast.Header>
+                <Toast.Body>&#9989;Changes saved successful!</Toast.Body>
+            </Toast>
             {data !== undefined ? (
             <Card className="col-7 m-auto" >
                 <h3 className="mt-2 text-center">Create new Vacancy</h3>
@@ -160,9 +179,31 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
                                         id="location"
                                         name="location"
                                         onChange={formik.handleChange}
+                                        defaultValue={data.cities[0]}
                                     >
                                         {data.cities.map((city, index) => {
                                             return (<option>{city}</option>);
+                                        })}
+                                    </Form.Control>
+                                </InputGroup>
+                            </Col>
+                        </Form.Group>
+                        {/*ENGLISH_LEVEL*/}
+                        <Form.Group as={Row}>
+                            <Form.Label column md="4">
+                                English:
+                            </Form.Label>
+                            <Col md="8">
+                                <InputGroup className="mb-2 mr-sm-2" >
+                                    <Form.Control
+                                        as="select"
+                                        id="englishLevel"
+                                        name="englishLevel"
+                                        onChange={formik.handleChange}
+                                        defaultValue={data.englishLevels[0]}
+                                    >
+                                        {data.englishLevels.map((value, index) => {
+                                            return (<option>{value}</option>);
                                         })}
                                     </Form.Control>
                                 </InputGroup>

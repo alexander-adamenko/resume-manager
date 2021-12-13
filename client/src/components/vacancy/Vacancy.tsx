@@ -117,7 +117,6 @@ const VacancyComponent = (props: any) => {
             console.log(values);
             VacancyService.updateVacancy(values).then((response) => {
                     if (response.status === 200){
-                        console.log("ura");
                         toggleShow();
 
                     }
@@ -340,10 +339,10 @@ const VacancyComponent = (props: any) => {
                             </Card.Body>
                         </Card>
                     ): (<></>)}
+                    {candidates ? (<CandidatesTable candidates={candidates} />): ("123")}
                 </>
                 )
             }
-            {candidates ? (<CandidatesTable candidates={candidates} />): ("123")}
         </>
     );
 }

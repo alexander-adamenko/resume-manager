@@ -97,6 +97,7 @@ const UserComponent = () => {
                                                     })}
                                                 </select>
                                                 <FontAwesomeIcon icon={faTrash} id={"del" + index}
+                                                                 color='red'
                                                                  onClick={() => removeRoleFromUser(item.username,
                                                                      document.getElementById("rolesDel" + index) as HTMLSelectElement)}
                                                                  size="1x" style={{cursor: "pointer"}}
@@ -111,6 +112,7 @@ const UserComponent = () => {
                                                     })}
                                                 </select>
                                                 <FontAwesomeIcon icon={faPlus} id={"add"+index}
+                                                                 color='green'
                                                                  onClick={() => addRoleToUser(item.username,
                                                                      document.getElementById("rolesAdd" + index) as HTMLSelectElement)}
                                                                  size="lg" style={{cursor: "pointer"}}
