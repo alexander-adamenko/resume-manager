@@ -26,6 +26,7 @@ import FullCandidateComponent from "./Candidates/FullCandidate";
 import VacancyComponent from "./vacancy/Vacancy";
 import {Col, Container, Row} from "react-bootstrap";
 import ChessLogo from './chess.svg';
+import CreateUser from "./admin/CreateUser";
 
 const PrivateRoute = ({ ...props }) => {
   useEffect(() => {
@@ -136,6 +137,16 @@ const MainApp = () => {
                 path="/profile"
                 render={(props: RouteComponentProps) => (
                     <Profile/>
+                )}
+            />
+            <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                username={username}
+                setUsername={setUsername}
+                path="/user/new"
+                render={(props: RouteComponentProps) => (
+                    <CreateUser/>
                 )}
             />
             <Route component={Error} />

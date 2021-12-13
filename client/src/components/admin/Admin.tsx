@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Table} from "react-bootstrap";
+import {Button, Col, Row, Table} from "react-bootstrap";
 import {Role, User} from "../../models/User";
 import UserService from "../../services/UserService";
+import RoleService from "../../services/RoleService";
+import { LinkContainer } from "react-router-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus, faTrash} from '@fortawesome/free-solid-svg-icons'
-import RoleService from "../../services/RoleService";
 
 const UserComponent = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -51,6 +52,13 @@ const UserComponent = () => {
     }
     return (
         <div>
+            <Row  xs={4}>
+                <Col lg="11">
+                    <LinkContainer to="/user/new" style={{float:"right", margin:"1%"}}>
+                        <Button variant="outline-dark">Create new user</Button>
+                    </LinkContainer>
+                </Col>
+            </Row>
             <div className="col-9 m-auto">
             <div className="container-xl">
                 <div className="table-title">
