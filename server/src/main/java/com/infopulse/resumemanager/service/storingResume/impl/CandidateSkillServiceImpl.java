@@ -12,10 +12,7 @@ import com.infopulse.resumemanager.service.storingResume.CandidateSkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,10 +41,15 @@ public class CandidateSkillServiceImpl implements CandidateSkillService {
     @Override
     public CandidateSkillDto saveCandidateSkill(CandidateSkillDto candidateSkilldto, long candidateId) {
         Skill savedSkill = saveSkillIfNotExist(candidateSkilldto.skill().name());
+        List<CandidateSkill> all = candidateSkillRepository.findAll();
+        Optional<CandidateSkill> any = all.stream()
+                .filter(candidateSkill -> candidateSkilldto.skill().name().equals(candidateSkill.getSkill().getName()))
+                .findAny();
+        if(any.isPresent()) return null;
+
         var candidateSkill = new CandidateSkill();
         candidateSkill.setSkill(savedSkill);
         candidateSkill.setLevel(candidateSkilldto.level());
-
         Optional<Candidate> candidate = candidateRepository.findById(candidateId);
         if(candidate.isPresent()){
             candidateSkill.setCandidate(candidate.get());
