@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Col, Form, InputGroup, Row, Toast} from "react-bootstrap";
+import {Alert, Button, Card, Col, Form, InputGroup, Placeholder, Row, Toast, ToastContainer} from "react-bootstrap";
 import {Skill, SkillsDegreesLevelsCitiesEnglishLevels, Vacancy, VacancySkills} from "../../models/Vacancy";
 import {FormikErrors, useFormik} from "formik";
 import {Typeahead} from "react-bootstrap-typeahead";
@@ -12,8 +12,8 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
     const [data, setData] = useState<SkillsDegreesLevelsCitiesEnglishLevels>();
     const [vacancySkills, setVacancySkills] = useState<VacancySkills[]>([]);
     const [successValidation, setSuccessValidation] = useState<boolean>();
-    const [show, setShow] = useState(false);
-    const toggleShow = () => setShow(!show);
+    const [show, setShow] = useState({show: false, id: 0});
+    const toggleShow = (id: number) => setShow({show: !show.show, id: id});
 
     useEffect(() => {
         handleSkillsDegreesLevelsCities();
@@ -72,31 +72,60 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
             }
             formik.setErrors(validate(values));
             if (successValidation) {
+                // toggleShow(1);
                 VacancyService.createVacancy(values).then(r => {
                     console.log(r.status === 201);
-                    toggleShow();
-                    //props.history.push("/vacancies/new");
+                    // @ts-ignore
+                    toggleShow(r.data.id);
+
+                    // @ts-ignore
+                    // props.history.push("/vacancies/".concat(r.data.id.toString()));
                 });
             }
         },
     });
 
+    const AComponent = () => {
+        return(
+            <>
+                <Col>
+                    <Card className="col-7 m-auto">
+                        <Card.Body>
+                            <Placeholder as={Card.Title} animation="glow">
+                                <Placeholder xs={6} bg="primary"/>
+                            </Placeholder>
+                            <Placeholder as={Card.Subtitle} animation="glow">
+                                <Placeholder xs={3} bg="secondary"/>
+                            </Placeholder>
+
+                            <Placeholder as={Card.Text} animation="glow">
+                                <Placeholder xs={9} />
+                                <Placeholder xs={4} />
+                                <Placeholder xs={4} />{' '}
+                                <Placeholder xs={6} />
+                                <Placeholder xs={7} />
+                                <Placeholder xs={6} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={12} />
+                                <Placeholder xs={5} />
+                            </Placeholder>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </>
+        )
+    }
+
     return(
         <>
-            <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide
-                   style={{
-                       position: 'absolute',
-                       right: 40,
-                       bottom: 10,
-                       width: 250,
-                       height: 100,
-                   }}>
-                <Toast.Header>
-                    <strong className="mr-auto">Notification</strong>
-                    <small>1 second ago</small>
-                </Toast.Header>
-                <Toast.Body>&#9989;Changes saved successful!</Toast.Body>
-            </Toast>
+            {show.show  ?
+                (<Alert variant="success" onClose={() => setShow({show: false, id: 0})} dismissible>
+                <Alert.Heading>The vacancy has been successfully created!</Alert.Heading>
+                <p>
+                    If you want to edit it or find candidates <a href={show.id.toString()}>click here.</a>
+                </p>
+            </Alert>):(<></>)}
+
             {data !== undefined ? (
             <Card className="col-7 m-auto" >
                 <h3 className="mt-2 text-center">Create new Vacancy</h3>
@@ -281,7 +310,7 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
                     </Form>
                 </Card.Body>
             </Card>
-            ): (<></>)}
+            ): (<AComponent/>)}
         </>
     );
 

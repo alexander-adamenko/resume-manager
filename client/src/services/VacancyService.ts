@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { SERVER_API_URL } from "../constants";
-import {Skill, SkillsDegreesLevelsCitiesEnglishLevels, Vacancy} from "../models/Vacancy";
+import {MailSendParams, Skill, SkillsDegreesLevelsCitiesEnglishLevels, Vacancy} from "../models/Vacancy";
+import {Candidate} from "../models/Candidate";
 
 const axiosInstance = axios.create({ withCredentials: true });
 
@@ -36,6 +37,11 @@ class UserService {
         params.append("id", String(id));
         return axiosInstance.get(`${SERVER_API_URL}/match`, { params: { id: id } });
     }
+
+    sendMails(mailSendParams: MailSendParams) {
+        return axiosInstance.post(`${SERVER_API_URL}/send-mails`, mailSendParams);
+    }
+
 }
 
 export default new UserService();

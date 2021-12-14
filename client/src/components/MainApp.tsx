@@ -152,7 +152,7 @@ const MainApp = () => {
             <Route component={Error} />
           </Switch>
         </div>
-        <footer className="bg-dark border-dark text-center bottom" style={{bottom:'0', width: '100%', marginTop: '500px'}}>
+        <footer className="bg-dark border-dark text-center bottom" style={{bottom:'0', width: '100%', marginTop: '200px'}}>
           <Container fluid className="text-center text-md-left text-white">
             <Row>
               <Col md="4">

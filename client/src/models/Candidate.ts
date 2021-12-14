@@ -14,6 +14,10 @@ export interface Candidate{
     candidateSkills: CandidateSkill[];
 }
 
+export interface CandidateWithProfile extends Candidate{
+    pathToProfile: string;
+}
+
 export interface CandidateWrapper{
     status: number;
     data: Candidate;

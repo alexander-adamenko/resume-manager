@@ -1,3 +1,5 @@
+import {Candidate} from "./Candidate";
+
 export interface Vacancy {
     id: number | undefined;
     positionTitle: string;
@@ -8,6 +10,11 @@ export interface Vacancy {
     englishLevel: string;
     vacancySkills: VacancySkills[];
     description: string;
+}
+
+export interface MailSendParams {
+    candidates: Candidate[];
+    vacancy: Vacancy;
 }
 
 export interface VacancySkills {

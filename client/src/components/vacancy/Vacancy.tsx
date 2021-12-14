@@ -7,8 +7,9 @@ import VacancyService from "../../services/VacancyService";
 import {FormikErrors, useFormik} from "formik";
 import {Typeahead} from "react-bootstrap-typeahead";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+// import  'react-bootstrap-typeahead/css/Typeahead.scss'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import {Candidate} from "../../models/Candidate";
+import {Candidate, CandidateWithProfile} from "../../models/Candidate";
 import CandidatesTable from "./CandidatesTable";
 
 const VacancyComponent = (props: any) => {
@@ -20,6 +21,7 @@ const VacancyComponent = (props: any) => {
     const [show, setShow] = useState(false);
     const toggleShow = () => setShow(!show);
     const [candidates, setCandidates] = useState<Candidate[]>();
+    const [candidates1, setCandidates1] = useState<CandidateWithProfile[]>();
 
     const [multiSelections, setMultiSelections] = useState<Skill[]>([]);
     const [data, setData] = useState<SkillsDegreesLevelsCitiesEnglishLevels>();
@@ -52,6 +54,13 @@ const VacancyComponent = (props: any) => {
                 if (response.status === 200) {
                     console.log(response);
                     setCandidates(response.data);
+                    // let a:CandidateWithProfile[] = Array.of()
+                    // @ts-ignore
+                    setCandidates1(response.data.map(candidate=> {
+                        // candidate.pathToProfile = "<a href=\"http://localhost:3000/candidates/".concat(candidate.id.toString()).concat("\">Link</a>");
+                        candidate.pathToProfile = "http://localhost:3000/candidates/".concat(candidate.id.toString());
+                        return candidate;
+                    }));
                 }
             });
         }
@@ -145,9 +154,10 @@ const VacancyComponent = (props: any) => {
                         <Toast.Body>&#9989;Changes saved successful!</Toast.Body>
                     </Toast>
                     {!isLoaded &&<div className="d-flex justify-content-center"><Spinner className="" animation="border" variant="info" /></div>}
-                    {data !== undefined && vacancy != undefined && vacancySkills.length > 0 && multiSelections.length > 0? (
-                        <Card style={{margin: 'auto', width:'500px', marginBottom: '50px', marginTop: '50px'}}>
-                            <Card.Header>Edit Vacancy</Card.Header>
+                    {data !== undefined && vacancy != undefined && (candidates1 == undefined || false)/*&& vacancySkills.length > 0 && multiSelections.length > 0*/ ? (
+                        <Card  className="col-7 m-auto" /*style={{margin: 'auto', width:'500px', marginBottom: '50px', marginTop: '50px'}}*/>
+                            {/*<Card.Header>Edit Vacancy</Card.Header>*/}
+                            <h3 className="mt-2 text-center">Edit Vacancy</h3>
                             <Card.Body>
                                 <Form onSubmit={formik.handleSubmit}>
                                     {/*TITLE*/}
@@ -260,7 +270,7 @@ const VacancyComponent = (props: any) => {
                                     {/*SKILLS*/}
                                     <Form.Group as={Row}>
                                         <Form.Label column md="4">Required Skills</Form.Label>
-                                        <Col md="8">
+                                        <Col md="8" className="mb-2 mr-sm-2">
                                             <Typeahead <Skill>
                                                 id="basic-typeahead-multiple"
                                                 labelKey="name"
@@ -278,7 +288,7 @@ const VacancyComponent = (props: any) => {
                                                 options={data.skills}
                                                 placeholder="Choose several skills..."
                                                 isInvalid={!!formik.errors.vacancySkills}
-                                                selected={vacancy.vacancySkills.flatMap(value => value.skill)}
+                                                defaultSelected={vacancy.vacancySkills.flatMap(value => value.skill)}
                                             />
                                             <Form.Control.Feedback type="invalid">
                                                 {formik.errors.vacancySkills}
@@ -314,7 +324,7 @@ const VacancyComponent = (props: any) => {
                                             </Row>
                                         );
                                     })}
-                                    <Form.Group>
+                                    <Form.Group style={{marginBottom: "10px"}}>
                                         <Form.Label>Description</Form.Label>
                                         <Form.Control
                                             as="textarea"
@@ -329,17 +339,17 @@ const VacancyComponent = (props: any) => {
                                             {formik.errors.description}
                                         </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Button type="submit">
+                                    <Button type="submit" style={{marginRight: "540px"}}>
                                         SaveChanges
                                     </Button>
-                                    <Button onClick={match}>
+                                    <Button onClick={match} className="align-content-end">
                                         Match
                                     </Button>
                                 </Form>
                             </Card.Body>
                         </Card>
                     ): (<></>)}
-                    {candidates ? (<CandidatesTable candidates={candidates} />): ("123")}
+                    {candidates1 && vacancy ? (<CandidatesTable candidates={candidates1} vacancy={vacancy} />): (<></>)}
                 </>
                 )
             }
