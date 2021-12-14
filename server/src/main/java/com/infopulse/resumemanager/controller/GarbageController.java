@@ -1,10 +1,6 @@
 package com.infopulse.resumemanager.controller;
 
-import com.infopulse.resumemanager.dto.CandidateDto;
-import com.infopulse.resumemanager.dto.SkillDto;
-import com.infopulse.resumemanager.dto.SkillsDegreesLevelsCitiesEnglishLevelsDto;
-import com.infopulse.resumemanager.dto.VacancyDto;
-import com.infopulse.resumemanager.repository.entity.Vacancy;
+import com.infopulse.resumemanager.dto.*;
 import com.infopulse.resumemanager.service.GarbageService;
 import com.infopulse.resumemanager.service.emailsender.EmailSenderService;
 import com.infopulse.resumemanager.service.matcher.CandidatesMatcher;
@@ -13,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -54,11 +49,18 @@ public class GarbageController {
         return garbageService.getAllSkillsDegreesLevelsCitiesEnglishLevels();
     }
 
-    @GetMapping("/send-email")
+//    @GetMapping("/send-email")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void sendEmail() {
+//        emailSenderService.sendInviteLetter(Collections.emptyList(), new VacancyDto());
+//    }
+
+    @PostMapping("/send-mails")
     @ResponseStatus(HttpStatus.OK)
-    public void sendEmail() {
-        emailSenderService.sendInviteLetter(Collections.emptyList(), new Vacancy());
+    public void sendEmails(@RequestBody @Valid MailSendParamsDto mailSendParams) {
+        emailSenderService.sendInviteLetter(mailSendParams.candidates(), mailSendParams.vacancy());
     }
+
 
     @GetMapping("/match-test")
     @ResponseStatus(HttpStatus.OK)

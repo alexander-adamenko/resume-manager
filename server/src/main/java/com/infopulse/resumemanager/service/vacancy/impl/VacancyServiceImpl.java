@@ -48,7 +48,8 @@ public class VacancyServiceImpl implements VacancyService {
                     .setParameter(3, vacancySkill.getLevel().name())
                     .executeUpdate();
         });
-        return vacancyDto;
+        return objectMapper.vacancyToVacancyDto(vacancyRepository.findByPositionTitle(vacancyDto.positionTitle()));
+//        return vacancyDto;
     }
 
     @Override
