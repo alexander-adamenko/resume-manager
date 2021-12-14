@@ -13,7 +13,7 @@ interface Props {
 
 const EditCandidateComponent = ({parsedCandidate}: Props) => {
     const [candidate, setCandidate] = useState<Candidate>(parsedCandidate);
-    const [skillSet, setSkillSet] = useState<CandidateSkill[]>([])
+    const [skillSet, setSkillSet] = useState<CandidateSkill[]>(parsedCandidate.candidateSkills || [])
     const [data, setData] = useState<SkillsDegreesLevelsCitiesEnglishLevels>();
     const [isSubmitted, setSubmit] = useState<boolean>(false)
     const [successValidation, setSuccessValidation] = useState<boolean>();
@@ -84,6 +84,12 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
             values.candidateSkills = skillSet;
             if (values.degree === "" && data){
                 values.degree = data.degrees[0];
+            }
+            if (values.location === "" && data){
+                values.location = data.cities[0];
+            }
+            if (values.englishLevel === "" && data){
+                values.englishLevel = data.englishLevels[0];
             }
             formik.setErrors(validate(values));
             if (successValidation) {
@@ -190,6 +196,40 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                         </InputGroup>
                     </Col>
                 </Form.Group>
+                <Form.Group as={Col}>
+                    <FormLabel>English level</FormLabel>
+                    <Col>
+                        <InputGroup className="mb-2 mr-sm-2" >
+                            <Form.Control
+                                as="select"
+                                id="engLevel"
+                                name="engLevel"
+                                defaultValue={formik.initialValues.englishLevel}
+                                onChange={formik.handleChange}>
+                                {data.englishLevels.map((engLvl, index) => {
+                                    return (<option  key={index}>{engLvl}</option>);
+                                })}
+                            </Form.Control>
+                        </InputGroup>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Col}>
+                    <FormLabel>City</FormLabel>
+                    <Col>
+                        <InputGroup className="mb-2 mr-sm-2" >
+                            <Form.Control
+                                as="select"
+                                id="location"
+                                name="location"
+                                defaultValue={formik.initialValues.location}
+                                onChange={formik.handleChange}>
+                                {data.cities.map((city, index) => {
+                                    return (<option  key={index}>{city}</option>);
+                                })}
+                            </Form.Control>
+                        </InputGroup>
+                    </Col>
+                </Form.Group>
                 <Table>
                     <thead>
                         <tr>
@@ -229,7 +269,7 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                                                     onChange={e => {
                                                         skillSet[index].level = e.target.value;
                                                     }}
-                                                    value={candidateSkill.level}>
+                                                    defaultValue={candidateSkill.level}>
                                                     {data.levels.map((level, index) => {
                                                         return (<option key={index}>{level}</option>);
                                                     })}

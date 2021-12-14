@@ -14,7 +14,7 @@ const UserComponent = () => {
     useEffect(() => {
         handleUsers();
         handleRoles();
-    }, []);
+    }, [users]);
 
     const handleUsers = () => {
         UserService.getAllUsers().then((response) => {
