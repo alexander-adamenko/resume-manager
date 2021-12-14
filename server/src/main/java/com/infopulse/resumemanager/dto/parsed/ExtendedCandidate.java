@@ -1,5 +1,6 @@
 package com.infopulse.resumemanager.dto.parsed;
 
+import com.infopulse.resumemanager.repository.entity.enums.City;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,6 @@ public class ExtendedCandidate {
         private String education;
         private String aboutMe;
         private String filePath;
+        private City city;
         private List<Map<String, String>> skills;
 }
