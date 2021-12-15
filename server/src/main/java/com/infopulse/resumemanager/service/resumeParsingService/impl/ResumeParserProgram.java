@@ -17,6 +17,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static gate.Utils.stringFor;
 
@@ -65,21 +67,47 @@ public class ResumeParserProgram {
             Document doc = (Document) iter.next();
             AnnotationSet defaultAnnotSet = doc.getAnnotations();
 
-            String email = parseAnnSectionSingleRes("EmailFinder", defaultAnnotSet, doc);
-            String phone = parseAnnSectionSingleRes("PhoneFinder", defaultAnnotSet, doc);
+
             String summary = parseSectionHeading("summary", defaultAnnotSet, doc);
             if(summary !=null) summary = summary.trim();
             String education = parseSectionHeading("education_and_training", defaultAnnotSet, doc);
             List<Map<String, String>> skills = parseSectionHeadingWithMultipleSubSections("skills", defaultAnnotSet, doc);
-            City city = getLocationOfCandidate(path);
+
+            String s = readFile(path);
+            City city = getLocationOfCandidate(s);
+
+            String phone = getPhoneOfCandidate(s);
+            if (phone == null) phone = parseAnnSectionSingleRes("PhoneFinder", defaultAnnotSet, doc);
+            String email = getEmailOfCandidate(s);
+            if (email == null) email = parseAnnSectionSingleRes("EmailFinder", defaultAnnotSet, doc);
+
 
             extendedCandidate = new ExtendedCandidate(email, phone, education, summary, path,city, skills);
         }
         return extendedCandidate;
     }
+    private String getPhoneOfCandidate(String s) {
+        String patterns
+                = "\\d{12}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}|\\d{2}\\(\\d{3}\\) ?\\d{3}-\\d{2}-\\d{2}";
+        Pattern pattern = Pattern.compile(patterns);
+        Matcher matcher = pattern.matcher(s);
+        if(matcher.find()){
+            return matcher.group(0);
+        }
+        return null;
+    }
+    private String getEmailOfCandidate(String s) {
+        String patterns = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+        Pattern pattern = Pattern.compile(patterns);
+        Matcher matcher = pattern.matcher(s);
+        if(matcher.find()){
+            return matcher.group(0);
+        }
+        return null;
+    }
 
-    private City getLocationOfCandidate(String path) {
-        String s = readFile(path);
+
+    private City getLocationOfCandidate(String s) {
         City city = null;
         if(s != null){
             Optional<City> any = Arrays.stream(City.values())
@@ -171,9 +199,9 @@ public class ResumeParserProgram {
         File file = new File(path);
         String text = null;
         String extension = FilenameUtils.getExtension(file.getName());
-        if(extension.equals(".pdf")){
+        if(extension.equals("pdf")){
             text = readPdf(path);
-        } else if(extension.equals(".doc") || extension.equals(".docx")){
+        } else if(extension.equals("doc") || extension.equals("docx")){
             text = readDocxFile(path);
         }
         return text;
@@ -205,9 +233,11 @@ public class ResumeParserProgram {
             XWPFDocument document = new XWPFDocument(fis);
             List<XWPFParagraph> paragraphs = document.getParagraphs();
 
+            StringBuilder stringBuilder = new StringBuilder();
             for (XWPFParagraph para : paragraphs) {
-                text = para.getText();
+                stringBuilder.append(para.getText());
             }
+            text = stringBuilder.toString();
             fis.close();
         } catch (Exception e) {
             e.printStackTrace();

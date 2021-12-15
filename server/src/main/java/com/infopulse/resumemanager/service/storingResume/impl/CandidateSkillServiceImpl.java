@@ -41,11 +41,7 @@ public class CandidateSkillServiceImpl implements CandidateSkillService {
     @Override
     public CandidateSkillDto saveCandidateSkill(CandidateSkillDto candidateSkilldto, long candidateId) {
         Skill savedSkill = saveSkillIfNotExist(candidateSkilldto.skill().name());
-        List<CandidateSkill> all = candidateSkillRepository.findAll();
-        Optional<CandidateSkill> any = all.stream()
-                .filter(candidateSkill -> candidateSkilldto.skill().name().equals(candidateSkill.getSkill().getName()))
-                .findAny();
-        if(any.isPresent()) return null;
+
 
         var candidateSkill = new CandidateSkill();
         candidateSkill.setSkill(savedSkill);
@@ -76,6 +72,8 @@ public class CandidateSkillServiceImpl implements CandidateSkillService {
             savedSkill = skill.get();
         } else {
             var skillToSave = new Skill();
+
+
             skillToSave.setName(name.toLowerCase(Locale.ROOT));
             savedSkill = skillRepository.save(skillToSave);
         }
