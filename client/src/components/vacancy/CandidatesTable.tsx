@@ -34,11 +34,11 @@ function CandidatesTable (props: Props) {
 
     const [show, setShow] = useState(false);
     const [isSending, setIsSending] = useState(false);
-    const toggleShow = () => setShow(!show);
+    const toggleShow = () => setShow(true);
 
     function priceFormatter(cell: any, row: any) {
         return (
-            <a href={cell}>Link</a>
+            <a href={cell} target="_blank">Link</a>
         );
     }
 
@@ -86,6 +86,8 @@ function CandidatesTable (props: Props) {
     }];
     return (
         <>
+            <div className="mt-3">
+
             <BootstrapTable
                 noDataIndication="There is no candidates for such vacancy!"
                 selectRow={selectRow}
@@ -105,6 +107,8 @@ function CandidatesTable (props: Props) {
                 (<Alert variant="success" onClose={() => setShow(false)} dismissible style={{marginTop: "70px"}}>
                     <Alert.Heading>All e-mails were sent!</Alert.Heading>
                 </Alert>):(<></>)}
+            </div>
+
         </>
     );
 }

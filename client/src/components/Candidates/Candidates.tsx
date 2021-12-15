@@ -25,7 +25,7 @@ const CandidatesComponent = () => {
 
     return (
         <div>
-            <div className="col-9 m-auto">
+            <div className="col-11 m-auto">
                 <h3 className="text-center m-3">All Candidates</h3>
                 <Row xs={1} md={4} className="g-3">
                     {candidates.length > 0 && candidates.map((item, index) => {
@@ -33,7 +33,7 @@ const CandidatesComponent = () => {
                             <div>
                             {item.name != null &&
                             <Col key={index}>
-                                <Card style={{ width: '18rem' }}>
+                                <Card style={{ width: '25rem' }}>
                                     <Card.Body>
                                         <Card.Title>{item.name}</Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">{item.email} {item.phone}</Card.Subtitle>

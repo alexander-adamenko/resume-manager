@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Button, Card, Col, Form, InputGroup, Placeholder, Row, Toast, ToastContainer} from "react-bootstrap";
+import {Alert, Button, Card, Col, Form, InputGroup, Row, Toast} from "react-bootstrap";
 import {Skill, SkillsDegreesLevelsCitiesEnglishLevels, Vacancy, VacancySkills} from "../../models/Vacancy";
 import {FormikErrors, useFormik} from "formik";
 import {Typeahead} from "react-bootstrap-typeahead";
@@ -88,30 +88,30 @@ const CreateVacancyComponent = (props: RouteComponentProps) =>  {
     const AComponent = () => {
         return(
             <>
-                <Col>
-                    <Card className="col-7 m-auto">
-                        <Card.Body>
-                            <Placeholder as={Card.Title} animation="glow">
-                                <Placeholder xs={6} bg="primary"/>
-                            </Placeholder>
-                            <Placeholder as={Card.Subtitle} animation="glow">
-                                <Placeholder xs={3} bg="secondary"/>
-                            </Placeholder>
+                {/*<Col>*/}
+                {/*    <Card className="col-7 m-auto">*/}
+                {/*        <Card.Body>*/}
+                {/*            <Placeholder as={Card.Title} animation="glow">*/}
+                {/*                <Placeholder xs={6} bg="primary"/>*/}
+                {/*            </Placeholder>*/}
+                {/*            <Placeholder as={Card.Subtitle} animation="glow">*/}
+                {/*                <Placeholder xs={3} bg="secondary"/>*/}
+                {/*            </Placeholder>*/}
 
-                            <Placeholder as={Card.Text} animation="glow">
-                                <Placeholder xs={9} />
-                                <Placeholder xs={4} />
-                                <Placeholder xs={4} />{' '}
-                                <Placeholder xs={6} />
-                                <Placeholder xs={7} />
-                                <Placeholder xs={6} />
-                                <Placeholder xs={12} />
-                                <Placeholder xs={12} />
-                                <Placeholder xs={5} />
-                            </Placeholder>
-                        </Card.Body>
-                    </Card>
-                </Col>
+                {/*            <Placeholder as={Card.Text} animation="glow">*/}
+                {/*                <Placeholder xs={9} />*/}
+                {/*                <Placeholder xs={4} />*/}
+                {/*                <Placeholder xs={4} />{' '}*/}
+                {/*                <Placeholder xs={6} />*/}
+                {/*                <Placeholder xs={7} />*/}
+                {/*                <Placeholder xs={6} />*/}
+                {/*                <Placeholder xs={12} />*/}
+                {/*                <Placeholder xs={12} />*/}
+                {/*                <Placeholder xs={5} />*/}
+                {/*            </Placeholder>*/}
+                {/*        </Card.Body>*/}
+                {/*    </Card>*/}
+                {/*</Col>*/}
             </>
         )
     }

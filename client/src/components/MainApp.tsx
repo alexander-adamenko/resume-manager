@@ -152,7 +152,7 @@ const MainApp = () => {
             <Route component={Error} />
           </Switch>
         </div>
-        <footer className="bg-dark border-dark text-center bottom" style={{bottom:'0', width: '100%', marginTop: '200px'}}>
+        <footer className="bg-dark border-dark text-center bottom" style={{bottom:'0', width: '100%', marginTop: '800px'}}>
           <Container fluid className="text-center text-md-left text-white">
             <Row>
               <Col md="4">
@@ -193,19 +193,11 @@ const MainApp = () => {
                     <a href="https://www.linkedin.com/in/alexander-adamenko-20344a203/" style={{color: 'white'}}>LinkedIn</a>
                   </Col>
                 </Row>
-                <Row>
-                  <Col md="1">
-                    <img src={ChessLogo} width="16" height="16" style={{backgroundColor: 'white'}}/>
-                  </Col>
-                  <Col md="4" style={{textAlign: 'left'}}>
-                    <a href="https://www.chess.com/stats/overview/alexander_417" style={{color: 'white'}}>Chess account</a>
-                  </Col>
-                </Row>
               </Col>
 
 
               <Col md="4">
-                <h5 className="title" style={{textAlign: 'left'}}>Oleksandr Adamenko</h5>
+                <h5 className="title" style={{textAlign: 'left'}}>Andrii Sliusarneko</h5>
                 <Row>
                   <Col md="1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -215,7 +207,7 @@ const MainApp = () => {
                     </svg>
                   </Col>
                   <Col md="1">
-                    <a href="https://github.com/alexander-adamenko" style={{color: 'white'}}>GitHub</a>
+                    <a href="https://github.com/anrysliusar" style={{color: 'white'}}>GitHub</a>
                   </Col>
                 </Row>
                 <Row>
@@ -227,7 +219,7 @@ const MainApp = () => {
                     </svg>
                   </Col>
                   <Col md="1">
-                    <a href="alex.adamenko.417@gmail.com" style={{color: 'white'}}>alex.adamenko.417@gmail.com</a>
+                    <a href="assliusarenko@gmail.com" style={{color: 'white'}}>assliusarenko@gmail.com</a>
                   </Col>
                 </Row>
                 <Row>
@@ -242,19 +234,11 @@ const MainApp = () => {
                     <a href="https://www.linkedin.com/in/alexander-adamenko-20344a203/" style={{color: 'white'}}>LinkedIn</a>
                   </Col>
                 </Row>
-                <Row>
-                  <Col md="1">
-                    <img src={ChessLogo} width="16" height="16" style={{backgroundColor: 'white'}}/>
-                  </Col>
-                  <Col md="4" style={{textAlign: 'left'}}>
-                    <a href="https://www.chess.com/stats/overview/alexander_417" style={{color: 'white'}}>Chess account</a>
-                  </Col>
-                </Row>
               </Col>
 
 
               <Col md="4">
-                <h5 className="title" style={{textAlign: 'left'}}>Oleksandr Adamenko</h5>
+                <h5 className="title" style={{textAlign: 'left'}}>Anastasia Hrynenko</h5>
                 <Row>
                   <Col md="1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -264,7 +248,7 @@ const MainApp = () => {
                     </svg>
                   </Col>
                   <Col md="1">
-                    <a href="https://github.com/alexander-adamenko" style={{color: 'white'}}>GitHub</a>
+                    <a href="https://github.com/Grynya" style={{color: 'white'}}>GitHub</a>
                   </Col>
                 </Row>
                 <Row>
@@ -276,7 +260,7 @@ const MainApp = () => {
                     </svg>
                   </Col>
                   <Col md="1">
-                    <a href="alex.adamenko.417@gmail.com" style={{color: 'white'}}>alex.adamenko.417@gmail.com</a>
+                    <a href="grinya1900@gmail.com" style={{color: 'white'}}>grinya1900@gmail.com</a>
                   </Col>
                 </Row>
                 <Row>
@@ -289,14 +273,6 @@ const MainApp = () => {
                   </Col>
                   <Col md="1">
                     <a href="https://www.linkedin.com/in/alexander-adamenko-20344a203/" style={{color: 'white'}}>LinkedIn</a>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md="1">
-                    <img src={ChessLogo} width="16" height="16" style={{backgroundColor: 'white'}}/>
-                  </Col>
-                  <Col md="4" style={{textAlign: 'left'}}>
-                    <a href="https://www.chess.com/stats/overview/alexander_417" style={{color: 'white'}}>Chess account</a>
                   </Col>
                 </Row>
               </Col>

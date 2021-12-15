@@ -1,6 +1,6 @@
 import {Skill, SkillsDegreesLevelsCitiesEnglishLevels, Vacancy, VacancySkills} from "../../models/Vacancy";
 import {RouteComponentProps} from "react-router-dom";
-import {Button, Card, Col, Form, InputGroup, Placeholder, Row, Spinner, Toast} from "react-bootstrap";
+import {Button, Card, Col, Form, InputGroup, Row, Spinner, Toast} from "react-bootstrap";
 import CreateVacancy from "./CreateVacancy";
 import React, {useEffect, useState} from "react";
 import VacancyService from "../../services/VacancyService";
@@ -270,7 +270,7 @@ const VacancyComponent = (props: any) => {
                                     {/*SKILLS*/}
                                     <Form.Group as={Row}>
                                         <Form.Label column md="4">Required Skills</Form.Label>
-                                        <Col md="8" className="mb-2 mr-sm-2">
+                                        <Col md="8" >
                                             <Typeahead <Skill>
                                                 id="basic-typeahead-multiple"
                                                 labelKey="name"

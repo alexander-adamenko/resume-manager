@@ -33,10 +33,14 @@ const FullCandidateComponent = (props: Props) => {
                         <Card.Subtitle className="mb-2 text-muted">
                             Phone: {candidate?.phone}
                         </Card.Subtitle>
+                        <Card.Subtitle className="mb-2 text-muted">
+                            City: {candidate?.location}
+                        </Card.Subtitle>
                         <Card.Text>Degree: {candidate?.degree}</Card.Text>
+                        <Card.Text>English level: {candidate?.englishLevel}</Card.Text>
                         <Card.Text>{candidate?.aboutMe}</Card.Text>
-                        <Card.Link
 
+                        <Card.Link
                             href={`${SERVER_API_URL}/resumes/${candidate?.filePath.substring(candidate?.filePath.lastIndexOf("\\") + 1)}`} target="_blank">
                             <Button className="bg-light">&#128194;</Button>
                         </Card.Link>

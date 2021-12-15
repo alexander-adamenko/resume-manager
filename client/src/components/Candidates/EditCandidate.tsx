@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Form, FormLabel, InputGroup, Table} from "react-bootstrap";
+import {Button, Col, Form, FormLabel, InputGroup, Row, Table} from "react-bootstrap";
 import CandidateService from "../../services/CandidateService";
 import {Candidate} from "../../models/Candidate";
 import {CandidateSkill} from "../../models/CandidateSkill";
@@ -46,6 +46,10 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
             errors.name = 'Field is empty.'
             setSuccessValidation(false);
         }
+        if (values.yearsOfExperience < 0) {
+            errors.yearsOfExperience = 'Must be positive integer.';
+            setSuccessValidation(false);
+        }
         if(!values.phone){
             errors.phone = 'Field is empty.'
             setSuccessValidation(false);
@@ -85,16 +89,18 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
             if (values.degree === "" && data){
                 values.degree = data.degrees[0];
             }
-            if (values.location === "" && data){
+            if (values.location === null && data){
                 values.location = data.cities[0];
             }
-            if (values.englishLevel === "" && data){
+            if (values.englishLevel === null && data){
                 values.englishLevel = data.englishLevels[0];
             }
             formik.setErrors(validate(values));
             if (successValidation) {
                 CandidateService.createCandidate(values).then(r =>{
-                    setSubmit(true)
+                    if(r.status == 200){
+                        setSubmit(true)
+                    }
                 })
             }
         },
@@ -160,6 +166,7 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                     </Col>
                 </Form.Group>
 
+
                 <Form.Group as={Col}>
                     <FormLabel>About me</FormLabel>
                     <Col>
@@ -174,6 +181,27 @@ const EditCandidateComponent = ({parsedCandidate}: Props) => {
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">
                                 {formik.errors.aboutMe}
+                            </Form.Control.Feedback>
+                        </InputGroup>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Col}>
+                    <Form.Label>
+                        Years of experience:
+                    </Form.Label>
+                    <Col>
+                        <InputGroup>
+                            <Form.Control
+                                id="yearsOfExperience"
+                                name="yearsOfExperience"
+                                type="number"
+                                defaultValue={0}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                isInvalid={!!formik.errors.yearsOfExperience}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.yearsOfExperience}
                             </Form.Control.Feedback>
                         </InputGroup>
                     </Col>

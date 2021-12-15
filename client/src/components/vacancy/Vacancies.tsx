@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useState} from "react";
 import VacancyService from "../../services/VacancyService";
 import {Vacancy} from "../../models/Vacancy";
-import {Card, Col, Placeholder, Row} from "react-bootstrap";
+import {Card, Col, Row} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {generatePath, Router} from "react-router";
 import {Route, RouteComponentProps, BrowserRouter} from "react-router-dom";
@@ -26,30 +26,30 @@ const VacanciesComponent = (props: any) => {
     const AComponent = () => {
       return(
           <>
-              <Col>
-                  <Card style={{ width: '18rem'}}>
-                      <Card.Body>
-                          <Placeholder as={Card.Title} animation="glow">
-                              <Placeholder xs={6} bg="primary"/>
-                          </Placeholder>
-                          <Placeholder as={Card.Subtitle} animation="glow">
-                              <Placeholder xs={3} bg="secondary"/>
-                          </Placeholder>
+              {/*<Col>*/}
+              {/*    <Card style={{ width: '18rem'}}>*/}
+              {/*        <Card.Body>*/}
+              {/*            <Placeholder as={Card.Title} animation="glow">*/}
+              {/*                <Placeholder xs={6} bg="primary"/>*/}
+              {/*            </Placeholder>*/}
+              {/*            <Placeholder as={Card.Subtitle} animation="glow">*/}
+              {/*                <Placeholder xs={3} bg="secondary"/>*/}
+              {/*            </Placeholder>*/}
 
-                          <Placeholder as={Card.Text} animation="glow">
-                              <Placeholder xs={9} />
-                              <Placeholder xs={4} />
-                              <Placeholder xs={4} />{' '}
-                              <Placeholder xs={6} />
-                              <Placeholder xs={7} />
-                              <Placeholder xs={6} />
-                              <Placeholder xs={12} />
-                              <Placeholder xs={12} />
-                              <Placeholder xs={5} />
-                          </Placeholder>
-                      </Card.Body>
-                  </Card>
-              </Col>
+              {/*            <Placeholder as={Card.Text} animation="glow">*/}
+              {/*                <Placeholder xs={9} />*/}
+              {/*                <Placeholder xs={4} />*/}
+              {/*                <Placeholder xs={4} />{' '}*/}
+              {/*                <Placeholder xs={6} />*/}
+              {/*                <Placeholder xs={7} />*/}
+              {/*                <Placeholder xs={6} />*/}
+              {/*                <Placeholder xs={12} />*/}
+              {/*                <Placeholder xs={12} />*/}
+              {/*                <Placeholder xs={5} />*/}
+              {/*            </Placeholder>*/}
+              {/*        </Card.Body>*/}
+              {/*    </Card>*/}
+              {/*</Col>*/}
           </>
       )
     }
@@ -57,12 +57,12 @@ const VacanciesComponent = (props: any) => {
     return (
         <>
             {vacancies[0] !== undefined ?(
-                <Row xs={1} md={4} className="g-3" style={{marginBottom: '50px'}}>
+                <Row xs={1} md={4} className="g-3 mt-3" style={{marginBottom: '50px'}}>
                     {vacancies.length && vacancies.map((item, index) => {
                         return (
                             <>
                                 <Col key={index}>
-                                    <Card style={{ width: '18rem', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+                                    <Card style={{ width: '30rem', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                                         <Card.Body>
                                             <LinkContainer to={`/vacancies/${item.id}/`}>
                                                 <Card.Link>
@@ -87,7 +87,6 @@ const VacanciesComponent = (props: any) => {
                                                             </Row>
                                                         );
                                                     })}
-                                                    {item.description}
                                             </Card.Text>
                                         </Card.Body>
                                     </Card>

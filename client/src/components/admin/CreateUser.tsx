@@ -51,8 +51,8 @@ const CreateUser = () => {
               handleBlur,
             handleSubmit
           }) => (
-            <Card style={{margin: 'auto', width: '500px'}}>
-                <Card.Header>Create new User</Card.Header>
+            <Card className="col-7 m-auto">
+                <h3 className="mt-2 text-center">Create new User</h3>
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         {/*FIRSTNAME*/}
