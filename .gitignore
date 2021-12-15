@@ -1,6 +1,10 @@
 # Compiled class file
 *.class
 
+/.idea/
+/client/.idea/
+/client/nginx/nginx.conf
+
 # Log file
 *.log
 
@@ -55,4 +59,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
