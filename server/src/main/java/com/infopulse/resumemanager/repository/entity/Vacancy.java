@@ -1,9 +1,14 @@
 package com.infopulse.resumemanager.repository.entity;
 
+import com.infopulse.resumemanager.repository.entity.enums.City;
+import com.infopulse.resumemanager.repository.entity.enums.Degree;
+import com.infopulse.resumemanager.repository.entity.enums.EnglishLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,20 +21,25 @@ public class Vacancy {
     private Long id;
 
     private String positionTitle;
-    private Boolean needVerifiedApplicants;
+    private Boolean isActive;
     private Integer minimumYearsOfExperience;
-    private String degree;
-    private String location;
+    @Enumerated(EnumType.STRING)
+    private Degree degree;
+    @Enumerated(EnumType.STRING)
+    private City location;
+    @Enumerated(EnumType.STRING)
+    private EnglishLevel englishLevel;
+    @Column(length = 6000)
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @ManyToMany
-    @JoinTable(
-            name = "vacancy_skills",
-            joinColumns = @JoinColumn(name = "vacancy_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
-    )
-    private Set<Skill> skills;
+    @OneToMany(mappedBy = "vacancy")
+    private Set<VacancySkill> vacancySkills = new HashSet<>();
+
+    @OneToMany(mappedBy = "vacancy")
+    private List<Hiring> hiringList;
+
 }

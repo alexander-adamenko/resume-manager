@@ -13,6 +13,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -45,6 +49,19 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(customAuthorisationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilter(customAuthenticationFilter);
+
+        http.cors().configurationSource(
+                request -> {
+                    // for development purposes allow CORS requests from :3000
+                    // this entire configuration section may be omitted in deployment
+                    CorsConfiguration cors = new CorsConfiguration();
+                    cors.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost"));
+                    cors.setAllowedMethods(Arrays.asList("GET", "POST","PUT", "DELETE", "OPTIONS"));
+                    cors.setAllowedHeaders(Collections.singletonList("*"));
+                    cors.setAllowCredentials(true);
+                    return cors;
+                }
+        );
         //http.formLogin().successForwardUrl("/api/v1/users");
     }
 
