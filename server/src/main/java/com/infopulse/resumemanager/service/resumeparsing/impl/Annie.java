@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.service.resumeParsingService.impl;
+package com.infopulse.resumemanager.service.resumeparsing.impl;
 
 import gate.Corpus;
 import gate.CorpusController;

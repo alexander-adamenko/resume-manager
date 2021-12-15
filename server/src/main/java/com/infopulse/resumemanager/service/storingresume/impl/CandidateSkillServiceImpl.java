@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.service.storingResume.impl;
+package com.infopulse.resumemanager.service.storingresume.impl;
 
 import com.infopulse.resumemanager.dto.CandidateSkillDto;
 import com.infopulse.resumemanager.mapper.ObjectMapper;
@@ -8,7 +8,7 @@ import com.infopulse.resumemanager.repository.SkillRepository;
 import com.infopulse.resumemanager.repository.entity.Candidate;
 import com.infopulse.resumemanager.repository.entity.CandidateSkill;
 import com.infopulse.resumemanager.repository.entity.Skill;
-import com.infopulse.resumemanager.service.storingResume.CandidateSkillService;
+import com.infopulse.resumemanager.service.storingresume.CandidateSkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@ package com.infopulse.resumemanager.controller;
 import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.exception.UserAlreadyExistsException;
 import com.infopulse.resumemanager.service.JwtUserWebService;
-import com.infopulse.resumemanager.service.UserService;
+import com.infopulse.resumemanager.service.usermanagement.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,6 @@ public class UserController {
     private final JwtUserWebService jwtUserWebService;
     private final UserService userService;
 
-    //todo: add paginating/sorting if it will be needed
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity.ok().body(jwtUserWebService.getUsers());
@@ -37,7 +36,6 @@ public class UserController {
         return ResponseEntity.created(uri).body(jwtUserWebService.saveUser(userDto));
     }
 
-//    http://localhost:8080/api/v1/user/add-role?username=zxczxc1&roleName=ADMIN
     @PostMapping("/user/add-role")
     public ResponseEntity<UserDto> addRoleToUser(@RequestParam String username, @RequestParam String roleName) {
         return ResponseEntity.ok().body(jwtUserWebService.addRoleToUser(username, roleName));
@@ -53,11 +51,8 @@ public class UserController {
     }
 
     @GetMapping("/is-authenticated")
-    public Map<String, String> isAuthenticated(
-            /*@RequestParam String username*/
-    ) {
+    public Map<String, String> isAuthenticated() {
         Map<String, String> jsonMap = new HashMap<>();
-        //System.out.println("username:  " + username);
         jsonMap.put("username", "username");
         return jsonMap;
     }

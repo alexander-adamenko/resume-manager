@@ -1,7 +1,7 @@
 package com.infopulse.resumemanager.controller;
 
 import com.infopulse.resumemanager.dto.RoleDto;
-import com.infopulse.resumemanager.service.RoleService;
+import com.infopulse.resumemanager.service.usermanagement.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

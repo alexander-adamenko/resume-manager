@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.service;
+package com.infopulse.resumemanager.service.skillextractor;
 
 import com.infopulse.resumemanager.dto.SkillDto;
 import com.infopulse.resumemanager.dto.SkillsDegreesLevelsCitiesEnglishLevelsDto;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class GarbageService {
+public class SkillExtractorServiceImpl implements SkillExtractorService {
     private final SkillRepository skillRepository;
     private final ObjectMapper objectMapper;
 
@@ -58,6 +58,5 @@ public class GarbageService {
             names[i] = enums[i].toString();
         }
         return new ArrayList<String>(Arrays.asList(names));
-        //return Arrays.stream(e.getEnumConstants()).map(Enum::get).toList();
     }
 }

@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.service.storingResume.impl;
+package com.infopulse.resumemanager.service.storingresume.impl;
 
 import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.exception.FileExistsException;
@@ -8,8 +8,8 @@ import com.infopulse.resumemanager.repository.CandidateRepository;
 import com.infopulse.resumemanager.repository.UserRepository;
 import com.infopulse.resumemanager.repository.entity.Candidate;
 import com.infopulse.resumemanager.repository.entity.User;
-import com.infopulse.resumemanager.service.storingResume.CandidateService;
-import com.infopulse.resumemanager.service.storingResume.CandidateSkillService;
+import com.infopulse.resumemanager.service.storingresume.CandidateService;
+import com.infopulse.resumemanager.service.storingresume.CandidateSkillService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

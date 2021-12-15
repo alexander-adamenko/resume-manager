@@ -1,20 +1,14 @@
-package com.infopulse.resumemanager.service.resumeParsingService.impl;
+package com.infopulse.resumemanager.service.resumeparsing.impl;
 
 import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.parsed.ExtendedCandidate;
-import com.infopulse.resumemanager.service.resumeParsingService.ParserService;
+import com.infopulse.resumemanager.service.resumeparsing.ParserService;
 import gate.util.GateException;
-import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 @Service
