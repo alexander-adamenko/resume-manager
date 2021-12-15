@@ -3,7 +3,7 @@ package com.infopulse.resumemanager.service.emailsender;
 import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.dto.VacancyDto;
-import com.infopulse.resumemanager.service.UserService;
+import com.infopulse.resumemanager.service.usermanagement.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,7 +18,7 @@ import java.util.Properties;
 @Service
 @AllArgsConstructor
 public class EmailSenderServiceImpl implements EmailSenderService {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Override
     public void sendInviteLetter(List<CandidateDto> candidates, VacancyDto vacancy) {

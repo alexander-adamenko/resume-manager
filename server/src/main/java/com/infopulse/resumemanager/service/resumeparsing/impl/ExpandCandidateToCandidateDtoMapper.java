@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.service.resumeParsingService.impl;
+package com.infopulse.resumemanager.service.resumeparsing.impl;
 
 import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.CandidateSkillDto;

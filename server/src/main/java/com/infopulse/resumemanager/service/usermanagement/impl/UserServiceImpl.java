@@ -1,10 +1,13 @@
-package com.infopulse.resumemanager.service;
+package com.infopulse.resumemanager.service.usermanagement.impl;
 
 import com.infopulse.resumemanager.dto.RoleDto;
 import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.mapper.ObjectMapper;
 import com.infopulse.resumemanager.repository.UserRepository;
 import com.infopulse.resumemanager.repository.entity.User;
+import com.infopulse.resumemanager.service.usermanagement.RoleService;
+import com.infopulse.resumemanager.service.usermanagement.UserService;
+import com.infopulse.resumemanager.service.usermanagement.impl.RoleServiceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,16 +18,15 @@ import javax.validation.Validator;
 import java.util.Set;
 
 @Service
-public class UserService {
-
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
     private final Validator validator;
     private final RoleService usersRoleService;
 
-    public UserService(UserRepository userRepository, ObjectMapper objectMapper,
-                       PasswordEncoder passwordEncoder, Validator validator, RoleService usersRoleService) {
+    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper,
+                           PasswordEncoder passwordEncoder, Validator validator, RoleServiceImpl usersRoleService) {
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
         this.passwordEncoder = passwordEncoder;

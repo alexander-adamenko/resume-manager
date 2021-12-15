@@ -4,8 +4,8 @@ import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.parsed.ResponseWrapper;
 import com.infopulse.resumemanager.exception.FileExistsException;
 import com.infopulse.resumemanager.exception.UnsupportedFileException;
-import com.infopulse.resumemanager.service.resumeParsingService.ParserService;
-import com.infopulse.resumemanager.service.storingResume.CandidateService;
+import com.infopulse.resumemanager.service.resumeparsing.ParserService;
+import com.infopulse.resumemanager.service.storingresume.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,4 +72,5 @@ public class CandidateController {
     public void deleteCandidateWithSuchResume(@RequestParam String fileName){
         candidateService.deleteCandidate(fileName);
     }
+
 }

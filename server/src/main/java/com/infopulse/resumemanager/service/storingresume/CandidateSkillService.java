@@ -1,4 +1,4 @@
-package com.infopulse.resumemanager.service.storingResume;
+package com.infopulse.resumemanager.service.storingresume;
 
 import com.infopulse.resumemanager.dto.CandidateSkillDto;
 import com.infopulse.resumemanager.repository.entity.CandidateSkill;
