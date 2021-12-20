@@ -14,14 +14,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Override
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles")
     List<User> findAll();
-
-//    @Query("")
-//    void addRoleToUser(String username, String roleName);
-
-    //List<User> findAllByUsername(String username, Pageable pageable);
-//    User saveUser(User user);
-//    Role saveRole(Role role);
-//    void addRoleToUser(String username, String roleName);
-//    User getUser(String username);
-//    List<User> getUsersWithPageRequest(PageRequest pageRequest);
 }
