@@ -5,12 +5,9 @@ import com.infopulse.resumemanager.exception.UserAlreadyExistsException;
 import com.infopulse.resumemanager.service.usermanagement.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,9 +22,9 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto) throws UserAlreadyExistsException {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/users").toUriString());
-        return ResponseEntity.created(uri).body(userService.createUser(userDto));
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@RequestBody @Valid UserDto userDto) throws UserAlreadyExistsException {
+        return userService.createUser(userDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -44,14 +41,14 @@ public class UserController {
 
     @GetMapping("/current-user")
     public UserDto getCurrentUser() {
-        return userService.getCurrentUser();
+        return userService.getCurrentUserDto();
     }
 
     @PatchMapping("/{userId}")
     public UserDto updateUser(@PathVariable Long userId, @RequestParam String username,
-                                    @RequestParam String firstname, @RequestParam String lastname,
+                                    @RequestParam String firstName, @RequestParam String lastName,
                                     @RequestParam String password){
-        return userService.updateUser(userId, username, firstname, lastname, password);
+        return userService.updateUser(userId, username, firstName, lastName, password);
     }
 
 }

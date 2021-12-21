@@ -30,17 +30,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean currentUserHasRole(String roleName) {
-        return getCurrentUser()
+        return getCurrentUserDto()
                 .roles()
                 .stream()
                 .anyMatch(roleDto -> roleDto.name().equals(roleName));
     }
 
     @Override
-    public UserDto getCurrentUser() {
+    public UserDto getCurrentUserDto() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByUsername(authentication.getName());
         return objectMapper.userToUserDto(user);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(authentication.getName());
+        return user;
     }
 
     @Override
@@ -66,12 +73,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto updateUser(Long userId, String username, String firstname, String lastname, String password) {
         User user = userRepository.getById(userId);
-        if (userRepository.findByUsername(username) == null){
-            user.setUsername(username);
-            user.setFirstName(firstname);
-            user.setLastName(lastname);
-            user.setPassword(passwordEncoder.encode(password));
+        if (!user.getUsername().equals(username) && userRepository.findByUsername(username) != null){
+            throw new IllegalArgumentException("Username " + username + " is not unique.");
         }
+        user.setUsername(username);
+        user.setFirstName(firstname);
+        user.setLastName(lastname);
+        user.setPassword(passwordEncoder.encode(password));
         return objectMapper.userToUserDto(user);
     }
 
