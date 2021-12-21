@@ -3,8 +3,10 @@ package com.infopulse.resumemanager.controller;
 import com.infopulse.resumemanager.dto.MailSendParamsDto;
 import com.infopulse.resumemanager.service.emailsender.EmailSenderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -15,7 +17,6 @@ public class MailController {
     private final EmailSenderService emailSenderService;
 
     @PostMapping("/send-mails")
-    @ResponseStatus(HttpStatus.OK)
     public void sendEmails(@RequestBody @Valid MailSendParamsDto mailSendParams) {
         emailSenderService.sendInviteLetter(mailSendParams.candidates(), mailSendParams.vacancy());
     }

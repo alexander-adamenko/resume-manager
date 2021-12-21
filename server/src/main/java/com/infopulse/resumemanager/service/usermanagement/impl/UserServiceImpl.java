@@ -1,88 +1,114 @@
 package com.infopulse.resumemanager.service.usermanagement.impl;
 
-import com.infopulse.resumemanager.dto.RoleDto;
 import com.infopulse.resumemanager.dto.UserDto;
+import com.infopulse.resumemanager.dto.UserSecurDto;
 import com.infopulse.resumemanager.mapper.ObjectMapper;
+import com.infopulse.resumemanager.repository.RoleRepository;
 import com.infopulse.resumemanager.repository.UserRepository;
 import com.infopulse.resumemanager.repository.entity.User;
-import com.infopulse.resumemanager.service.usermanagement.RoleService;
 import com.infopulse.resumemanager.service.usermanagement.UserService;
-import com.infopulse.resumemanager.service.usermanagement.impl.RoleServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
     private final Validator validator;
-    private final RoleService usersRoleService;
+    private final RoleRepository roleRepository;
 
-    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper,
-                           PasswordEncoder passwordEncoder, Validator validator, RoleServiceImpl usersRoleService) {
-        this.userRepository = userRepository;
-        this.objectMapper = objectMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.validator = validator;
-        this.usersRoleService = usersRoleService;
+    @Override
+    public boolean currentUserHasRole(String roleName) {
+        return getCurrentUserDto()
+                .roles()
+                .stream()
+                .anyMatch(roleDto -> roleDto.name().equals(roleName));
     }
 
-    public UserDto getCurrentUser() {
+    @Override
+    public UserDto getCurrentUserDto() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return objectMapper.userToUserDto(userRepository.findByUsername(authentication.getName()));
+        User user = userRepository.findByUsername(authentication.getName());
+        return objectMapper.userToUserDto(user);
     }
 
-    public StringBuilder update(String oldUserName, String lastname, String firstname,
-                                String username, String oldPassword, String newPassword) {
-        StringBuilder result = new StringBuilder();
-
-        User user = userRepository.findByUsername(oldUserName);
-        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
-
-            UserDto userDto;
-            if (newPassword.matches(".+"))
-                userDto = new UserDto(username, newPassword, firstname, lastname, null);
-            else
-                userDto = new UserDto(username, null, firstname, lastname, null);
-
-            Set<ConstraintViolation<UserDto>> violations = validator.validate(userDto);
-            for (ConstraintViolation<UserDto> c : violations) {
-                result.append(c.getMessage());
-                result.append("\n");
-            }
-            if (violations.size() == 0 && newPassword.matches(".+")) {
-                objectMapper.updateUserFromDto(userDto, user);
-                user.setPassword(passwordEncoder.encode(newPassword));
-                userRepository.save(user);
-            }
-        } else return result.append("Invalid old password");
-        return result;
+    @Override
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(authentication.getName());
+        return user;
     }
 
-    private boolean isAdmin(UserDto userDto) {
-        for (RoleDto r : userDto.roles())
-            if (r.name().equals("ADMIN")) return true;
-        return false;
+    @Override
+    public UserSecurDto getCurrentUserSecurDto() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new UserSecurDto(authentication.getName(),
+                authentication
+                        .getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList());
     }
 
-    public void updateUserRoles(String userName, Set<RoleDto> roles) {
-        if (isAdmin(getCurrentUser())) {
-            User user = userRepository.findByUsername(userName);
-            objectMapper.updateUserFromDto(new UserDto(null, null,
-                    null, null, roles), user);
-            userRepository.save(user);
+    @Override
+    @Transactional
+    public List<Long> updateUserRoles(Long userId, List<Long> rolesIds) {
+        User user = userRepository.getById(userId);
+        user.setRoles(new HashSet<>(roleRepository.findAllById(rolesIds)));
+        return rolesIds;
+    }
+
+    @Override
+    @Transactional
+    public UserDto updateUser(Long userId, String username, String firstname, String lastname, String password) {
+        User user = userRepository.getById(userId);
+        if (!user.getUsername().equals(username) && userRepository.findByUsername(username) != null){
+            throw new IllegalArgumentException("Username " + username + " is not unique.");
         }
+        user.setUsername(username);
+        user.setFirstName(firstname);
+        user.setLastName(lastname);
+        user.setPassword(passwordEncoder.encode(password));
+        return objectMapper.userToUserDto(user);
     }
-    public void addRoleToUser(String userName, RoleDto roleDto){
-        if (isAdmin(getCurrentUser())) {
-           usersRoleService.addRoleToUser(userName, roleDto);
-        }
+
+    @Override
+    @Transactional
+    public UserDto createUser(UserDto userDto) {
+        User user = objectMapper.userDtoToUser(userDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return userDto;
+    }
+
+    @Override
+    @Transactional
+    public void addRoleToUser(Long userId, Long roleId) {
+        User user = userRepository.getById(userId);
+        user.getRoles().add(roleRepository.getById(roleId));
+    }
+
+    @Override
+    @Transactional
+    public void removeRoleFromUser(Long userId, Long roleId) {
+        User user = userRepository.getById(userId);
+        user.getRoles().remove(roleRepository.getById(roleId));
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        List<User> userList = userRepository.findAll();
+        return userList.stream().map(objectMapper::userToUserDto).toList();
     }
 }

@@ -43,7 +43,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/login", "/api/v1/refresh-token").permitAll()
-                .antMatchers("/api/v1/user**").hasAuthority(ERole.ADMIN.name())
+                .antMatchers("/api/v1/users**").hasAuthority(ERole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -52,8 +52,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         http.cors().configurationSource(
                 request -> {
-                    // for development purposes allow CORS requests from :3000
-                    // this entire configuration section may be omitted in deployment
                     CorsConfiguration cors = new CorsConfiguration();
                     cors.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost"));
                     cors.setAllowedMethods(Arrays.asList("GET", "POST","PUT", "DELETE", "OPTIONS"));
@@ -62,7 +60,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                     return cors;
                 }
         );
-        //http.formLogin().successForwardUrl("/api/v1/users");
     }
 
     @Override

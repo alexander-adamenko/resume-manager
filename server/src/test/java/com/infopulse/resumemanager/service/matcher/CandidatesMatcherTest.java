@@ -217,11 +217,11 @@ class CandidatesMatcherTest {
     private VacancyDto getVacancyDto() {
         Set<VacancySkillDto> skills = new HashSet<>();
 
-        skills.add(new VacancySkillDto(new SkillDto(skill1.getName()), Level.JUNIOR));
-        skills.add(new VacancySkillDto(new SkillDto(skill2.getName()), Level.TRAINEE));
-        skills.add(new VacancySkillDto(new SkillDto(skill3.getName()), Level.MIDDLE));
+        skills.add(new VacancySkillDto(null, new SkillDto(null, skill1.getName()), Level.JUNIOR));
+        skills.add(new VacancySkillDto(null, new SkillDto(null, skill2.getName()), Level.TRAINEE));
+        skills.add(new VacancySkillDto(null, new SkillDto(null, skill3.getName()), Level.MIDDLE));
 
-        return new VacancyDto(1l, "Java Developer", true,
+        return new VacancyDto(1L, "Java Developer", true,
                 2, null, null,null, null, skills);
 
     }

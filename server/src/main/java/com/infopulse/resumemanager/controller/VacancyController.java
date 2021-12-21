@@ -1,8 +1,6 @@
 package com.infopulse.resumemanager.controller;
 
-import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.VacancyDto;
-import com.infopulse.resumemanager.service.matcher.CandidatesMatcher;
 import com.infopulse.resumemanager.service.vacancy.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,18 +17,17 @@ public class VacancyController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public VacancyDto saveVacancy(@RequestBody @Valid VacancyDto vacancyDto) {
-        return vacancyService.createNewVacancy(vacancyDto);
+    public VacancyDto createVacancy(@RequestBody @Valid VacancyDto vacancyDto) {
+        return vacancyService.createVacancy(vacancyDto);
     }
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public List<VacancyDto> getAllVacancies() {
+    public List<VacancyDto> getVacancies() {
         return vacancyService.getAllVacancies();
     }
 
-    @PutMapping()
-    public VacancyDto update(@RequestBody @Valid VacancyDto vacancyDto){
+    @PatchMapping("/{vacancyId}")
+    public VacancyDto updateVacancy(@PathVariable Long vacancyId, @RequestBody @Valid VacancyDto vacancyDto){
         return vacancyService.updateVacancy(vacancyDto);
     }
 }

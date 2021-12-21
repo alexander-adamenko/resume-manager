@@ -81,6 +81,8 @@ public class CandidatesMatcherImpl implements CandidatesMatcher {
         return doMatching(vacancy);
     }
 
+    //----------------------------------------------------------------------------------
+
     @Override
     public List<Candidate> getCandidates(VacancyDto vacancy) {
         return getStreamOfFilteredSkills(vacancy)

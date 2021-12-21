@@ -36,7 +36,7 @@ public class Vacancy {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @OneToMany(mappedBy = "vacancy")
+    @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
     private Set<VacancySkill> vacancySkills = new HashSet<>();
 
     @OneToMany(mappedBy = "vacancy")

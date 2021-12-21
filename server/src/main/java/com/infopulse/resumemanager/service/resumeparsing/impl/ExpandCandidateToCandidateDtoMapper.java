@@ -41,7 +41,7 @@ public class ExpandCandidateToCandidateDtoMapper {
         for (String skill : allSkills) {
             String skillName = skill.trim().toLowerCase();
             if(!skillName.isBlank()) {
-                var skillDto = new SkillDto(skillName);
+                var skillDto = new SkillDto(null, skillName);
                 resultSkillSet.add(new CandidateSkillDto(skillDto, Level.DEFAULT));
             }
         }
