@@ -30,7 +30,6 @@ public class JwtTokenComponent {
     private final String ENCODED_KEY = "rtzjyNGqu1z9+Wa7XqTq30sSvCAYhMrKt8Cjaw4I8n/e2r9+0WiFW1O+92BJRnWTFDdmCQYeLFoxybueaENDQQ==";
     private final int ACCESS_TOKEN_LIFETIME_MS = 1000 * 60 * 600;//1h
     private final int REFRESH_TOKEN_LIFETIME_MS = 1000 * 60 * 60 * 30;//3h
-//    private static final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS512);
     private final SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(ENCODED_KEY));
     public enum TokenType {
         ACCESS,
