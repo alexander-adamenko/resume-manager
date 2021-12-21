@@ -1,8 +1,9 @@
-package com.infopulse.resumemanager.service.emailsender;
+package com.infopulse.resumemanager.service.emailsender.impl;
 
 import com.infopulse.resumemanager.dto.CandidateDto;
 import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.dto.VacancyDto;
+import com.infopulse.resumemanager.service.emailsender.EmailSenderService;
 import com.infopulse.resumemanager.service.usermanagement.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -27,7 +28,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             String password = "8c8e28ef9c4ce9";
             String host = "smtp.mailtrap.io";
 
-            UserDto user = userService.getCurrentUser();
+            UserDto user = userService.getCurrentUserDto();
             String from = (user.firstName() + "." + user.lastName() + "@gmail.com").toLowerCase(Locale.ROOT);
             String subject = vacancy.positionTitle();
             String premsg = """
