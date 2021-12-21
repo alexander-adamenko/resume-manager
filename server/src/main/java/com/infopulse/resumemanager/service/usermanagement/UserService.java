@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface UserService {
     UserDto createUser(UserDto userDto);
-    UserDto addRoleToUser(Long userId, Long roleId);
-    UserDto removeRoleFromUser(Long userId, Long roleId);
+    void addRoleToUser(Long userId, Long roleId);
+    void removeRoleFromUser(Long userId, Long roleId);
     List<Long> updateUserRoles(Long userId, List<Long> rolesIds);
     UserDto updateUser(Long userId, String username, String firstname, String lastname, String password);
     UserDto getCurrentUser();

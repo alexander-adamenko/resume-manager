@@ -4,6 +4,7 @@ import com.infopulse.resumemanager.dto.UserDto;
 import com.infopulse.resumemanager.exception.UserAlreadyExistsException;
 import com.infopulse.resumemanager.service.usermanagement.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,8 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<UserDto>> getUsers() {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+    public List<UserDto> getUsers() {
+        return userService.getAllUsers();
     }
 
     @PostMapping()
@@ -29,14 +30,16 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.createUser(userDto));
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping("/{userId}/roles/{roleId}")
-    public ResponseEntity<UserDto> addRoleToUser(@PathVariable Long userId, @PathVariable Long roleId) {
-        return ResponseEntity.ok().body(userService.addRoleToUser(userId, roleId));
+    public void addRoleToUser(@PathVariable Long userId, @PathVariable Long roleId) {
+        userService.addRoleToUser(userId, roleId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}/roles/{roleId}")
-    public ResponseEntity<UserDto> deleteRolesFromUser(@PathVariable Long userId, @PathVariable Long roleId) {
-        return ResponseEntity.ok().body(userService.removeRoleFromUser(userId, roleId));
+    public void deleteRolesFromUser(@PathVariable Long userId, @PathVariable Long roleId) {
+        userService.removeRoleFromUser(userId, roleId);
     }
 
     @GetMapping("/current-user")

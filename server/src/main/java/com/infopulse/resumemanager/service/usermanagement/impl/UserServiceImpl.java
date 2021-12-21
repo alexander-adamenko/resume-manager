@@ -86,18 +86,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto addRoleToUser(Long userId, Long roleId) {
+    public void addRoleToUser(Long userId, Long roleId) {
         User user = userRepository.getById(userId);
         user.getRoles().add(roleRepository.getById(roleId));
-        return objectMapper.userToUserDto(user);
     }
 
     @Override
     @Transactional
-    public UserDto removeRoleFromUser(Long userId, Long roleId) {
+    public void removeRoleFromUser(Long userId, Long roleId) {
         User user = userRepository.getById(userId);
         user.getRoles().remove(roleRepository.getById(roleId));
-        return objectMapper.userToUserDto(user);
     }
 
     @Override
