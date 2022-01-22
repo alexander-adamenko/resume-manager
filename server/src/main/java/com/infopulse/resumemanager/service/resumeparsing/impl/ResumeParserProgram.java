@@ -26,11 +26,11 @@ import static gate.Utils.stringFor;
 public class ResumeParserProgram {
 
     public ExtendedCandidate parseUsingGateAndAnnie(String path) throws GateException, IOException {
-        System.setProperty("gate.site.config", System.getProperty("user.dir")+"/GATEFiles/gate.xml");
+        System.setProperty("gate.site.config", System.getProperty("user.dir") + "/GATEFiles/gate.xml");
         if (Gate.getGateHome() == null)
-            Gate.setGateHome(new File(System.getProperty("user.dir")+"/GATEFiles"));
+            Gate.setGateHome(new File(System.getProperty("user.dir") + "/GATEFiles"));
         if (Gate.getPluginsHome() == null)
-            Gate.setPluginsHome(new File(System.getProperty("user.dir")+"/GATEFiles/plugins"));
+            Gate.setPluginsHome(new File(System.getProperty("user.dir") + "/GATEFiles/plugins"));
         Gate.init();
 
         Annie annie = new Annie();
@@ -60,7 +60,7 @@ public class ResumeParserProgram {
 
     }
 
-    private ExtendedCandidate parseIntoCandidateExpand(Corpus corpus, String path){
+    private ExtendedCandidate parseIntoCandidateExpand(Corpus corpus, String path) {
         Iterator<Document> iter = corpus.iterator();
         ExtendedCandidate extendedCandidate = null;
         if (iter.hasNext()) {
@@ -69,38 +69,27 @@ public class ResumeParserProgram {
 
 
             String summary = parseSectionHeading("summary", defaultAnnotSet, doc);
-            if(summary !=null) summary = summary.trim();
+            if (summary != null) summary = summary.trim();
             String education = parseSectionHeading("education_and_training", defaultAnnotSet, doc);
             List<Map<String, String>> skills = parseSectionHeadingWithMultipleSubSections("skills", defaultAnnotSet, doc);
 
             String s = readFile(path);
             City city = getLocationOfCandidate(s);
 
-            String phone = getPhoneOfCandidate(s);
+            String phone = getUsingRegexp(RegexpPattern.PHONE.toString(), s);
             if (phone == null) phone = parseAnnSectionSingleRes("PhoneFinder", defaultAnnotSet, doc);
-            String email = getEmailOfCandidate(s);
+            String email = getUsingRegexp(RegexpPattern.EMAIL.toString(), s);
             if (email == null) email = parseAnnSectionSingleRes("EmailFinder", defaultAnnotSet, doc);
 
-
-            extendedCandidate = new ExtendedCandidate(email, phone, education, summary, path,city, skills);
+            extendedCandidate = new ExtendedCandidate(email, phone, education, summary, path, city, skills);
         }
         return extendedCandidate;
     }
-    private String getPhoneOfCandidate(String s) {
-        String patterns
-                = "\\d{12}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}|\\d{2}\\(\\d{3}\\) ?\\d{3}-\\d{2}-\\d{2}";
+
+    private String getUsingRegexp(String patterns, String s) {
         Pattern pattern = Pattern.compile(patterns);
         Matcher matcher = pattern.matcher(s);
-        if(matcher.find()){
-            return matcher.group(0);
-        }
-        return null;
-    }
-    private String getEmailOfCandidate(String s) {
-        String patterns = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-        Pattern pattern = Pattern.compile(patterns);
-        Matcher matcher = pattern.matcher(s);
-        if(matcher.find()){
+        if (matcher.find()) {
             return matcher.group(0);
         }
         return null;
@@ -109,18 +98,18 @@ public class ResumeParserProgram {
 
     private City getLocationOfCandidate(String s) {
         City city = null;
-        if(s != null){
+        if (s != null) {
             Optional<City> any = Arrays.stream(City.values())
                     .filter(eCity -> s.toLowerCase().contains(eCity.toString().toLowerCase()))
                     .findAny();
-            if(any.isPresent()){
+            if (any.isPresent()) {
                 city = any.get();
             }
         }
         return city;
     }
 
-    private List<Map<String, String>> parseSectionHeadingWithMultipleSubSections(String section, AnnotationSet defaultAnnotSet, Document doc){
+    private List<Map<String, String>> parseSectionHeadingWithMultipleSubSections(String section, AnnotationSet defaultAnnotSet, Document doc) {
         AnnotationSet curAnnSet;
         Iterator it;
         Annotation currAnnot;
@@ -160,7 +149,7 @@ public class ResumeParserProgram {
         return null;
     }
 
-    private List<String> parseAnnSection(String annSection, AnnotationSet defaultAnnotSet, Document doc){
+    private List<String> parseAnnSection(String annSection, AnnotationSet defaultAnnotSet, Document doc) {
         AnnotationSet curAnnSet;
         Iterator it;
         Annotation currAnnot;
@@ -178,7 +167,7 @@ public class ResumeParserProgram {
         return strings;
     }
 
-    private String parseAnnSectionSingleRes(String annSection, AnnotationSet defaultAnnotSet, Document doc){
+    private String parseAnnSectionSingleRes(String annSection, AnnotationSet defaultAnnotSet, Document doc) {
         AnnotationSet curAnnSet;
         Iterator it;
         Annotation currAnnot;
@@ -195,22 +184,22 @@ public class ResumeParserProgram {
         return null;
     }
 
-    private String readFile(String path){
+    private String readFile(String path) {
         File file = new File(path);
         String text = null;
         String extension = FilenameUtils.getExtension(file.getName());
-        if(extension.equals("pdf")){
+        if (extension.equals("pdf")) {
             text = readPdf(path);
-        } else if(extension.equals("doc") || extension.equals("docx")){
+        } else if (extension.equals("doc") || extension.equals("docx")) {
             text = readDocxFile(path);
         }
         return text;
     }
 
-    private String readPdf(String path){
+    private String readPdf(String path) {
         String text = null;
         try {
-            PDDocument document  = PDDocument.load(new File(path));
+            PDDocument document = PDDocument.load(new File(path));
             if (!document.isEncrypted()) {
                 PDFTextStripper stripper = new PDFTextStripper();
                 text = stripper.getText(document);
